@@ -1,0 +1,18 @@
+.social-sidebar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1.4rem;
+}
+
+.social-sidebar__icon {
+  color: #dddadb;
+  opacity: 0.8;
+  transition: color 0.25s ease, opacity 0.25s ease, transform 0.25s ease;
+}
+
+.social-sidebar__icon:hover {
+  color: #a78bfa;
+  opacity: 1;
+  transform: translateY(-2px);
+}

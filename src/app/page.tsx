@@ -1,41 +1,47 @@
 'use client';
 
 import dynamic from 'next/dynamic';
+import LoadingScreen from "@/components/LoadingScreen";
 import Hero from "@/components/Hero";
 import Navbar from "@/components/Navbar";
-import LoadingScreen from "@/components/LoadingScreen";
+import Projects from "@/components/Projects";
+import About from "@/components/About";
+import Skills from "@/components/Skills";
+import Contact from "@/components/Contact";
+import Footer from "@/components/Footer";
+import { useBgTransition } from '@/hooks/useBgTransition';
 
 const Lanyard = dynamic(() => import('@/components/Lanyard'), { ssr: false });
 
 export default function Home() {
+  const triggerRef = useBgTransition('#06060a', '#dddadb', 900);
+
   return (
-    <main className="bg-[#120f17] min-h-screen">
-      
+    <main className="min-h-screen">
+      <div id="bg-transition-layer" />
       <LoadingScreen />
-
-      {/* Grade de fundo */}
-      <div
-        className="fixed inset-0 z-0 pointer-events-none"
-        style={{
-          backgroundImage: "radial-gradient(circle, rgba(68, 47, 95, 0.56) 1px, transparent 1px)",
-          backgroundSize: "18px 18px",
-        }}
-      />
-
       <Navbar />
 
-  {/* Hero + Lanyard lado a lado */}
-  <div className="relative w-full h-screen">
-    <div className="absolute inset-0">
-      <Hero />
-    </div>
-    <div className="absolute inset-0 pointer-events-none">
-      <div className="w-full h-full pointer-events-auto">
-        <Lanyard position={[0, 0, 10]} gravity={[0, -40, 0]} transparent={true} />
+      <div className="relative w-full">
+        <Hero>
+          <div className="absolute inset-0 pointer-events-none z-5">
+            <div className="w-full h-full pointer-events-auto">
+              <Lanyard position={[0, 0, 10]} gravity={[0, -40, 0]} transparent={true} />
+            </div>
+          </div>
+        </Hero>
+
+        <Projects />
+        <div ref={triggerRef} aria-hidden="true" />
+
+        <div className="about-skills-wrapper" style={{ background: 'transparent' }}>
+          <About />
+          <Skills />
+        </div>
+
+        <Contact />
+        <Footer />
       </div>
-    </div>
-  </div>
-</main>
+    </main>
   );
 }
-
