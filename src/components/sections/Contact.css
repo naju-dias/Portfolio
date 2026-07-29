@@ -1,0 +1,246 @@
+@import url('https://fonts.googleapis.com/css2?family=Alumni+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+
+.contact {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  padding: 12rem 1.5rem 10rem 1.5rem;
+}
+
+.contact-container {
+  max-width: 1310px;
+  margin: 0 auto;
+
+  display: grid;
+  grid-template-columns: 0.9fr 1fr;
+  gap: 10rem;
+  align-items: flex-start;
+}
+
+/* ──── Heading column ───── */
+
+.contact-heading {
+  position: sticky;
+  top: -5px;
+  display: flex;
+  flex-direction: column;
+}
+
+.contact-heading h2 {
+  font-family: "Tanker", serif;
+  font-weight: 400;
+  font-size: clamp(4rem, 8vw, 8.2rem);
+  line-height: 0.96;
+  letter-spacing: -0.00em;
+
+  background: linear-gradient(180deg, #f7f7ff 0%, #f7f7ff 40%, #5e50b1 90%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  margin-bottom: 2.2rem;
+}
+
+.contact-subtitle {
+  font-family: "Geist", sans-serif;
+  font-size: 18px;
+  line-height: 1.5;
+  color: rgba(217, 213, 197, 0.65);
+  max-width: 380px;
+  margin-bottom: 3rem;
+}
+
+.contact-micro-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+
+  font-family: "Geist", monospace;
+  font-size: 1.3rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  color: #dddadb;
+
+  margin-top: -2.8rem;
+  margin-bottom: 1.6rem;
+}
+
+.contact-micro-slash {
+  font-family: "JetBrains Mono", monospace;
+  font-weight: 700;
+  color: #97999d;
+}
+
+/* ──── Form column ──── */
+
+.contact-form-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+  margin-top: 1.1rem;
+}
+
+.contact-field {
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+}
+
+.contact-field label {
+  font-family: "Geist Mono", monospace;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+
+  color: #f7f7ff;
+}
+
+.contact-field input,
+.contact-field textarea {
+  width: 100%;
+
+  background: transparent;
+
+  border: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+
+  padding-bottom: 1rem;
+
+  font-family: "Geist", sans-serif;
+  font-size: 1.4rem;
+
+  color: #ffffff;
+
+  outline: none;
+
+  transition: all 0.3s ease;
+}
+
+.contact-field textarea {
+  resize: none;
+  min-height: 120px;
+}
+
+.contact-field input::placeholder,
+.contact-field textarea::placeholder {
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.contact-field input:focus,
+.contact-field textarea:focus {
+  border-color: #ffffff;
+}
+
+/* ──── Form button ──── */
+
+.container-botao-direita {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  margin-top: -11px;
+}
+
+.btn-enviar-scramble {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  
+  background: transparent;
+  border: none;
+  padding: 0.4rem 0;
+  cursor: pointer;
+
+  font-family: 'Geist', sans-serif;
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: #f7f7ff;
+
+  transition: color 0.4s ease, border-color 0.4s ease;
+}
+
+.btn-enviar-scramble:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-text-underline {
+  display: inline-block;
+  line-height: 1;
+  padding-bottom: 2px;
+  border-bottom: 1px solid #f7f7ff;
+  transition: border-color 0.4s ease;
+}
+
+.btn-arrow-icon {
+  display: inline-flex;
+  align-items: center;
+  transform: rotate(0deg) translateY(-3px);
+  color: #5e50b1;
+  width: 1.4em;
+  height: 1.4em;
+
+  transition: transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-enviar-scramble:hover .btn-arrow-icon {
+  transform: rotate(45deg) translateY(-3);
+}
+
+/* ──── Feedback ──── */
+
+.contact-form-wrapper {
+  font-family: 'Geist', sans-serif;
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+}
+
+.form-feedback {
+  font-size: 0.85rem;
+  padding: 0.5rem 0;
+  font-weight: 500;
+}
+
+.form-feedback.success { color: #6ee7b7; }
+.form-feedback.error   { color: #fca5a5; }
+
+@media (max-width: 968px) {
+  .contact-container {
+    grid-template-columns: 1fr;
+    gap: 4rem;
+  }
+
+  .contact-heading {
+    position: relative;
+    top: 0;
+  }
+
+  .contact-heading h2 {
+    font-size: clamp(3.5rem, 14vw, 8rem);
+  }
+
+  .contact-micro-label {
+    margin-top: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .contact {
+    padding: 8rem 1.5rem 6rem;
+  }
+
+  .contact-form-wrapper {
+    gap: 3rem;
+  }
+
+  .contact-field input,
+  .contact-field textarea {
+    font-size: 1rem;
+  }
+
+  .contact-button {
+    font-size: 2rem;
+  }
+}

@@ -1,44 +1,69 @@
 'use client';
 
 import dynamic from 'next/dynamic';
-import LoadingScreen from "@/components/LoadingScreen";
-import Hero from "@/components/Hero";
-import Navbar from "@/components/Navbar";
-import Projects from "@/components/Projects";
-import About from "@/components/About";
-import Skills from "@/components/Skills";
-import Contact from "@/components/Contact";
-import Footer from "@/components/Footer";
-import { useBgTransition } from '@/hooks/useBgTransition';
+import LoadingScreen from "@/components/layout/LoadingScreen";
+import Navbar from "@/components/layout/Navbar";
 
-const Lanyard = dynamic(() => import('@/components/Lanyard'), { ssr: false });
+import Hero from "@/components/sections/Hero";
+import Projects from "@/components/sections/Projects";
+import About from "@/components/sections/About";
+import Skills from "@/components/sections/Skills";
+import Contact from "@/components/sections/Contact";
+import Footer from "@/components/sections/Footer";
+
+import { useBgTransition } from "@/hooks/useBgTransition";
+
+const Lanyard = dynamic(
+  () => import("@/components/effects/Lanyard"),
+  { ssr: false }
+);
 
 export default function Home() {
-  const triggerRef = useBgTransition('#06060a', '#dddadb', 900);
+  const [aboutTrigger, contactTrigger] = useBgTransition([
+    {
+      from: "#06060a",
+      to: "#dddadb",
+      zoneHeight: 700,
+    },
+    {
+      from: "#dddadb",
+      to: "#06060a",
+      zoneHeight: 900,
+    },
+  ]);
 
   return (
     <main className="min-h-screen">
-      <div id="bg-transition-layer" />
       <LoadingScreen />
       <Navbar />
-
       <div className="relative w-full">
         <Hero>
           <div className="absolute inset-0 pointer-events-none z-5">
             <div className="w-full h-full pointer-events-auto">
-              <Lanyard position={[0, 0, 10]} gravity={[0, -40, 0]} transparent={true} />
+              <Lanyard
+                position={[0, 0, 10]}
+                gravity={[0, -40, 0]}
+                transparent
+              />
             </div>
           </div>
         </Hero>
-
         <Projects />
-        <div ref={triggerRef} aria-hidden="true" />
 
-        <div className="about-skills-wrapper" style={{ background: 'transparent' }}>
+        {/* Escuro -> Claro (Inicia ao rolar para o About) */}
+        <div ref={aboutTrigger} aria-hidden />
+        
+        <div className="about-skills-wrapper bg-transparent">
           <About />
           <Skills />
         </div>
 
+        {/* Claro -> Escuro (Começa a escurecer ao entrar no Contact) */}
+        <div
+          ref={contactTrigger}
+          className="h-px"
+          aria-hidden
+        />
         <Contact />
         <Footer />
       </div>

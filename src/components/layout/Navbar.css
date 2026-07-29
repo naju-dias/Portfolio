@@ -1,0 +1,324 @@
+.navbar-wrapper {
+    position: fixed;
+    top: 2.1em;
+    left: 0;
+    right: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 clamp(8rem, 4vw, 8rem);
+
+    z-index: 1000;
+
+    font-family: 'Geist Mono', monospace;
+
+    transition: top 0.3s ease;
+}
+
+ .navbar-wrapper.scrolled {
+    top: 1rem;
+}
+
+ .navbar-wrapper > * {
+    pointer-events: auto;
+ }
+
+.nav-logo {
+    display: inline-block;
+    font-size: 37px;
+    letter-spacing: 0.02em;
+    color: #806ded;
+    text-decoration: none;
+    font-family: 'Tanker', sans-serif;
+
+    transition: transform 0.4s cubic-bezier(0.16,1,0.3,1), color 0.4s ease;
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 2.2rem;
+
+}
+.nav-item {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+
+    color: #f7f7ff;
+    text-decoration: none;
+
+    transition: color 0.4s ease;
+}
+
+.nav-item .plus {
+    display: inline-flex;
+    color: #806ded;
+    transform-origin: center;
+    transform: translateY(-1.1px);
+    transition: transform 0.6s ease;
+}
+
+.nav-item:hover .plus {
+    transform: translateY(-2px) rotate(90deg);
+}
+
+.nav-item.active {
+    color: #e7e1d1;
+}
+
+.nav-item.active .plus {
+    transform: translateY(-2px) rotate(90deg);
+}
+
+.nav-contato {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+
+    color: #f7f7ff;
+    text-decoration: none;
+
+    transition: color 0.4s ease;
+}
+
+.nav-contato .arrow-icon {
+    display: inline-flex;
+    align-items: center;
+    width: 1.25em;
+    height: 1.25em;
+    transform: translateY(-0.5px);
+    transition: transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+    color: #806ded;
+}
+
+.nav-contato:hover .arrow-icon {
+    transform: translateY(-0.5px) rotate(45deg);
+}
+
+.nav-overlay-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: 'Tanker', sans-serif;
+  font-size: clamp(2.8rem, 10vw, 3.8rem);
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  line-height: 1.15;
+  color: rgba(247, 247, 255, 0.4); /* Fica mais apagadinho quando não selecionado */
+  text-decoration: none;
+  transition: color 0.3s ease, opacity 0.3s ease;
+}
+
+.nav-overlay-item.active {
+  color: #f7f7ff; /* Destaca o item ativo em branco */
+}
+
+.nav-overlay-item:hover {
+  opacity: 0.8;
+}
+
+/* Bolinha indicadora do item ativo */
+.nav-active-dot {
+  width: 12px;
+  height: 12px;
+  background-color: #806ded; /* Cor do seu tema principal */
+  border-radius: 50%;
+  display: inline-block;
+  margin-left: auto;
+}
+
+/* ---- TEMA CLARO (sobre fundo branco) ---- */
+.navbar-wrapper.theme-light .nav-item {
+    color: #1c1d24;
+}
+
+.navbar-wrapper.theme-light .nav-item.active {
+    color: #0a0a0a;
+}
+
+.navbar-wrapper.theme-light .nav-contato {
+    color: #1c1d24;
+}
+
+.navbar-wrapper.theme-light .nav-contato:hover {
+    color: #2a2a2a;
+}
+
+.navbar-wrapper.theme-light .plus {
+    color: #5e50b1;
+}
+
+.navbar-wrapper.theme-light .arrow-icon {
+    color: #5e50b1;
+}
+
+/* ── Hamburger (só existe no mobile) ─────────────────────────── */
+.nav-burger {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    color: #f7f7ff;
+    transition: color 0.4s ease;
+}
+
+.navbar-wrapper.theme-light .nav-burger {
+    color: #1c1d24;
+}
+
+.nav-burger-icon {
+    position: relative;
+    width: 22px;
+    height: 14px;
+}
+
+.nav-burger-icon span {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: currentColor;
+    border-radius: 2px;
+    transition: transform 0.35s cubic-bezier(0.16,1,0.3,1), 
+    opacity 0.25s ease, top 0.35s cubic-bezier(0.16,1,0.3,1);
+}
+
+.nav-burger-icon span:nth-child(1) { 
+    top: 0; 
+}
+
+.nav-burger-icon span:nth-child(2) { 
+    top: 6px; 
+}
+
+.nav-burger-icon span:nth-child(3) { 
+    top: 12px; 
+}
+
+.nav-burger.open .nav-burger-icon span:nth-child(1) {
+    top: 6px;
+    transform: rotate(45deg);
+}
+
+.nav-burger.open .nav-burger-icon span:nth-child(2) {
+    opacity: 0;
+}
+
+.nav-burger.open .nav-burger-icon span:nth-child(3) {
+    top: 6px;
+    transform: rotate(-45deg);
+}
+
+/* ── Menu overlay mobile ─────────────────────────────────────── */
+.nav-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 999;
+    background: #06060a;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 0 clamp(1.5rem, 6vw, 3.5rem) 2.5rem;
+}
+
+.nav-overlay-content {
+    margin-top: clamp(6rem, 15vh, 8rem); 
+    display: flex;
+    flex-direction: column;
+}
+
+.nav-overlay-header {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.nav-overlay-title {
+    font-family: 'Geist', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: #a9a9af;
+    text-transform: uppercase;
+}
+
+.nav-divider {
+    border: none;
+    border-top: 1px solid rgba(247, 247, 255, 0.24);
+    margin: 0;
+    width: 100%;
+}
+
+.nav-overlay-links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    padding: 2.5rem 0;
+}
+
+.nav-overlay-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.6rem;
+    font-family: 'Tanker', sans-serif;
+    font-size: clamp(2.6rem, 11vw, 3.4rem);
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    line-height: 1.25;
+    color: #f7f7ff;
+    text-decoration: none;
+    padding-bottom: 0.15em;
+}
+
+.nav-overlay-item .arrow-icon {
+    display: inline-flex;
+    align-items: center;
+    width: 0.65em;
+    height: 0.65em;
+    color: #806ded;
+}
+
+.nav-overlay-footer {
+    margin-top: auto;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    padding-top: 2rem;
+    width: 100%;
+}
+        
+
+@media (max-width: 768px) {
+    .nav-links,
+    .nav-contato {
+        display: none;
+    }
+
+    .nav-burger {
+        display: inline-flex;
+    }
+
+    .navbar-wrapper {
+        top: 1.5rem;
+        padding: 0 1.9rem;
+    }
+}

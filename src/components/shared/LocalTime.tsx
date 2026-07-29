@@ -3,7 +3,11 @@
 import { useState, useEffect } from "react";
 import { RiGlobalLine } from "react-icons/ri";
 
-export default function LocalTime() {
+interface LocalTimeProps {
+  className?: string;
+}
+
+export default function LocalTime({ className }: LocalTimeProps) {
   const [time, setTime] = useState("");
 
   useEffect(() => {
@@ -23,7 +27,7 @@ export default function LocalTime() {
   }, []);
 
   return (
-    <div className="local-time">
+    <div className={`local-time ${className || ""}`}>
       <div className="local-time__label">
         <RiGlobalLine className="local-time__icon" />
         Br

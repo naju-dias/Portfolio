@@ -1,0 +1,353 @@
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap');
+
+/* ==========================================================================
+   BASE / DESKTOP — valores idênticos ao inline style original.
+   Os dois clamp() originais (paddingLeft e right do LocalTime) resolviam
+   sempre para 320px e 128px fixos em telas até ~2560px — então aqui eles
+   entram já como valores fixos, preservando o resultado visual exato.
+   ========================================================================== */
+
+.hero-inner {
+  background-color: #0b0b11;
+}
+
+.hero-content-wrap {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  width: fit-content;
+  padding-left: 20rem; /* era clamp(20rem, 8vw, 18rem) — sempre resolvia pra 320px */
+  position: relative;
+  z-index: 10;
+}
+
+.hero-title-block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  gap: 0;
+  margin-top: -15px;
+}
+
+.hero-label {
+  font-family: 'Geist Mono', monospace;
+  font-size: 21px;
+  font-weight: 500;
+  color: #97999d;
+  line-height: 1.2;
+  margin-bottom: 0.5em;
+}
+
+.hero-label-slash {
+  color: #6f60cc;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 21px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+.hero-name {
+  display: block;
+  color: #f7f7ff;
+  font-family: 'Instrument Serif', serif;
+  font-size: 60px;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  margin-bottom: -12px;
+  text-shadow: 0 0 12px rgba(255, 255, 255, .03);
+}
+
+.hero-role {
+  display: block;
+  color: #806ded;
+  font-family: 'Instrument Serif', serif;
+  font-size: 58px;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+}
+
+.hero-desc {
+  font-family: 'Geist', sans-serif;
+  font-size: 23px;
+  font-weight: 500;
+  color: #979799;
+  letter-spacing: 0.04em;
+  margin-top: 1.5em;
+  z-index: 1;
+  display: block;
+  max-width: 500px;
+  line-height: 1.6;
+}
+
+/* ── Lanyard slot ─────────────────────────────── */
+
+.hero-lanyard-slot {
+  display: contents;
+}
+
+.hero-bottom-row {
+  display: contents;
+}
+
+/* ── CTAs ─────────────────────────────────────────────────────────────── */
+
+.hero-ctas {
+  position: absolute;
+  bottom: 1.3rem;
+  left: clamp(2rem, 5vw, 5.6rem);
+  display: flex;
+  align-items: center;
+  gap: 1.4rem;
+  z-index: 10;
+}
+
+.hero-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+
+  padding: 0.75rem 1rem;
+
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 18px;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+
+  text-decoration: none;
+  cursor: pointer;
+
+  transition: transform 0.3s cubic-bezier(0.16,1,0.3,1),
+              box-shadow 0.3s ease,
+              border-color 0.3s ease,
+              color 0.3s ease;
+}
+
+.hero-cta--filled,
+.hero-cta--ghost {
+  color: #f7f7ff;
+}
+
+.hero-cta--filled .bracket,
+.hero-cta--ghost .bracket {
+  color: #806ded;
+}
+
+.hero-cta--filled:hover {
+  color: #00ed2c;
+}
+
+.hero-cta--ghost:hover {
+  color: #ff7a36;
+}
+
+/* ── LocalTime ────────────────────────────────────────────────────────── */
+
+.hero-localtime-wrap {
+  position: absolute;
+  bottom: 1.4rem;
+  right: 8rem; /* era clamp(8rem, 5vw, 8rem) — min === max, sempre resolvia pra 128px */
+  z-index: 10;
+}
+
+.local-time {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  font-family: 'Geist', sans-serif;
+}
+
+.local-time__label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  font-size: 15px;
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #f7f7ff;
+}
+
+.local-time__icon {
+  color: #806ded;
+  margin-bottom: 1px;
+}
+
+.local-time__value {
+  font-size: 15px;
+  font-weight: 400;
+  color: #f7f7ff;
+  letter-spacing: 0.02em;
+}
+
+/* ── Scroll indicator ─────────────────────────────────────────────────── */
+
+.hero-scroll-indicator {
+  position: absolute;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1;
+}
+
+.hero-scroll-dot {
+  animation: scrollDot 1.8s ease-in-out infinite;
+}
+
+@keyframes scrollDot {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  60% {
+    transform: translateY(14px);
+    opacity: 0.3;
+  }
+  61% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* ==========================================================================
+   RESPONSIVO
+   Só entram em ação abaixo de 1024px — acima disso, tudo se comporta
+   exatamente como a versão inline original.
+   ========================================================================== */
+
+/* ── Tablets ──────────────────────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .hero-content-wrap {
+    padding-left: clamp(4rem, 12vw, 10rem);
+  }
+
+  .hero-name {
+    font-size: 46px;
+  }
+
+  .hero-role {
+    font-size: 44px;
+  }
+
+  .hero-desc {
+    font-size: 19px;
+    max-width: 420px;
+  }
+
+  .hero-localtime-wrap {
+    right: clamp(2rem, 5vw, 4rem);
+  }
+}
+
+/* ── Mobile ───────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .hero-content-wrap {
+    padding-left: 0;
+    width: 100%;
+    flex: 0 0 auto;
+  }
+
+  .hero-title-block {
+    align-items: flex-start;
+    margin-top: 0;
+    margin-top: -25px;
+  }
+
+  .hero-label {
+    font-size: 17px;
+  }
+
+  .hero-label-slash {
+    font-size: 18px;
+  }
+
+  .hero-name {
+    font-size: clamp(2.1rem, 9vw, 2.6rem);
+    margin-bottom: -6px;
+  }
+
+  .hero-role {
+    font-size: clamp(1.9rem, 8vw, 2.3rem);
+  }
+
+  .hero-desc {
+    font-size: 16px;
+    line-height: 1.7;
+    max-width: 100%;
+    margin-top: 1.2em;
+  }
+
+  .hero-lanyard-slot {
+    display: none;
+  }
+
+  .hero-bottom-row {
+    display: contents;
+  }
+
+  .hero-ctas {
+    position: static;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 6rem;
+    padding-left: 0;
+    margin-left: 0;
+  }
+
+  .hero-cta:first-child {
+    padding-left: 0;
+  }
+
+  .hero-cta {
+    font-size: 16px;
+    padding: 0.65rem 0.85rem;
+  }
+
+  .hero-localtime-wrap {
+    position: absolute;
+    bottom: 1.4rem;
+    right: 1.5rem;
+  }
+
+  .hero-scroll-indicator {
+    display: none;
+  }
+}
+
+/* ── Telas muito pequenas ─────────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .hero-name {
+    font-size: clamp(1.8rem, 10vw, 3.2rem);
+  }
+
+  .hero-role {
+    font-size: clamp(1.6rem, 9vw, 3rem);
+  }
+
+  .hero-desc {
+    font-size: 16px;
+  }
+
+  .hero-ctas {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.6rem 0.4rem;
+  }
+
+  .local-time__label,
+  .local-time__value {
+    font-size: 15px;
+  }
+}
