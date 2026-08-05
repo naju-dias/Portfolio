@@ -4,19 +4,19 @@ import { useEffect, useRef, useState } from "react";
 import { motion, type Variants } from "framer-motion";
 import { useProgress } from "@react-three/drei";
 
-const GREETINGS = ["Hello", "Bonjour", "Ciao", "Hola", "こんにちは", "Hallå", "Guten Tag", "Olá"];
-const STATUS_WORDS = [
-  "carregando ativos",
-  "renderizando cena",
-  "invocando a carta",
-  "quase lá",
+const BOOT_LINES = [
+  { label: "CARTA CORINGA", status: "INVOCANDO", threshold: 25 },
+  { label: "CENA 3D", status: "RENDERIZANDO", threshold: 50 },
+  { label: "ATIVOS DO PORTFÓLIO", status: "CARREGANDO", threshold: 75 },
+  { label: "SISTEMA", status: "PRONTO", threshold: 100 },
 ];
-const SCRAMBLE_CHARS = "!<>-_\\/[]{}—=+*^?#________";
 
-// Keeps the loader on screen for at least this long, even if assets
-// resolve instantly (e.g. localhost, cached builds). Without this the
-// screen can flash for ~100ms and feel like a glitch rather than a beat.
-const MIN_DISPLAY_MS = 2400;
+const STEP_MS = 550;
+const LINE_REVEAL_MS = 640;
+const READ_HOLD_MS = 700;
+
+// Trava de segurança: força a exibição se o WebGL/Three.js travar no carregamento
+const MAX_WAIT_MS = 8000;
 
 const EASE = [0.76, 0, 0.24, 1] as const;
 
@@ -24,117 +24,77 @@ interface LoadingScreenProps {
   onComplete?: () => void;
 }
 
-function useScramble(words: string[], active: boolean) {
-  const [display, setDisplay] = useState(words[0]);
-  const frame = useRef(0);
-  const wordIndex = useRef(0);
+function targetVisibleCount(progress: number, active: boolean) {
+  let count = 0;
+  for (const line of BOOT_LINES) {
+    const reached =
+      line.threshold === 100 ? progress >= 100 && !active : progress >= line.threshold;
+    if (!reached) break;
+    count++;
+  }
+  return count;
+}
+
+function useBootSequence(progress: number, active: boolean) {
+  const [visible, setVisible] = useState(0);
+  const target = targetVisibleCount(progress, active);
 
   useEffect(() => {
-    if (!active) return;
+    if (visible >= target) return;
+    const t = setTimeout(() => setVisible((v) => v + 1), visible === 0 ? 200 : STEP_MS);
+    return () => clearTimeout(t);
+  }, [visible, target]);
 
-    let raf: number;
-    let holdTimeout: ReturnType<typeof setTimeout>;
-    let queue: { from: string; to: string; start: number; end: number; char: string }[] = [];
+  useEffect(() => {
+    const t = setTimeout(() => {
+      setVisible((v) => (v < BOOT_LINES.length ? BOOT_LINES.length : v));
+    }, MAX_WAIT_MS);
+    return () => clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-    const setupQueue = (from: string, to: string) => {
-      const length = Math.max(from.length, to.length);
-      queue = [];
-      for (let i = 0; i < length; i++) {
-        const start = Math.floor(Math.random() * 20);
-        const end = start + Math.floor(Math.random() * 20);
-        queue.push({ from: from[i] || "", to: to[i] || "", start, end, char: "" });
-      }
-    };
-
-    const run = () => {
-      let output = "";
-      let complete = 0;
-      for (let i = 0; i < queue.length; i++) {
-        const item = queue[i];
-        if (frame.current >= item.end) {
-          complete++;
-          output += item.to;
-        } else if (frame.current >= item.start) {
-          if (!item.char || Math.random() < 0.28) {
-            item.char = SCRAMBLE_CHARS[Math.floor(Math.random() * SCRAMBLE_CHARS.length)];
-          }
-          output += item.char;
-        } else {
-          output += item.from;
-        }
-      }
-      setDisplay(output);
-      frame.current++;
-
-      if (complete < queue.length) {
-        raf = requestAnimationFrame(run);
-      } else {
-        holdTimeout = setTimeout(() => {
-          const nextIndex = (wordIndex.current + 1) % words.length;
-          setupQueue(words[wordIndex.current], words[nextIndex]);
-          wordIndex.current = nextIndex;
-          frame.current = 0;
-          raf = requestAnimationFrame(run);
-        }, 900);
-      }
-    };
-
-    setupQueue("", words[0]);
-    frame.current = 0;
-    raf = requestAnimationFrame(run);
-
-    return () => {
-      cancelAnimationFrame(raf);
-      clearTimeout(holdTimeout);
-    };
-  }, [active, words]);
-
-  return display;
+  return visible;
 }
 
 export default function LoadingScreen({ onComplete = () => {} }: LoadingScreenProps) {
-  // progress/active come from everything currently loading inside your <Canvas>
-  // (lanyard model, textures, fonts) — no manual tracking needed.
   const { progress, active } = useProgress();
 
-  const [dimension, setDimension] = useState({ width: 0, height: 0 });
-  const [greetIndex, setGreetIndex] = useState(0);
   const [exiting, setExiting] = useState(false);
   const [mounted, setMounted] = useState(true);
-  const startTime = useRef<number>(Date.now());
+  const [displayProgress, setDisplayProgress] = useState(0);
+  const lineChangeTime = useRef<number>(Date.now());
 
-  const statusText = useScramble(STATUS_WORDS, !exiting);
+  const visibleLines = useBootSequence(progress, active);
 
-  // Real viewport size — needed for the curve path, which is drawn in
-  // actual pixels rather than a fixed 0-100 viewBox.
   useEffect(() => {
-    setDimension({ width: window.innerWidth, height: window.innerHeight });
-  }, []);
+    lineChangeTime.current = Date.now();
+  }, [visibleLines]);
 
-  // Advance through greetings: first one holds a beat, then it accelerates
-  // and settles on the last word ("olá") — no looping.
   useEffect(() => {
-    if (greetIndex >= GREETINGS.length - 1) return;
-    const t = setTimeout(
-      () => setGreetIndex((i) => i + 1),
-      greetIndex === 0 ? 1000 : 150
-    );
+    if (exiting) {
+      setDisplayProgress(100);
+      return;
+    }
+    let raf: number;
+    const loop = () => {
+      const prevThreshold = visibleLines > 1 ? BOOT_LINES[visibleLines - 2].threshold : 0;
+      const currThreshold = visibleLines > 0 ? BOOT_LINES[visibleLines - 1].threshold : 0;
+      const t = Math.min(1, (Date.now() - lineChangeTime.current) / LINE_REVEAL_MS);
+      const value = prevThreshold + (currThreshold - prevThreshold) * t;
+      setDisplayProgress(Math.floor(value));
+      raf = requestAnimationFrame(loop);
+    };
+    raf = requestAnimationFrame(loop);
+    return () => cancelAnimationFrame(raf);
+  }, [visibleLines, exiting]);
+
+  useEffect(() => {
+    if (exiting) return;
+    if (visibleLines < BOOT_LINES.length) return;
+    const t = setTimeout(() => setExiting(true), LINE_REVEAL_MS + READ_HOLD_MS);
     return () => clearTimeout(t);
-  }, [greetIndex]);
+  }, [visibleLines, exiting]);
 
-  // Trigger the exit once loading is truly done AND the minimum display
-  // time has elapsed — whichever finishes last wins.
-  useEffect(() => {
-    if (active || progress < 100 || exiting) return;
-    const elapsed = Date.now() - startTime.current;
-    const wait = Math.max(MIN_DISPLAY_MS - elapsed, 0);
-    const t = setTimeout(() => setExiting(true), wait);
-    return () => clearTimeout(t);
-  }, [active, progress, exiting]);
-
-  // Unmount and hand off once the exit animation has fully played out
-  // (curve settles at 0.3s delay + 0.7s duration = 1s; container slide
-  // matches at 0.2s delay + 0.8s duration = 1s).
   useEffect(() => {
     if (!exiting) return;
     const t = setTimeout(() => {
@@ -144,24 +104,21 @@ export default function LoadingScreen({ onComplete = () => {} }: LoadingScreenPr
     return () => clearTimeout(t);
   }, [exiting, onComplete]);
 
-  if (!mounted || dimension.width === 0) return null;
-
-  const displayProgress = Math.floor(progress);
-  const { width, height } = dimension;
-
-  // Resting state: curve bulges 300px below the viewport (invisible,
-  // just sets up the shape). Exit state: curve flattens to the bottom edge.
-  const initialPath = `M0 0 L${width} 0 L${width} ${height} Q${width / 2} ${height + 300} 0 ${height} L0 0`;
-  const targetPath = `M0 0 L${width} 0 L${width} ${height} Q${width / 2} ${height} 0 ${height} L0 0`;
-
-  const curve: Variants = {
-    initial: { d: initialPath },
-    exit: { d: targetPath, transition: { duration: 0.7, ease: EASE, delay: 0.3 } },
-  };
+  if (!mounted) return null;
 
   const slideUp: Variants = {
     initial: { top: 0 },
     exit: { top: "-100vh", transition: { duration: 0.8, ease: EASE, delay: 0.2 } },
+  };
+
+  const lineVariants: Variants = {
+    hidden: {},
+    visible: { transition: { staggerChildren: 0.18 } },
+  };
+  
+  const pieceVariants: Variants = {
+    hidden: { opacity: 0, y: 4 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.28, ease: EASE } },
   };
 
   return (
@@ -179,17 +136,6 @@ export default function LoadingScreen({ onComplete = () => {} }: LoadingScreenPr
         overflow: "hidden",
       }}
     >
-      <svg
-        style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}
-      >
-        <motion.path
-          variants={curve}
-          initial="initial"
-          animate={exiting ? "exit" : "initial"}
-          fill="#06060a"
-        />
-      </svg>
-
       <div
         style={{
           position: "relative",
@@ -198,59 +144,138 @@ export default function LoadingScreen({ onComplete = () => {} }: LoadingScreenPr
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          gap: "16px",
+          gap: "clamp(28px, 6vw, 50px)",
           opacity: exiting ? 0 : 1,
           transition: "opacity 0.4s ease",
-          fontFamily: "var(--font-jetbrains-mono, monospace)",
+          padding: "0 24px",
+          boxSizing: "border-box",
         }}
       >
         <div
           style={{
-            fontFamily: "Geist, sans-serif",
-            fontWeight: 400,
-            fontSize: "clamp(40px, 6vw, 64px)",
-            color: "#d9d5c5",
-            lineHeight: 1,
-            minHeight: "1.2em",
             display: "flex",
             alignItems: "center",
+            gap: "clamp(6px, 1.6vw, 14px)",
+            flexWrap: "wrap",
+            justifyContent: "center",
           }}
         >
-          {GREETINGS[greetIndex]}
+          <span
+            style={{
+              fontFamily: "Geist Mono, monospace",
+              fontWeight: 500,
+              fontSize: "clamp(16px, 2.4vw, 28px)",
+              color: "#6f6c78",
+            }}
+          >
+            +
+          </span>
+
+          <span
+            style={{
+              fontFamily: "Geist Mono, monospace",
+              fontWeight: 400,
+              fontSize: "clamp(24px, 5vw, 52px)",
+              color: "#6f6c78",
+              lineHeight: 0.9,
+            }}
+          >
+            (
+          </span>
+
+          <h3
+            style={{
+              margin: 0,
+              marginTop: "clamp(4px, 1vw, 7px)",
+              fontFamily: "Tanker, serif",
+              fontWeight: 400,
+              fontSize: "clamp(22px, 5vw, 52px)",
+              lineHeight: 0.9,
+              color: "#6758bf",
+              whiteSpace: "nowrap",
+            }}
+          >
+            NAJU DIAS
+          </h3>
+
+          <span
+            style={{
+              fontFamily: "Geist Mono, monospace",
+              fontWeight: 400,
+              fontSize: "clamp(24px, 5vw, 52px)",
+              color: "#6f6c78",
+              lineHeight: 0.9,
+            }}
+          >
+            )
+          </span>
+
+          <span
+            style={{
+              fontFamily: "JetBrains Mono, monospace",
+              fontWeight: 500,
+              fontSize: "clamp(13px, 1.6vw, 22px)",
+              color: "#f7f7ff",
+              marginLeft: "4px",
+              minWidth: "3ch",
+            }}
+          >
+            {displayProgress}%
+          </span>
         </div>
 
         <div
           style={{
-            fontSize: "13px",
-            letterSpacing: "0.01em",
-            color: "#6f6c78",
-            textTransform: "uppercase",
-            fontFamily: "Geist Mono, monospace",
-            fontWeight: 500,
+            display: "flex",
+            flexDirection: "column",
+            gap: "clamp(6px, 1.4vw, 8px)",
+            width: "min(360px, 100%)",
+            marginTop: "8px",
           }}
         >
-          [ {statusText} ... {displayProgress}% ]
+          {BOOT_LINES.map((line, i) => (
+            <motion.div
+              key={line.label}
+              variants={lineVariants}
+              initial="hidden"
+              animate={i < visibleLines ? "visible" : "hidden"}
+              style={{
+                display: "flex",
+                alignItems: "baseline",
+                gap: "clamp(4px, 1.2vw, 8px)",
+                fontFamily: "JetBrains Mono, monospace",
+                fontSize: "clamp(10px, 3.2vw, 15px)",
+                letterSpacing: "0.02em",
+                textTransform: "uppercase",
+              }}
+            >
+              <motion.span variants={pieceVariants} style={{ color: "#a9a9af", whiteSpace: "nowrap" }}>
+                {line.label}
+              </motion.span>
+              <motion.span
+                variants={pieceVariants}
+                style={{
+                  flex: 1,
+                  overflow: "hidden",
+                  whiteSpace: "nowrap",
+                  letterSpacing: "1px",
+                  color: "#a9a9af",
+                  fontFamily: "JetBrains Mono, monospace",
+                  fontSize: "clamp(10px, 3.2vw, 15px)",
+                  transform: "translateY(-1px)",
+                }}
+              >
+                {".".repeat(80)}
+              </motion.span>
+              <motion.span
+                variants={pieceVariants}
+                style={{ color: "#6758bf", fontWeight: 500, whiteSpace: "nowrap" }}
+              >
+                [{line.status}]
+              </motion.span>
+            </motion.div>
+          ))}
         </div>
-      </div>
-
-      <div
-        style={{
-          position: "absolute",
-          left: 0,
-          right: 0,
-          bottom: "24px",
-          height: "1px",
-          background: "#26212f",
-        }}
-      >
-        <div
-          style={{
-            height: "100%",
-            width: `${progress}%`,
-            background: "#d9d5c5",
-            transition: "width 0.1s linear",
-          }}
-        />
       </div>
     </motion.div>
   );

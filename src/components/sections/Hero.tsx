@@ -36,7 +36,7 @@ export default function Hero({ children }: { children?: React.ReactNode }) {
           <Noise patternAlpha={8} />
         </div>
 
-        {/* Lanyard (recebido via page.tsx) — some no mobile via CSS */}
+        {/* Lanyard some no mobile */}
         <div className="hero-lanyard-slot">
           {children}
         </div>
@@ -58,7 +58,7 @@ export default function Hero({ children }: { children?: React.ReactNode }) {
           </div>
         </div>
 
-        {/* CTAs + LocalTime — no mobile viram uma linha só (cta esquerda / hora direita) */}
+        {/* CTAs + LocalTime */}
         <div className="hero-bottom-row">
           <div className="hero-ctas">
             <a href="#projects" className="hero-cta hero-cta--filled">

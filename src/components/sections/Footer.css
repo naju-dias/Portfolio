@@ -1,4 +1,4 @@
-/* Container */
+/* ── Container ─────────────────────────────────────────────────── */
 
 .footer-container {
   position: relative;
@@ -9,7 +9,7 @@
   padding: 3rem 3rem 2.8rem;
 }
 
-/* Brand */
+/* ── Brand ─────────────────────────────────────────────────── */
 
 .footer-brand {
   display: flex;
@@ -18,7 +18,7 @@
   margin-top: 0.5rem;
 }
 
-/* Image */
+/* ── Imagem ─────────────────────────────────────────────────── */
 
 .footer-brand__image {
   width: 95px;
@@ -28,7 +28,7 @@
   pointer-events: none;
 }
 
-/* Text */
+/* ── Texto ─────────────────────────────────────────────────── */
 
 .footer-brand__text h3 {
   margin: 0;
@@ -57,7 +57,7 @@
   gap: 1.5rem;
 }
 
-/* Local Time */
+/* ── Local Time ─────────────────────────────────────────────────── */
 .footer-local-time {
   display: flex;
   flex-direction: column;
@@ -74,7 +74,6 @@
   text-transform: uppercase;
   color: #a9a9af;
 }
-
 
 .footer-local-time .local-time-value {
   font-family: "Geist", sans-serif;
@@ -99,7 +98,7 @@
   gap: 5rem;
 }
 
-/* Socials */
+/* ── Socials ─────────────────────────────────────────────────── */
 .footer-socials-wrapper {
   display: flex;
   flex-direction: column;
@@ -125,14 +124,14 @@
   margin: 0;
 }
 
-/* Links */
+/* ── Links ─────────────────────────────────────────────────── */
 .footer-social-btn {
   display: inline-block;
   padding: 0;
   font-family: "Geist", sans-serif;
   font-size: 16px;
   font-weight: 500;
-  letter-spacing: -0.01em;
+  letter-spacing: 0.05em;
   color: #f7f7ff;
   text-decoration: none;
   cursor: pointer;
@@ -143,12 +142,20 @@
   line-height: 1;
 }
 
-.footer-social-btn:hover {
-  opacity: 0.7;
-  color: #f7f7ff;
+.footer-social-btn.linkedin:hover {
+  color: #0a84ff;
+  
 }
 
-/* Divider */
+.footer-social-btn.github:hover {
+  color: #5cdb95;
+}
+
+.footer-social-btn.email:hover {
+  color: #ff7a36;
+}
+
+/* ── Divisor ─────────────────────────────────────────────────── */
 .footer-divider {
   width: 100%;
   height: 1px;
@@ -158,7 +165,7 @@
   margin: 1.5rem 0;
 }
 
-/* ── Bottom bar ── */
+/* ── Bottom bar ─────────────────────────────────────────────────── */
 .footer-bottom {
   display: flex;
   align-items: center;
@@ -182,7 +189,7 @@
   vertical-align: middle; 
 }
 
-/* Back to top */
+/* ── Back to top ─────────────────────────────────────────────────── */
 .footer-back-to-top {
   position: absolute;
   bottom: 2.8rem;
@@ -207,10 +214,10 @@
 }
 
 /* ==========================================================================
-   ADAPTAÇÕES RESPONSIVAS (Media Queries)
+   RESPONSIVIDADE (Media Queries)
    ========================================================================== */
 
-/* Tablets (landscape / portrait) */
+/* ── Tablets ──*/
 @media (max-width: 1024px) {
   .footer-container {
     padding: 2.5rem 2rem;
@@ -225,7 +232,7 @@
   }
 }
 
-/* Dispositivos Móveis e Telas Pequenas */
+/* ── Mobile ── */
 @media (max-width: 768px) {
   .footer-container {
     padding: 2rem 1.5rem 6rem;

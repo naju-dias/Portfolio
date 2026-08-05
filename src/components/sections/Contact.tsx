@@ -92,7 +92,7 @@ export default function Contact() {
   return (
     <section id="contact" className="contact">
       <div className="contact-container">
-        {/* left */}
+        {/* Coluna título */}
         <div ref={headingRef} className="contact-heading">
           <span className="contact-micro-label">
             <span className="contact-micro-slash">{"//"}</span> contato
@@ -104,7 +104,7 @@ export default function Contact() {
         </div>
 
 
-        {/* right */}
+        {/* Coluna formulário */}
         <div ref={formWrapperRef} className="contact-form-wrapper">
           <div className="contact-field">
             <label>NOME</label>
@@ -149,6 +149,7 @@ export default function Contact() {
             </p>
           )}
 
+        {/* Botão formulário */}
          <div className="container-botao-direita">
           <button
             className="btn-enviar-scramble"

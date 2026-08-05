@@ -1,14 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap');
-
-/* ==========================================================================
-   BASE / DESKTOP — valores idênticos ao inline style original.
-   Os dois clamp() originais (paddingLeft e right do LocalTime) resolviam
-   sempre para 320px e 128px fixos em telas até ~2560px — então aqui eles
-   entram já como valores fixos, preservando o resultado visual exato.
-   ========================================================================== */
 
 .hero-inner {
   background-color: #0b0b11;
@@ -19,7 +11,7 @@
   display: flex;
   align-items: center;
   width: fit-content;
-  padding-left: 20rem; /* era clamp(20rem, 8vw, 18rem) — sempre resolvia pra 320px */
+  padding-left: clamp(4rem, 14vw, 20rem);
   position: relative;
   z-index: 10;
 }
@@ -37,7 +29,7 @@
   font-family: 'Geist Mono', monospace;
   font-size: 21px;
   font-weight: 500;
-  color: #97999d;
+  color: #a9a9af;
   line-height: 1.2;
   margin-bottom: 0.5em;
 }
@@ -73,8 +65,8 @@
 .hero-desc {
   font-family: 'Geist', sans-serif;
   font-size: 23px;
-  font-weight: 500;
-  color: #979799;
+  font-weight: 400;
+  color: #a9a9af;
   letter-spacing: 0.04em;
   margin-top: 1.5em;
   z-index: 1;
@@ -83,7 +75,7 @@
   line-height: 1.6;
 }
 
-/* ── Lanyard slot ─────────────────────────────── */
+/* ── Lanyard slot ──────────────────────────────────────────────────────── */
 
 .hero-lanyard-slot {
   display: contents;
@@ -150,7 +142,7 @@
 .hero-localtime-wrap {
   position: absolute;
   bottom: 1.4rem;
-  right: 8rem; /* era clamp(8rem, 5vw, 8rem) — min === max, sempre resolvia pra 128px */
+  right: 8rem;
   z-index: 10;
 }
 
@@ -185,7 +177,7 @@
   letter-spacing: 0.02em;
 }
 
-/* ── Scroll indicator ─────────────────────────────────────────────────── */
+/* ── Scroll indicador ─────────────────────────────────────────────────── */
 
 .hero-scroll-indicator {
   position: absolute;
@@ -219,17 +211,41 @@
 }
 
 /* ==========================================================================
-   RESPONSIVO
-   Só entram em ação abaixo de 1024px — acima disso, tudo se comporta
-   exatamente como a versão inline original.
+   RESPONSIVIDADE (Media Queries)
    ========================================================================== */
 
-/* ── Tablets ──────────────────────────────────────────────────────────── */
-@media (max-width: 1024px) {
-  .hero-content-wrap {
-    padding-left: clamp(4rem, 12vw, 10rem);
+/* ── Notebooks pequenos e tablets grandes ── */
+@media (max-width: 1280px) {
+  .hero-lanyard-slot {
+    display: none;
   }
 
+  .hero-content-wrap {
+    padding-left: clamp(4rem, 10vw, 8rem);
+    width: 100%;
+    flex: 0 0 auto;
+  }
+
+  .hero-name {
+    font-size: clamp(2.6rem, 6vw, 3.6rem);
+  }
+
+  .hero-role {
+    font-size: clamp(2.4rem, 5.6vw, 3.4rem);
+  }
+
+  .hero-desc {
+    font-size: 19px;
+    max-width: 460px;
+  }
+
+  .hero-localtime-wrap {
+    right: clamp(2rem, 5vw, 4rem);
+  }
+}
+
+/* ── Tablets ── */
+@media (max-width: 1024px) {
   .hero-name {
     font-size: 46px;
   }
@@ -248,7 +264,7 @@
   }
 }
 
-/* ── Mobile ───────────────────────────────────────────────────────────── */
+/* ── Mobile ── */
 @media (max-width: 768px) {
   .hero-content-wrap {
     padding-left: 0;
@@ -264,6 +280,7 @@
 
   .hero-label {
     font-size: 17px;
+    color: #babac2
   }
 
   .hero-label-slash {
@@ -284,10 +301,7 @@
     line-height: 1.7;
     max-width: 100%;
     margin-top: 1.2em;
-  }
-
-  .hero-lanyard-slot {
-    display: none;
+    color: #babac2
   }
 
   .hero-bottom-row {
@@ -325,7 +339,7 @@
   }
 }
 
-/* ── Telas muito pequenas ─────────────────────────────────────────────── */
+/* ── Telas muito pequenas ── */
 @media (max-width: 480px) {
   .hero-name {
     font-size: clamp(1.8rem, 10vw, 3.2rem);

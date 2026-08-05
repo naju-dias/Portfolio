@@ -1,4 +1,3 @@
-/* Garante que o fundo da página não vaze entre as seções */
 html, body {
   margin: 0;
   padding: 0;
@@ -94,7 +93,7 @@ html, body {
   height: 100%;
 }
 
-/* ── Label sempre visível abaixo do ícone ───────────────────────────────── */
+/* ── Label abaixo do ícone ─────────────────────────────────────────────────── */
 .skill-label {
   font-family: 'Geist Mono', monospace;
   font-size: 0.72rem;
@@ -112,10 +111,10 @@ html, body {
 }
 
 /* ==========================================================================
-   ADAPTAÇÕES RESPONSIVAS — SKILLS SECTION (Media Queries)
+   RESPONSIVIDADE (Media Queries)
    ========================================================================== */
 
-/* Tablets (landscape / portrait) */
+/* ── Tablets ── */
 @media (max-width: 1024px) {
   .skills-section {
     padding: 8rem 1.5rem 10rem;
@@ -127,7 +126,7 @@ html, body {
   }
 }
 
-/* Dispositivos Móveis */
+/* ── Mobile ── */
 @media (max-width: 768px) {
   .skills-section {
     padding: 5rem 1rem 6rem;
@@ -167,7 +166,7 @@ html, body {
   }
 }
 
-/* Telas muito pequenas / Smartphones compactos */
+/* ── Telas muito pequenas ── */
 @media (max-width: 480px) {
   .skills-section {
     padding: 4rem 0.85rem 6.5rem;

@@ -3,7 +3,8 @@
   padding-top: 1rem;
   padding-bottom: 12rem;
   isolation: isolate;
-  perspective: 1200px; 
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .proj-header {
@@ -41,7 +42,7 @@
   text-align: left; 
 }
 
-/* ──── Stack ──── */
+/* ──── Stack ─────────────────────────────────────────────────── */
 .proj-stack {
   padding: 0 15vw;
   display: flex;
@@ -50,17 +51,14 @@
 
 .proj-card-wrapper {
   padding-bottom: 5rem;
-  perspective: 1000px;
-  transform-style: preserve-3d;
 }
 
-/* ──── Cards ──── */
+/* ──── Cards ─────────────────────────────────────────────────── */
 .proj-card {
   display: grid;
   grid-template-columns: 38% 62%;
   gap: 0;
   border-radius: 28px;
-  overflow: hidden;
   height: 560px;
   background: #14151a;
   border: 1px solid rgba(255, 255, 255, 0.212);
@@ -68,10 +66,7 @@
     0 24px 48px rgba(0, 0, 0, 0.6), 
     inset 0 1px 0px rgba(255, 255, 255, 0.1); 
     
-  transition: border-color 0.8s cubic-bezier(0.16, 1, 0.3, 1), 
-              box-shadow 0.8s cubic-bezier(0.16, 1, 0.3, 1), 
-              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: transform, box-shadow;
+  transition: border-color 0.4s ease, box-shadow 0.4s ease;
 }
 
 .proj-card:hover {
@@ -82,7 +77,7 @@
 }
 
 
-/* ──── Info (coluna esquerda) ──── */
+/* ──── Info (coluna esquerda) ─────────────────────────────────────────────────── */
 .proj-card-info {
   padding: 5rem 5rem;
   display: flex;
@@ -124,7 +119,7 @@
   margin: 0.25rem 0 0;
 }
 
-/* ──── Link Ver Projeto ──── */
+/* ──── Link Ver Projeto ─────────────────────────────────────────────────── */
 .proj-card-link {
   display: inline-flex; 
   align-items: center; 
@@ -143,19 +138,31 @@
 
 .proj-card-link:hover {
   color: #fff;
-  gap: 9px;
 }
 
-/* ──── Imagem ──── */
+.proj-link-arrow-icon {
+  transform: rotate(0deg);
+  transition: transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.proj-card-link:hover .proj-link-arrow-icon {
+  transform: rotate(-45deg);
+}
+
+/* ──── Imagem ─────────────────────────────────────────────────── */
 .proj-card-image-wrap {
-  padding: 3rem 3rem 3rem 2rem;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: transparent;
+  padding: 1.5rem 1.5rem 1.5rem 1rem;
+  cursor: none;
+  position: relative;
   height: 100%;
   box-sizing: border-box;
+}
+
+.proj-card-image-inner {
+  position: absolute;
+  inset: 1.5rem 1.5rem 1.5rem 1rem;
+  overflow: hidden;
+  border-radius: 20px;
 }
 
 .proj-card-image {
@@ -164,21 +171,26 @@
   object-fit: cover;
   display: block;
   border-radius: 20px;
- 
-  transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1), 
-              filter 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-  filter: brightness(0.9);
 }
 
-.proj-card-image-wrap:hover .proj-card-image {
-  transform: scale(1.035);
-  filter: brightness(1.05);
+.proj-card-image-inner::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 20px;
+  background: rgba(0,0,0,0.1);
+  pointer-events: none;
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  opacity: 1;
+  z-index: 1;
 }
 
-/* ──── Cursor ──── */
+.proj-card-image-wrap:hover::after {
+  opacity: 0;
+}
+
+/* ──── Cursor ─────────────────────────────────────────────────── */
 .proj-card-image-wrap {
-  position: relative;
-  overflow: hidden;
   cursor: none;
 }
 
@@ -242,7 +254,7 @@
 }
 
 
-/* ──── Tech pills no card ──── */
+/* ──── Tech pills no card ─────────────────────────────────────────────────── */
 .proj-card-techs {
   display: flex;
   flex-wrap: wrap;
@@ -283,7 +295,7 @@
   height: 100%; 
 }
 
-/* ────── MODAL ────── */
+/* ────── MODAL ─────────────────────────────────────────────────── */
 .modal-backdrop {
   position: fixed; inset: 0;
   background: rgba(0,0,0,0.82);
@@ -413,7 +425,7 @@
   display: inline-block;
 }
 
-/* ──── Botões Modal ──── */
+/* ──── Botões Modal ─────────────────────────────────────────────────── */
 
 .modal-btn-shadow {
   position: absolute;
@@ -509,7 +521,7 @@
   box-shadow: 0 0 0 0 rgba(255,255,255,0.4);
 }
 
-/* ──── Techs ──── */
+/* ──── Techs ─────────────────────────────────────────────────── */
 
 .modal-techs-wrap {
   margin-top: 0.5rem; 
@@ -538,7 +550,12 @@
   display: flex; 
   flex-direction: column; 
   align-items: center; 
-  gap: 5px; 
+  gap: 5px;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.modal-tech:hover {
+  transform: scale(1.12);
 }
 
 .modal-tech-icon { 
@@ -564,11 +581,10 @@
   color: #a9a9af;
 }
 
-.modal-tech:hover .modal-tech-icon {
-  filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.301));
-}
+/* ==========================================================================
+   RESPONSIVIDADE (Media Queries)
+   ========================================================================== */
 
-/* ────────── Responsivo ────────── */
 /* ──── Tablet (≤1024px) ──── */
 @media (max-width: 1024px) {
   .proj-header {

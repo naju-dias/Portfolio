@@ -7,7 +7,7 @@ import LocalTime from "../shared/LocalTime";
 import { useNavTheme } from "../../hooks/useNavTheme";
 import "./Navbar.css";
 
-// Links exclusivos para o Overlay (menu aberto)
+// Links exclusivos para o Overlay
 const overlayNavItems = [
   { label: "Início", href: "#hero" },
   { label: "Projetos", href: "#projects" },
@@ -16,7 +16,7 @@ const overlayNavItems = [
   { label: "Contato", href: "#contact" },
 ];
 
-// Links para a barra do Desktop (SEM o "Início", pois o logo AJ já faz esse papel)
+// Links para a barra do Desktop
 const desktopNavItems = overlayNavItems.filter((item) => item.label !== "Início" && item.label !== "Contato");
 
 export default function Navbar() {
@@ -59,7 +59,7 @@ export default function Navbar() {
 
   const handleNavClick = (label: string) => {
     setActive(label);
-    setMenuOpen(false); // Fecha o overlay
+    setMenuOpen(false);
 
     if (label === "Início") {
       window.scrollTo({ top: 0, behavior: "smooth" });
@@ -94,7 +94,7 @@ export default function Navbar() {
           AJ
         </a>
 
-        {/* --- DESKTOP NAV (Usa desktopNavItems: Projetos, Sobre, Skills) --- */}
+        {/* DESKTOP NAV (Usa desktopNavItems: Projetos, Sobre, Skills) */}
         <div className="nav-links">
           {desktopNavItems.map(({ label, href }) => (
             <a
@@ -139,7 +139,7 @@ export default function Navbar() {
         </button>
       </motion.nav>
 
-      {/* --- OVERLAY MENU (Usa overlayNavItems: Início, Projetos, Sobre, Skills, Contato) --- */}
+      {/* OVERLAY MENU (Usa overlayNavItems: Início, Projetos, Sobre, Skills, Contato) */}
       <AnimatePresence>
         {menuOpen && (
           <motion.div

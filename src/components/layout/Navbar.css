@@ -17,11 +17,11 @@
     transition: top 0.3s ease;
 }
 
- .navbar-wrapper.scrolled {
+.navbar-wrapper.scrolled {
     top: 1rem;
 }
 
- .navbar-wrapper > * {
+.navbar-wrapper > * {
     pointer-events: auto;
  }
 
@@ -71,7 +71,7 @@
 }
 
 .nav-item.active {
-    color: #e7e1d1;
+    color: #a9a9af;
 }
 
 .nav-item.active .plus {
@@ -108,6 +108,8 @@
     transform: translateY(-0.5px) rotate(45deg);
 }
 
+/* ── Overlay Mobile ──────────────────────────── */
+
 .nav-overlay-item {
   display: flex;
   align-items: center;
@@ -117,24 +119,24 @@
   letter-spacing: 0.01em;
   text-transform: uppercase;
   line-height: 1.15;
-  color: rgba(247, 247, 255, 0.4); /* Fica mais apagadinho quando não selecionado */
+  color: rgba(247, 247, 255, 0.4);
   text-decoration: none;
   transition: color 0.3s ease, opacity 0.3s ease;
 }
 
 .nav-overlay-item.active {
-  color: #f7f7ff; /* Destaca o item ativo em branco */
+  color: #f7f7ff;
 }
 
 .nav-overlay-item:hover {
   opacity: 0.8;
 }
 
-/* Bolinha indicadora do item ativo */
+/* ── Bolinha indicadora do item ativo ─────────────────────────── */
 .nav-active-dot {
   width: 12px;
   height: 12px;
-  background-color: #806ded; /* Cor do seu tema principal */
+  background-color: #806ded;
   border-radius: 50%;
   display: inline-block;
   margin-left: auto;
@@ -146,7 +148,7 @@
 }
 
 .navbar-wrapper.theme-light .nav-item.active {
-    color: #0a0a0a;
+    color: #0A0A0A;
 }
 
 .navbar-wrapper.theme-light .nav-contato {
@@ -165,7 +167,7 @@
     color: #5e50b1;
 }
 
-/* ── Hamburger (só existe no mobile) ─────────────────────────── */
+/* ── Hamburger mobile ─────────────────────────── */
 .nav-burger {
     display: none;
     align-items: center;
@@ -305,8 +307,12 @@
     padding-top: 2rem;
     width: 100%;
 }
-        
 
+/* ==========================================================================
+   RESPONSIVIDADE (Media Queries)
+   ========================================================================== */
+
+/* ── Mobile ── */
 @media (max-width: 768px) {
     .nav-links,
     .nav-contato {

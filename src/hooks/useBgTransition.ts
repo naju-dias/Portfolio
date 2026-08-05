@@ -103,11 +103,9 @@ export function useBgTransition(
       document.body.style.backgroundColor =
         `rgb(${r},${g},${b})`;
 
-      // Se a transição possuir um background personalizado (como o Skills)
     if (tr.backgroundImage) {
 
       if (progress < 1) {
-        // Mantém exatamente a animação antiga
         document.body.style.backgroundImage = `
           radial-gradient(
             circle at top left,
@@ -116,7 +114,6 @@ export function useBgTransition(
           )
         `;
       } else {
-        // Só depois da transição completa aplica o fundo do Skills
         document.body.style.backgroundImage = tr.backgroundImage;
       }
 

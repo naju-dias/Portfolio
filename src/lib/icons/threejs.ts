@@ -1,0 +1,1 @@
+export const threejsIcon = `<svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor"><path d="M.38 0a.268.268 0 0 0-.256.332l5.784 23.424a.268.268 0 0 0 .447.128L23.802 7.15a.268.268 0 0 0-.112-.45L.38 0z"/></svg>`

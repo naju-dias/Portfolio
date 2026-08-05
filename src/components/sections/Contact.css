@@ -17,7 +17,7 @@
   align-items: flex-start;
 }
 
-/* ──── Heading column ───── */
+/* ──── Coluna esquerda ─────────────────────────────────────────────────── */
 
 .contact-heading {
   position: sticky;
@@ -71,7 +71,7 @@
   color: #97999d;
 }
 
-/* ──── Form column ──── */
+/* ──── Formulário ─────────────────────────────────────────────────── */
 
 .contact-form-wrapper {
   display: flex;
@@ -131,7 +131,7 @@
   border-color: #ffffff;
 }
 
-/* ──── Form button ──── */
+/* ──── Botão ─────────────────────────────────────────────────── */
 
 .container-botao-direita {
   display: flex;
@@ -188,7 +188,7 @@
   transform: rotate(45deg) translateY(-3);
 }
 
-/* ──── Feedback ──── */
+/* ──── Feedback ─────────────────────────────────────────────────── */
 
 .contact-form-wrapper {
   font-family: 'Geist', sans-serif;
@@ -203,9 +203,19 @@
   font-weight: 500;
 }
 
-.form-feedback.success { color: #6ee7b7; }
-.form-feedback.error   { color: #fca5a5; }
+.form-feedback.success { 
+  color: #6ee7b7; 
+}
 
+.form-feedback.error { 
+  color: #fca5a5; 
+}
+
+/* ==========================================================================
+   RESPONSIVIDADE (Media Queries)
+   ========================================================================== */
+
+/* ── Tablets ── */
 @media (max-width: 968px) {
   .contact-container {
     grid-template-columns: 1fr;
@@ -226,6 +236,8 @@
   }
 }
 
+
+/* ── Mobile ── */
 @media (max-width: 768px) {
   .contact {
     padding: 8rem 1.5rem 6rem;

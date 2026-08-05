@@ -9,7 +9,7 @@ export default function LocalTime({ className = "" }) {
     const updateTime = () => {
       const now = new Date();
       
-      // Formata a hora no padrão 'hh:mm AM/PM' para o fuso do Brasil (América/São_Paulo)
+      // Formata a hora para o fuso do Brasil
       const formattedTime = now.toLocaleTimeString("en-US", {
         timeZone: "America/Sao_Paulo",
         hour: "2-digit",
@@ -17,7 +17,7 @@ export default function LocalTime({ className = "" }) {
         hour12: true,
       });
 
-      setTimeString(`${formattedTime} BRT`); // Ou GMT-3 se preferir
+      setTimeString(`${formattedTime} BRT`);
     };
 
     updateTime();

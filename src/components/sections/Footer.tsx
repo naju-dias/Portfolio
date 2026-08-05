@@ -57,7 +57,7 @@ export default function Footer() {
             href="https://www.linkedin.com/in/najudias"
             target="_blank"
             rel="noopener noreferrer"
-            className="footer-social-btn"
+            className="footer-social-btn linkedin"
           >
             <TextScramble text="LinkedIn" duration={800} />
           </a>
@@ -66,14 +66,14 @@ export default function Footer() {
             href="https://github.com/naju-dias"
             target="_blank"
             rel="noopener noreferrer"
-            className="footer-social-btn"
+            className="footer-social-btn github"
           >
             <TextScramble text="GitHub" duration={800} />
           </a>
 
           <a
             href="mailto:anajuliaalvesd10@gmail.com"
-            className="footer-social-btn"
+            className="footer-social-btn email"
           >
             <TextScramble text="Email" duration={800} />
           </a>

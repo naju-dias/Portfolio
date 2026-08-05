@@ -3,7 +3,6 @@
 import dynamic from 'next/dynamic';
 import LoadingScreen from "@/components/layout/LoadingScreen";
 import Navbar from "@/components/layout/Navbar";
-
 import Hero from "@/components/sections/Hero";
 import Projects from "@/components/sections/Projects";
 import About from "@/components/sections/About";
@@ -50,7 +49,7 @@ export default function Home() {
         </Hero>
         <Projects />
 
-        {/* Escuro -> Claro (Inicia ao rolar para o About) */}
+        {/* Escuro > Claro */}
         <div ref={aboutTrigger} aria-hidden />
         
         <div className="about-skills-wrapper bg-transparent">
@@ -58,7 +57,7 @@ export default function Home() {
           <Skills />
         </div>
 
-        {/* Claro -> Escuro (Começa a escurecer ao entrar no Contact) */}
+        {/* Claro > Escuro */}
         <div
           ref={contactTrigger}
           className="h-px"
