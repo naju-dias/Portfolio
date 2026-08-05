@@ -262,6 +262,10 @@
   .hero-localtime-wrap {
     right: clamp(2rem, 5vw, 4rem);
   }
+
+  .hero-scroll-indicator {
+    display: none;
+  }
 }
 
 /* ── Mobile ── */

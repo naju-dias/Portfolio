@@ -11,9 +11,8 @@ html, body {
   flex-direction: column;
   align-items: center;
   gap: 3rem;
-  background: transparent; 
+  background: transparent;
   overflow: visible;
-  
 }
 
 /* ── Título ──────────────────────────────────────────────────────────────── */
@@ -34,7 +33,7 @@ html, body {
 
 /* ── Grid de ícones ──────────────────────────────────────────────────────── */
 .skills-card {
-  background: rgba(214, 213, 213, 0.493);
+  background: rgba(95, 80, 177, 0.199);
   border: 1px solid rgba(0, 0, 0, 0.07);
   border-radius: 20px;
   padding: 2rem 2.25rem;
@@ -93,7 +92,7 @@ html, body {
   height: 100%;
 }
 
-/* ── Label abaixo do ícone ─────────────────────────────────────────────────── */
+/* ── Label abaixo do ícone ───────────────────────────────── */
 .skill-label {
   font-family: 'Geist Mono', monospace;
   font-size: 0.72rem;

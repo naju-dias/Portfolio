@@ -15,7 +15,7 @@ const skills: Skill[] = [
   { name: "HTML", color: "#E34F26", icon: htmlIcon },
   { name: "CSS", color: "#1572B6", icon: cssIcon },
   { name: "Tailwind CSS", color: "#38bdf8", icon: tailwindIcon },
-  { name: "JavaScript", color: "#F7DF1E", icon: javascriptIcon },
+  { name: "JavaScript", color: "#d9c421", icon: javascriptIcon },
   { name: "TypeScript", color: "#3178C6", icon: typescriptIcon },
   { name: "React", color: "#61DAFB", icon: reactIcon },
   { name: "Python", color: "#3776AB", icon: pythonIcon },

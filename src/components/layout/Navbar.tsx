@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import TextScramble from "../shared/TextScramble";
-import LocalTime from "../shared/LocalTime";
+import LocalTime2 from "../shared/LolcalTime2";
 import { useNavTheme } from "../../hooks/useNavTheme";
 import "./Navbar.css";
 
@@ -166,7 +166,6 @@ export default function Navbar() {
                       onClick={() => handleNavClick(label)}
                     >
                       <span>{label}</span>
-                      {isActive && <span className="nav-active-dot" />}
                     </a>
                   );
                 })}
@@ -205,8 +204,11 @@ export default function Navbar() {
                     </a>
                   </div>
                 </div>
-
-                <LocalTime />
+                
+                <div className="nav-overlay-time-wrapper">
+                  <span className="footer-socials-title">HORA LOCAL</span>
+                <LocalTime2 />
+                </div>
               </div>
             </div>
           </motion.div>

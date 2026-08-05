@@ -61,11 +61,11 @@ function PolaroidDuo({ cards, visible }: { cards: Card[]; visible: boolean }) {
         <div
           style={{
             position: "absolute",
-            top: "-5px",
-            left: "-120px",
+            top: "0px",
+            left: "-130px",
             fontFamily: "'Caveat', cursive",
             fontWeight: 500,
-            fontSize: "1.25rem",
+            fontSize: "1.3rem",
             color: "#4a3e72",
             lineHeight: 1.4,
             maxWidth: "240px",
@@ -77,7 +77,7 @@ function PolaroidDuo({ cards, visible }: { cards: Card[]; visible: boolean }) {
           }}
         >
           {cards[0].annotation}
-          <div style={{ position: "relative", left: "80px", marginTop: "-5px", fontSize: "2.5rem", color: "#4a3e72" }}>↘</div>
+          <svg width="70" height="60" viewBox="-5 -5 70 60" style={{ position: "relative", left: "78px", marginTop: "2px", overflow: "visible" }}><path d="M8 6 C 6 20, 19 20, 33.6 36" fill="none" stroke="#4a3e72" strokeWidth="2" strokeLinecap="round" /><path d="M22 36 L 36 38 L 35 24" fill="none" stroke="#4a3e72" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
         </div>
       )}
 

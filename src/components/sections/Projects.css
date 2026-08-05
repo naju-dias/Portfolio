@@ -588,13 +588,65 @@
 /* ──── Tablet (≤1024px) ──── */
 @media (max-width: 1024px) {
   .proj-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.25rem;
     padding: 6rem 6vw 4rem;
   }
+  .proj-description {
+    max-width: none;
+  }
+
   .proj-stack {
     padding: 0 6vw;
   }
+
+  .proj-card-wrapper {
+    perspective: none;
+  }
+
+  .proj-card {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "image"
+      "info";
+    height: auto;
+  }
+
+  .proj-card-image-wrap {
+    grid-area: image;
+    order: initial;
+    aspect-ratio: auto;
+    padding: 2.5rem 2rem 1.5rem;
+    cursor: pointer;
+    height: auto;
+  }
+
+  .proj-card-image-inner {
+    position: static;
+    inset: auto;
+    aspect-ratio: 16 / 10;
+    width: 100%;
+    border-radius: 14px;
+    overflow: hidden;
+  }
+
+  .proj-card-image {
+    border-radius: 14px;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+  }
+
   .proj-card-info {
-    padding: 3.5rem 3rem;
+    grid-area: info;
+    padding: 0.5rem 2.5rem 2.5rem;
+  }
+  
+  .proj-card-techs {
+    margin-top: 1.25rem;
+    margin-bottom: 1.25rem;
   }
 }
 
@@ -606,6 +658,7 @@
     gap: 1.25rem;
     padding: 5rem 1.25rem 3rem;
   }
+
   .proj-description {
     max-width: none;
   }
@@ -633,11 +686,23 @@
     aspect-ratio: auto;
     padding: 2.5rem 1.75rem 1.5rem;
     cursor: pointer;
+    height: auto;
+  }
+
+  .proj-card-image-inner {
+    position: static;
+    inset: auto;
+    aspect-ratio: 16 / 10;
+    width: 100%;
+    border-radius: 14px;
+    overflow: hidden;
   }
 
   .proj-card-image {
     border-radius: 14px;
-    height: auto;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
   }
 
   .proj-card-info {

@@ -49,7 +49,7 @@ export default function Home() {
         </Hero>
         <Projects />
 
-        {/* Escuro > Claro */}
+        {/* Escuro -> Claro (Inicia ao rolar para o About) */}
         <div ref={aboutTrigger} aria-hidden />
         
         <div className="about-skills-wrapper bg-transparent">
@@ -57,7 +57,7 @@ export default function Home() {
           <Skills />
         </div>
 
-        {/* Claro > Escuro */}
+        {/* Claro -> Escuro (Começa a escurecer ao entrar no Contact) */}
         <div
           ref={contactTrigger}
           className="h-px"
