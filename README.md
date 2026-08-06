@@ -5,17 +5,19 @@
 
 <img src="public/previewport.png" alt="Project Preview">
 
+
 ## 💻 Tecnologias
 
 - Next.js + TypeScript
 - React Three Fiber + Rapier (física do Lanyard Card)
+- GSAP + Lenis (scroll suave e animações)
 - CSS3 + Tailwind CSS
 - Framer Motion
 - Resend (envio de e-mail do formulário de contato)
 
 ---
 
-## 📋 O que tem aqui
+## 📋 Funcionalidades
 
 - Loading screen com progresso real
 - Hero com lanyard interativo e horário local
@@ -37,7 +39,9 @@ npm run dev
 
 Para o formulário de contato funcionar, crie um arquivo `.env.local` na raiz com:
 
+```bash
 RESEND_API_KEY=sua_chave_aqui
+```
 
 Abre em `localhost:3000`.
 
