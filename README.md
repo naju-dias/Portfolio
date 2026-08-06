@@ -3,14 +3,15 @@
   <a href="https://najudias.vercel.app/" target="_blank">najudias.tech</a>
 </h1>
 
-<img src="/public/previewport.png" alt="Project Preview">
+<img src="public/previewport.png" alt="Project Preview">
 
-## 🛠️ Tecnologias
+## 💻 Tecnologias
 
 - Next.js + TypeScript
 - React Three Fiber + Rapier (física do Lanyard Card)
 - CSS3 + Tailwind CSS
 - Framer Motion
+- Resend (envio de e-mail do formulário de contato)
 
 ---
 
@@ -25,7 +26,7 @@
 
 ---
 
-## 🧩 Rodando localmente
+## 🛠️ Rodando localmente
 
 ```bash
 git clone https://github.com/naju-dias/portfolio.git
@@ -34,11 +35,15 @@ npm install
 npm run dev
 ```
 
+Para o formulário de contato funcionar, crie um arquivo `.env.local` na raiz com:
+
+RESEND_API_KEY=sua_chave_aqui
+
 Abre em `localhost:3000`.
 
 ---
 
-## ​🏗️​ Estrutura
+## ​🧩​ Estrutura
 
 ```
 src/
