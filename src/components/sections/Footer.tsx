@@ -1,12 +1,22 @@
 "use client";
 
-import React, { useRef } from "react";
 import "./Footer.css";
 import stickerLogo from "@/assets/stickerLogo.png";
 import Noise from "../effects/Noise";
 import TextScramble from "../shared/TextScramble";
 
 import LocalTime from "../shared/LolcalTime2";
+
+const scrollToTop = () => {
+  if (typeof window !== "undefined") {
+    try {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } catch {
+      // Fallback para navegadores mobile legados
+      window.scrollTo(0, 0);
+    }
+  }
+};
 
 export default function Footer() {
   return (
@@ -107,7 +117,7 @@ export default function Footer() {
 
     {/* BACK TO TOP */}
     <button
-      onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+      onClick={scrollToTop}
       className="footer-back-to-top"
       aria-label="Voltar ao topo"
     >

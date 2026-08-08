@@ -33,7 +33,7 @@
 }
 
 .proj-description {
-  font-family: 'Geist', sans-serif;
+  font-family: var(--font-geist-sans);
   font-size: 1.15rem; 
   color: #c8c5d9;
   max-width: 420px; 
@@ -104,7 +104,7 @@
 }
 
 .proj-card-type {
-  font-family: 'Geist', sans-serif;
+  font-family: var(--font-geist-sans);
   font-size: 1rem; 
   font-weight: 500;
   color: #b2a3e8; 
@@ -112,7 +112,7 @@
 }
 
 .proj-card-desc {
-  font-family: 'Geist', sans-serif;
+  font-family: var(--font-geist-sans);
   font-size: 18px; 
   color: #b8b5c9;
   line-height: 1.6; 
@@ -124,7 +124,7 @@
   display: inline-flex; 
   align-items: center; 
   gap: 6px;
-  font-family: 'Geist', sans-serif;
+  font-family: var(--font-geist-sans);
   font-size: 18px; 
   font-weight: 500;
   color: #f7f7ff;
@@ -270,7 +270,7 @@
   border-radius: 999px;
   border: 2px solid rgba(178, 163, 232, 0.18); 
   background: rgba(178, 163, 232, 0.05);
-  font-family: 'Geist', sans-serif; 
+  font-family: var(--font-geist-sans);
   font-size: 14px;
   font-weight: 500; 
   color: #e2e1e8;
@@ -392,7 +392,7 @@
 }
 
 .modal-type {
-  font-family: 'Geist', sans-serif; 
+  font-family: var(--font-geist-sans);
   font-size: 0.8rem;
   font-weight: 600; 
   letter-spacing: 0.08em;
@@ -402,7 +402,7 @@
 }
 
 .modal-desc {
-  font-family: 'Geist', sans-serif; 
+  font-family: var(--font-geist-sans);
   font-size: 16.5px;
   color: #b8b5c9; 
   line-height: 1.7; 
@@ -455,7 +455,7 @@
   position: relative;
   border-radius: 10px;
   padding: 10px 18px;
-  font-family: 'Geist', sans-serif;
+  font-family: var(--font-geist-sans);
   font-size: 0.83rem;
   font-weight: 600;
   text-decoration: none;
@@ -475,7 +475,7 @@
   align-items: center;
   gap: 6px;
   border-radius: 10em;
-  font-family: 'Geist', sans-serif;
+  font-family: var(--font-geist-sans);
   font-size: 0.87rem;
   font-weight: 600;
   text-decoration: none;
@@ -530,7 +530,7 @@
 }
 
 .modal-techs-label {
-  font-family: 'Geist', sans-serif; 
+  font-family: var(--font-geist-sans);
   font-size: 12px; 
   font-weight: 700;
   letter-spacing: 0.15em; 
@@ -575,7 +575,7 @@
 }
 
 .modal-tech-name {
-  font-family: 'Geist',sans-serif; 
+  font-family: var(--font-geist-sans);
   font-size: 14px;
   font-weight: 500; 
   color: #a9a9af;

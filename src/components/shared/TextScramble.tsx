@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef, startTransition } from "react";
+import { useState, useEffect, useRef, useLayoutEffect, startTransition } from "react";
 import type { CSSProperties } from "react";
 
 interface TextScrambleProps {
@@ -27,7 +27,6 @@ export default function TextScramble({
   const measureRef = useRef<HTMLSpanElement>(null);
   const [lockedWidth, setLockedWidth] = useState<number | undefined>(undefined);
 
-  // mede a largura real do texto final (não do texto embaralhado) e trava nela
   useEffect(() => {
     if (measureRef.current) {
       const width = measureRef.current.offsetWidth;
@@ -98,7 +97,6 @@ export default function TextScramble({
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
     >
-      {/* span invisível só pra medir a largura real do texto final */}
       <span
         ref={measureRef}
         style={{ position: "absolute", visibility: "hidden", whiteSpace: "nowrap" }}

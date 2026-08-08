@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Alumni+Sans:ital,wght@0,100..900;1,100..900&display=swap');
-
 .contact {
   position: relative;
   width: 100%;
@@ -42,7 +40,7 @@
 }
 
 .contact-subtitle {
-  font-family: "Geist", sans-serif;
+  font-family: var(--font-geist-sans);
   font-size: 18px;
   line-height: 1.5;
   color: rgba(217, 213, 197, 0.65);
@@ -55,7 +53,7 @@
   align-items: center;
   gap: 0.4rem;
 
-  font-family: "Geist", monospace;
+  font-family: var(--font-geist-mono);
   font-size: 1.3rem;
   font-weight: 500;
   letter-spacing: 0.05em;
@@ -66,7 +64,7 @@
 }
 
 .contact-micro-slash {
-  font-family: "JetBrains Mono", monospace;
+  font-family: var(--font-jetbrains-mono);
   font-weight: 700;
   color: #97999d;
 }
@@ -87,7 +85,7 @@
 }
 
 .contact-field label {
-  font-family: "Geist Mono", monospace;
+  font-family: var(--font-geist-mono);
   font-size: 1rem;
   font-weight: 700;
   letter-spacing: 0.02em;
@@ -106,7 +104,7 @@
 
   padding-bottom: 1rem;
 
-  font-family: "Geist", sans-serif;
+  font-family: var(--font-geist-sans);
   font-size: 1.4rem;
 
   color: #ffffff;
@@ -150,7 +148,7 @@
   padding: 0.4rem 0;
   cursor: pointer;
 
-  font-family: 'Geist', sans-serif;
+  font-family: var(--font-geist-sans);
   font-size: 24px;
   font-weight: 600;
   letter-spacing: 0.03em;
@@ -191,7 +189,7 @@
 /* ──── Feedback ─────────────────────────────────────────────────── */
 
 .contact-form-wrapper {
-  font-family: 'Geist', sans-serif;
+  font-family: var(--font-geist-sans);
   display: flex;
   flex-direction: column;
   gap: 4rem;

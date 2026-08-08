@@ -94,7 +94,7 @@ html, body {
 
 /* ── Label abaixo do ícone ───────────────────────────────── */
 .skill-label {
-  font-family: 'Geist Mono', monospace;
+  font-family: var(--font-geist-mono);
   font-size: 0.72rem;
   font-weight: 600;
   letter-spacing: 0.01em;

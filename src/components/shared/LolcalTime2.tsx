@@ -28,9 +28,15 @@ export default function LocalTime({ className = "" }) {
 
   return (
     <div className={`local-time-container ${className}`}>
-      <span className="local-time-value">
+      <span className="local-time-value" style={styles.localTimeValue}>
         {timeString || "00:00 PM BRT"}
       </span>
     </div>
   );
 }
+
+const styles = {
+  localTimeValue: {
+    minWidth: '5ch',
+  }
+};

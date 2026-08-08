@@ -32,8 +32,18 @@ export default function LocalTime({ className }: LocalTimeProps) {
         <RiGlobalLine className="local-time__icon" />
         Br
       </div>
-      <span></span> 
-      <div className="local-time__value">{time || "--:--"}</div>
+      <span style={styles.localTimeValue}>{time || "00:00 PM"}</span>
     </div>
   );
 }
+
+const styles = {
+  localTimeValue: {
+    fontSize: '15px',
+    fontWeight: '400',
+    color: '#f7f7ff',
+    letterSpacing: '0.02em',
+    minWidth: '5ch',
+    display: 'inline-block',
+  }
+};

@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import TextScramble from "../shared/TextScramble";
 import LocalTime2 from "../shared/LolcalTime2";
 import { useNavTheme } from "../../hooks/useNavTheme";
+import { useLenis } from "lenis/react";
 import "./Navbar.css";
 
 // Links exclusivos para o Overlay
@@ -25,7 +26,10 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const lastScrollY = useRef(0);
+
+  const lenis = useLenis();
   const theme = useNavTheme(48);
+  
 
   useEffect(() => {
     const handleScroll = () => {
@@ -51,11 +55,14 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
-    document.body.style.overflow = menuOpen ? "hidden" : "";
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [menuOpen]);
+  if (menuOpen) {
+    lenis?.stop();
+    document.body.style.overflow = "hidden";
+  } else {
+    lenis?.start();
+    document.body.style.overflow = "";
+  }
+}, [menuOpen, lenis]);
 
   const handleNavClick = (label: string) => {
     setActive(label);

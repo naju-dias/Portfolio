@@ -315,4 +315,10 @@
         top: 1.5rem;
         padding: 0 1.9rem;
     }
+
+    .nav-burger {
+        display: inline-flex;
+        grid-column: 3;
+        justify-self: end;
+    }
 }
