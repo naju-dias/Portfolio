@@ -69,6 +69,7 @@
   display: block;
   max-width: 500px;
   line-height: 1.6;
+  text-wrap: pretty;
 }
 
 /* ── Lanyard slot ──────────────────────────────────────────────────────── */
@@ -357,7 +358,7 @@
     flex-direction: row;
     flex-wrap: wrap;
     align-items: center;
-    gap: 0.6rem 0.4rem;
+    gap: 0.1rem;
   }
 
   .local-time__label,

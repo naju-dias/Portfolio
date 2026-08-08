@@ -5,7 +5,7 @@ import stickerLogo from "@/assets/stickerLogo.png";
 import Noise from "../effects/Noise";
 import TextScramble from "../shared/TextScramble";
 
-import LocalTime from "../shared/LolcalTime2";
+import LocalTime from "../shared/LocalTime2";
 
 const scrollToTop = () => {
   if (typeof window !== "undefined") {

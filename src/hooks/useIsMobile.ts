@@ -1,16 +1,15 @@
 "use client";
-
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 export function useIsMobile(breakpoint = 1280) {
   const [isMobile, setIsMobile] = useState<boolean | null>(null);
+  const lockedRef = useRef(false);
 
   useEffect(() => {
+    if (lockedRef.current) return;
     const mq = window.matchMedia(`(max-width: ${breakpoint}px)`);
     setIsMobile(mq.matches);
-    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
-    mq.addEventListener("change", handler);
-    return () => mq.removeEventListener("change", handler);
+    lockedRef.current = true;
   }, [breakpoint]);
 
   return isMobile;

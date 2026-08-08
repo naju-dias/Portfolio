@@ -280,19 +280,14 @@
 }
 
 .nav-overlay-time-wrapper {
-    color: #f7f7ff;
-    font-family: 'Geist', sans-serif;
-    font-size: 16px;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 0.6rem;
 }
 
-.local-time-value {
-    line-height: 1;
+.nav-local-time {
     display: inline-block;
-    transform: translateY(-1px);
+    transform: translateY(-2.8px);
 }
 
 

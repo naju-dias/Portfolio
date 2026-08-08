@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import TextScramble from "../shared/TextScramble";
-import LocalTime2 from "../shared/LolcalTime2";
+import LocalTime from "../shared/LocalTime";
 import { useNavTheme } from "../../hooks/useNavTheme";
 import { useLenis } from "lenis/react";
 import "./Navbar.css";
@@ -213,8 +213,8 @@ export default function Navbar() {
                 </div>
                 
                 <div className="nav-overlay-time-wrapper">
-                  <span className="footer-socials-title">HORA LOCAL</span>
-                <LocalTime2 />
+                  <span className="nav-local-time"><LocalTime /></span>
+                
                 </div>
               </div>
             </div>

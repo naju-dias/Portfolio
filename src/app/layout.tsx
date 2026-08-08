@@ -3,7 +3,6 @@ import { Geist, Geist_Mono, Instrument_Serif, Caveat, Cormorant_Garamond, JetBra
 import "./globals.css";
 
 import Navbar from "@/components/layout/Navbar";
-import LoadingScreen from "@/components/layout/LoadingScreen";
 import SmoothScroll from "@/components/layout/SmoothScroll";
 
 const geistSans = Geist({
@@ -53,10 +52,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="pt-br">
       <body className={`min-h-full ${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable} ${caveat.variable} ${cormorantGaramond.variable} ${jetbrainsMono.variable}`}>
         <div className="background-grid"></div>
-
         <Navbar />
-        <LoadingScreen />
-
         <SmoothScroll>{children}</SmoothScroll>
       </body>
     </html>
