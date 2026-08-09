@@ -1,17 +1,17 @@
 'use client';
 
 import dynamic from 'next/dynamic';
-import Hero from "@/components/sections/Hero";
 
 import { useBgTransition } from "@/hooks/useBgTransition";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { useIdleMount } from "@/hooks/useIdleMount";
 
-const Projects = dynamic(() => import("@/components/sections/Projects"));
-const About = dynamic(() => import("@/components/sections/About"));
-const Skills = dynamic(() => import("@/components/sections/Skills"));
-const Contact = dynamic(() => import("@/components/sections/Contact"));
-const Footer = dynamic(() => import("@/components/sections/Footer"));
+import Hero from "@/components/sections/Hero";
+import Projects from "@/components/sections/Projects";
+import About from "@/components/sections/About";
+import Skills from "@/components/sections/Skills";
+import Contact from "@/components/sections/Contact";
+import Footer from "@/components/sections/Footer";
 
 // Não baixar Three.js no Mobile!
 const Lanyard = dynamic(
@@ -33,11 +33,9 @@ export default function Home() {
 
   return (
     <main className="min-h-screen">
-      <div className="block xl:hidden">
-        <LoadingScreenMobile />
-      </div>
-      <div className="hidden xl:block">
-        <LoadingScreen />
+      <div className="relative w-full">
+        {isMobile === true && <LoadingScreenMobile />}
+        {isMobile === false && <LoadingScreen />}
       </div>
 
       <div className="relative w-full">
