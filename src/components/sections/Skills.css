@@ -113,6 +113,12 @@ html, body {
    RESPONSIVIDADE (Media Queries)
    ========================================================================== */
 
+@media (min-width: 1025px) {
+  .skills-card {
+    backdrop-filter: blur(8px);
+  }
+}
+
 /* ── Tablets ── */
 @media (max-width: 1024px) {
   .skills-section {

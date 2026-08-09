@@ -10,9 +10,10 @@ import Footer from "@/components/sections/Footer";
 
 import { useBgTransition } from "@/hooks/useBgTransition";
 import { useIsMobile } from "@/hooks/useIsMobile";
+import { useIdleMount } from "@/hooks/useIdleMount";
 
 const Lanyard = dynamic(
-  () => import("@/components/effects/Lanyard"),
+  () => import(/* webpackPrefetch: true */ "@/components/effects/Lanyard"),
   { ssr: false }
 );
 
@@ -21,6 +22,7 @@ const LoadingScreenMobile = dynamic(() => import("@/components/layout/LoadingScr
 
 export default function Home() {
   const isMobile = useIsMobile(1280);
+  const idleReady = useIdleMount(1500);
 
   const [aboutTrigger, contactTrigger] = useBgTransition([
     { from: "#06060a", to: "#dddadb", zoneHeight: 700 },
@@ -34,7 +36,7 @@ export default function Home() {
 
       <div className="relative w-full">
         <Hero>
-          {isMobile === false && (
+          {isMobile === false && idleReady && (
             <div className="absolute inset-0 pointer-events-none z-5">
               <div className="w-full h-full pointer-events-auto">
                 <Lanyard position={[0, 0, 10]} gravity={[0, -40, 0]} transparent />
