@@ -46,9 +46,11 @@ export default function Lanyard({
   return (
     <div style={{ width: '100vw', height: '100vh' }}>
       <Canvas
-        camera={{ position: [0, 0, 13], fov: 20 }}
-        gl={{ alpha: transparent }}
-        onCreated={({ gl }) => gl.setClearColor(new THREE.Color(0x000000), transparent ? 0 : 1)}
+      camera={{ position: [0, 0, 13], fov: 20 }}
+      gl={{ alpha: transparent }}
+      dpr={[1, 1.5]} // limita a resolução de renderização, ajuda GPUs fracas
+      frameloop="demand" // só renderiza quando necessário
+      onCreated={({ gl }) => gl.setClearColor(new THREE.Color(0x000000), transparent ? 0 : 1)}
       >
         <ambientLight intensity={Math.PI} />
         <Physics gravity={gravity} timeStep={1 / 60}>
@@ -77,9 +79,11 @@ function Band({ maxSpeed = 50, minSpeed = 0 }: BandProps) {
   const j2 = useRef<any>(null);
   const j3 = useRef<any>(null);
   const card = useRef<any>(null);
+  
 
   const { width, height } = useThree((state) => state.size);
-
+  const { invalidate } = useThree();
+  
   const vec = new THREE.Vector3();
   const ang = new THREE.Vector3();
   const rot = new THREE.Vector3();
@@ -148,6 +152,7 @@ function Band({ maxSpeed = 50, minSpeed = 0 }: BandProps) {
       rot.copy(card.current.rotation());
       card.current.setAngvel({ x: ang.x, y: ang.y - rot.y * 0.25, z: ang.z });
     }
+    invalidate();
   });
 
   curve.curveType = 'chordal';
