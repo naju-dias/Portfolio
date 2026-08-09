@@ -83,7 +83,7 @@ function Band({ maxSpeed = 50, minSpeed = 0 }: BandProps) {
 
   const { width, height } = useThree((state) => state.size);
   const { invalidate } = useThree();
-  
+
   const vec = new THREE.Vector3();
   const ang = new THREE.Vector3();
   const rot = new THREE.Vector3();
@@ -124,36 +124,49 @@ function Band({ maxSpeed = 50, minSpeed = 0 }: BandProps) {
   }, [hovered, dragged]);
 
   useFrame((state, delta) => {
-    if (dragged && typeof dragged !== 'boolean') {
-      vec.set(state.pointer.x, state.pointer.y, 0.5).unproject(state.camera);
-      dir.copy(vec).sub(state.camera.position).normalize();
-      vec.add(dir.multiplyScalar(state.camera.position.length()));
-      [card, j1, j2, j3, fixed].forEach(ref => ref.current?.wakeUp());
-      card.current?.setNextKinematicTranslation({
-        x: vec.x - dragged.x,
-        y: vec.y - dragged.y,
-        z: vec.z - dragged.z
-      });
+  if (dragged && typeof dragged !== 'boolean') {
+    vec.set(state.pointer.x, state.pointer.y, 0.5).unproject(state.camera);
+    dir.copy(vec).sub(state.camera.position).normalize();
+    vec.add(dir.multiplyScalar(state.camera.position.length()));
+    [card, j1, j2, j3, fixed].forEach(ref => ref.current?.wakeUp());
+    card.current?.setNextKinematicTranslation({
+      x: vec.x - dragged.x,
+      y: vec.y - dragged.y,
+      z: vec.z - dragged.z
+    });
+  }
+  if (fixed.current) {
+    [j1, j2].forEach(ref => {
+      if (!ref.current.lerped) ref.current.lerped = new THREE.Vector3().copy(ref.current.translation());
+      const clampedDistance = Math.max(0.1, Math.min(1, ref.current.lerped.distanceTo(ref.current.translation())));
+      ref.current.lerped.lerp(ref.current.translation(), delta * (minSpeed + clampedDistance * (maxSpeed - minSpeed)));
+    });
+    curve.points[0].copy(j3.current.translation());
+    curve.points[1].copy(j2.current.lerped);
+    curve.points[2].copy(j1.current.lerped);
+    curve.points[3].copy(fixed.current.translation());
+    if (band.current) {
+      band.current.geometry.setPoints(curve.getPoints(32));
     }
-    if (fixed.current) {
-      [j1, j2].forEach(ref => {
-        if (!ref.current.lerped) ref.current.lerped = new THREE.Vector3().copy(ref.current.translation());
-        const clampedDistance = Math.max(0.1, Math.min(1, ref.current.lerped.distanceTo(ref.current.translation())));
-        ref.current.lerped.lerp(ref.current.translation(), delta * (minSpeed + clampedDistance * (maxSpeed - minSpeed)));
-      });
-      curve.points[0].copy(j3.current.translation());
-      curve.points[1].copy(j2.current.lerped);
-      curve.points[2].copy(j1.current.lerped);
-      curve.points[3].copy(fixed.current.translation());
-      if (band.current) {
-        band.current.geometry.setPoints(curve.getPoints(32));
-      }
-      ang.copy(card.current.angvel());
-      rot.copy(card.current.rotation());
-      card.current.setAngvel({ x: ang.x, y: ang.y - rot.y * 0.25, z: ang.z });
-    }
+    ang.copy(card.current.angvel());
+    rot.copy(card.current.rotation());
+    card.current.setAngvel({ x: ang.x, y: ang.y - rot.y * 0.25, z: ang.z });
+  }
+
+  // só continua pedindo novos frames enquanto algo ainda está se movendo.
+  // quando os corpos "dormem" (Rapier detecta baixa velocidade + canSleep:true),
+  // o loop para sozinho e a CPU volta a ficar ociosa.
+  const stillMoving =
+    dragged ||
+    !card.current?.isSleeping?.() ||
+    !j1.current?.isSleeping?.() ||
+    !j2.current?.isSleeping?.() ||
+    !j3.current?.isSleeping?.();
+
+  if (stillMoving) {
     invalidate();
-  });
+  }
+});
 
   curve.curveType = 'chordal';
   texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
