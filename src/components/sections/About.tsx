@@ -4,15 +4,13 @@ import { useEffect, useRef, useState } from "react";
 import "./About.css";
 import polaroid1 from "@/assets/polaroid1.jpeg";
 import polaroid4 from "@/assets/polaroid4.jpeg";
+import Image, { StaticImageData } from "next/image";
 
 type Card = {
-  image: string | { src: string };
+  image: string | StaticImageData;
   caption?: string;
   annotation?: string;
 };
-
-const getSrc = (img: string | { src: string }) =>
-  typeof img === "string" ? img : img.src;
 
 /* ─── Desktop ─── */
 function PolaroidDuo({ cards, visible }: { cards: Card[]; visible: boolean }) {
@@ -98,13 +96,16 @@ function PolaroidDuo({ cards, visible }: { cards: Card[]; visible: boolean }) {
           ...backStyle,
         }}
       >
-        <div style={{ width: "100%", height: "100%", borderRadius: "12px", overflow: "hidden", background: "#e7e7e7" }}>
-          <img
-            src={getSrc(cards[0].image)}
-            alt={cards[0].caption || "polaroid"}
-            style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+        <div style={{ position: "relative", width: "100%", height: "100%", borderRadius: "12px", overflow: "hidden", background: "#e7e7e7" }}>
+          <Image
+          src={cards[0].image}
+          alt={cards[0].caption || "polaroid"}
+          fill
+          sizes="(max-width: 480px) 70vw, 320px"
+          quality={95}
+          style={{ objectFit: "cover" }}
           />
-        </div>
+          </div>
         {cards[0].caption && (
           <div
             style={{
@@ -164,11 +165,14 @@ function PolaroidDuo({ cards, visible }: { cards: Card[]; visible: boolean }) {
           ...frontStyle,
         }}
       >
-        <div style={{ width: "100%", height: "100%", borderRadius: "16px", overflow: "hidden", background: "#e7e7e7" }}>
-          <img
-            src={getSrc(cards[1].image)}
+        <div style={{ position: "relative", width: "100%", height: "100%", borderRadius: "16px", overflow: "hidden", background: "#e7e7e7" }}>
+          <Image
+            src={cards[1].image}
             alt={cards[1].caption || "polaroid"}
-            style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+            fill
+            sizes="(max-width: 480px) 70vw, 320px"
+            quality={95}
+            style={{ objectFit: "cover" }}
           />
         </div>
         {cards[1].caption && (
@@ -255,14 +259,17 @@ function PolaroidStackMobile({ cards, visible }: { cards: Card[]; visible: boole
                 cursor: isFront ? "pointer" : "default",
               }}
             >
-              <div className="pd-mobile-card-inner">
-                <img
-                  src={getSrc(card.image)}
+              <div className="pd-mobile-card-inner" style={{ position: "relative" }}>
+                <Image
+                  src={card.image}
                   alt={card.caption || "polaroid"}
+                  fill
+                  sizes="(max-width: 480px) 60vw, 300px"
+                  quality={90}
                   draggable={false}
+                  style={{ objectFit: "cover" }}
                 />
               </div>
-              {card.caption && <div className="pd-mobile-caption">{card.caption}</div>}
             </div>
           );
         })}

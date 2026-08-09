@@ -4,6 +4,7 @@ import "./Footer.css";
 import stickerLogo from "@/assets/stickerLogo.png";
 import Noise from "../effects/Noise";
 import TextScramble from "../shared/TextScramble";
+import Image from "next/image";
 
 import LocalTime from "../shared/LocalTime2";
 
@@ -49,7 +50,14 @@ export default function Footer() {
 
         {/* LOGO */}
         <div className="footer-brand">
-          <img src={stickerLogo.src} alt="Naju Dias" className="footer-brand__image" />
+          <Image
+            src={stickerLogo}
+            alt="Naju Dias"
+            width={166}
+            height={166}
+            quality={90}
+            className="footer-brand__image"
+          />
           <div className="footer-brand__text">
             <h3>Naju Dias <br /></h3>
             <h4>Engenheira de Software</h4>
