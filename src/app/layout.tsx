@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Instrument_Serif, Caveat, Cormorant_Garamond, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
+import { Analytics } from "@vercel/analytics/next"
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 import Navbar from "@/components/layout/Navbar";
 import SmoothScroll from "@/components/layout/SmoothScroll";
@@ -56,6 +58,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <div className="background-grid"></div>
         <Navbar />
         <SmoothScroll>{children}</SmoothScroll>
+        <Analytics />
+        <SpeedInsights/>
       </body>
     </html>
   );

@@ -16,7 +16,7 @@ import {
 import { MeshLineGeometry, MeshLineMaterial } from 'meshline';
 import * as THREE from 'three';
 
-const cardGLB = './card.optimized.glb';
+const cardGLB = './card.glb';
 const lanyard = './lanyard.png';
 
 useGLTF.preload(cardGLB);
@@ -41,9 +41,7 @@ interface LanyardProps {
 }
 
 export default function Lanyard({
-  position = [0, 0, 30],
   gravity = [0, -40, 0],
-  fov = 20,
   transparent = true
 }: LanyardProps) {
   return (
@@ -51,8 +49,8 @@ export default function Lanyard({
       <Canvas
       camera={{ position: [0, 0, 13], fov: 20 }}
       gl={{ alpha: transparent }}
-      dpr={[1, 1.5]} // limita a resolução de renderização, ajuda GPUs fracas
-      frameloop="demand" // só renderiza quando necessário
+      dpr={[1, 1.5]}
+      frameloop="demand"
       onCreated={({ gl }) => gl.setClearColor(new THREE.Color(0x000000), transparent ? 0 : 1)}
       >
         <ambientLight intensity={Math.PI} />
