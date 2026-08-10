@@ -16,8 +16,11 @@ import {
 import { MeshLineGeometry, MeshLineMaterial } from 'meshline';
 import * as THREE from 'three';
 
-const cardGLB = './card.glb';
+const cardGLB = './card.optimized.glb';
 const lanyard = './lanyard.png';
+
+useGLTF.preload(cardGLB);
+useTexture.preload(lanyard);
 
 extend({ MeshLineGeometry, MeshLineMaterial });
 

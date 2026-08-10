@@ -5,6 +5,8 @@ import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import SmoothScroll from "@/components/layout/SmoothScroll";
 
+<link rel="preload" href="/fonts/Tanker-Regular.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
