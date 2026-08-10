@@ -54,7 +54,7 @@ export default function Lanyard({
       onCreated={({ gl }) => gl.setClearColor(new THREE.Color(0x000000), transparent ? 0 : 1)}
       >
         <ambientLight intensity={Math.PI} />
-        <Physics gravity={gravity} timeStep={1 / 60}>
+        <Physics gravity={gravity} timeStep={1 / 60} interpolate updateLoop="independent">
           <Band />
         </Physics>
         <Environment blur={0.75}>
@@ -206,7 +206,7 @@ function Band({ maxSpeed = 50, minSpeed = 0 }: BandProps) {
               drag(new THREE.Vector3().copy(e.point).sub(vec.copy(card.current.translation())));
             }}
           >
-            <mesh geometry={nodes.card.geometry}>
+            <mesh geometry={nodes.card.geometry} frustumCulled={false}>
               <meshPhysicalMaterial
                 map={materials.base.map}
                 map-anisotropy={16}
