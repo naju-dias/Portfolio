@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Instrument_Serif, Caveat, Cormorant_Garamond, JetBrains_Mono } from "next/font/google";
+
+import localFont from "next/font/local"; 
+import { Geist, Geist_Mono, Instrument_Serif, Caveat, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/next"
 import { SpeedInsights } from "@vercel/speed-insights/next"
@@ -7,43 +9,46 @@ import { SpeedInsights } from "@vercel/speed-insights/next"
 import Navbar from "@/components/layout/Navbar";
 import SmoothScroll from "@/components/layout/SmoothScroll";
 
-<link rel="preload" href="/fonts/Tanker-Regular.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
-
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
+  display: "swap"
 });
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+  display: "swap"
 });
 
 const instrumentSerif = Instrument_Serif({
   variable: "--font-instrument-serif",
-  style: ["italic", "normal"],
+  style: ["normal"],
   weight: "400",
   subsets: ["latin"],
+  display: "swap"
 });
+
+const tanker = localFont({
+  src: '../../public/fonts/Tanker-Regular.woff2',
+  variable: '--font-tanker',
+  display: 'swap',
+})
+
 
 const caveat = Caveat({
   variable: "--font-caveat",
-  weight: ["400","500","600","700"],
+  weight: ["500"],
   subsets: ["latin"],
-});
-
-const cormorantGaramond = Cormorant_Garamond({
-  variable: "--font-cormorant-garamond",
-  style: ["italic", "normal"],
-  weight: ["300","400","500","600","700"],
-  subsets: ["latin"],
+  display: "swap"
 });
 
 const jetbrainsMono = JetBrains_Mono({
   variable: "--font-jetbrains-mono",
-  style: ["italic", "normal"],
+  style: ["normal"],
   weight: "variable",
   subsets: ["latin"],
+  display: "swap"
 });
 
 export const metadata: Metadata = {
@@ -54,7 +59,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="pt-br">
-      <body className={`min-h-full ${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable} ${caveat.variable} ${cormorantGaramond.variable} ${jetbrainsMono.variable}`}>
+      <body className={`min-h-full ${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable} ${tanker.variable} ${caveat.variable} ${jetbrainsMono.variable}`}>
         <div className="background-grid"></div>
         <Navbar />
         <SmoothScroll>{children}</SmoothScroll>

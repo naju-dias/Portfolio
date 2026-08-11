@@ -24,7 +24,7 @@ const LoadingScreenMobile = dynamic(() => import("@/components/layout/LoadingScr
 
 export default function Home() {
   const isMobile = useIsMobile(1280);
-  const idleReady = useIdleMount(1500);
+  const idleReady = useIdleMount(3000);
 
   const [aboutTrigger, contactTrigger] = useBgTransition([
     { from: "#06060a", to: "#dddadb", zoneHeight: 700 },
