@@ -125,6 +125,8 @@ function Band({ maxSpeed = 50, minSpeed = 0 }: BandProps) {
   }, [hovered, dragged]);
 
   useFrame((state, delta) => {
+  const dt = Math.min(delta, 1 / 30); // nunca deixa o delta explodir após frames pulados
+
   if (dragged && typeof dragged !== 'boolean') {
     vec.set(state.pointer.x, state.pointer.y, 0.5).unproject(state.camera);
     dir.copy(vec).sub(state.camera.position).normalize();
@@ -140,7 +142,7 @@ function Band({ maxSpeed = 50, minSpeed = 0 }: BandProps) {
     [j1, j2].forEach(ref => {
       if (!ref.current.lerped) ref.current.lerped = new THREE.Vector3().copy(ref.current.translation());
       const clampedDistance = Math.max(0.1, Math.min(1, ref.current.lerped.distanceTo(ref.current.translation())));
-      ref.current.lerped.lerp(ref.current.translation(), delta * (minSpeed + clampedDistance * (maxSpeed - minSpeed)));
+      ref.current.lerped.lerp(ref.current.translation(), dt * (minSpeed + clampedDistance * (maxSpeed - minSpeed)));
     });
     curve.points[0].copy(j3.current.translation());
     curve.points[1].copy(j2.current.lerped);
@@ -154,9 +156,6 @@ function Band({ maxSpeed = 50, minSpeed = 0 }: BandProps) {
     card.current.setAngvel({ x: ang.x, y: ang.y - rot.y * 0.25, z: ang.z });
   }
 
-  // só continua pedindo novos frames enquanto algo ainda está se movendo.
-  // quando os corpos "dormem" (Rapier detecta baixa velocidade + canSleep:true),
-  // o loop para sozinho e a CPU volta a ficar ociosa.
   const stillMoving =
     dragged ||
     !card.current?.isSleeping?.() ||
