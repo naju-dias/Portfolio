@@ -18,7 +18,7 @@
 }
 
 .proj-heading {
-  font-family: 'Tanker', serif; 
+  font-family: var(--font-tanker);
   font-weight: 400;
   font-size: clamp(2.8rem, 6vw, 5rem);
   background: linear-gradient(180deg, #f7f7ff 0%, #f7f7ff 45%, #5e50b1 90%);
@@ -51,6 +51,8 @@
 
 .proj-card-wrapper {
   padding-bottom: 5rem;
+  content-visibility: auto;
+  contain-intrinsic-size: auto 560px;
 }
 
 /* ──── Cards ─────────────────────────────────────────────────── */
@@ -93,8 +95,8 @@
 }
 
 .proj-card-title {
-  font-family: 'Tanker', serif; 
-  font-weight: 700;
+  font-family: var(--font-tanker); 
+  font-weight: 400;
   font-size: clamp(1.6rem, 2.5vw, 3rem);
   color: #f7f7ff; 
   margin: 0;
@@ -178,15 +180,11 @@
   position: absolute;
   inset: 0;
   border-radius: 20px;
-  background: rgba(0,0,0,0.1);
+  background: rgba(0, 0, 0, 0.06);
   pointer-events: none;
-  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1);
   opacity: 1;
   z-index: 1;
-}
-
-.proj-card-image-wrap:hover::after {
-  opacity: 0;
 }
 
 /* ──── Cursor ─────────────────────────────────────────────────── */
@@ -196,28 +194,27 @@
 
 .proj-custom-cursor {
   position: absolute;
+  top: 0;
+  left: 0;
+
   pointer-events: none;
   z-index: 20;
-
-  margin-left: -50px;
-  margin-top: -20px;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
 
   display: flex;
   align-items: center;
   gap: 8px;
 
   padding: 8px 18px;
-  background-color: #f7f7ff;
+
+  background: #f7f7ff;
   border-radius: 999px;
+
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
 
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-
   white-space: nowrap;
-  animation: cursorFadeIn 0.15s ease-out forwards;
+
+  will-change: transform, opacity;
+  backface-visibility: hidden;
 }
 
 .proj-cursor-eyes {
@@ -226,7 +223,7 @@
 }
 
 .proj-cursor-text {
-  font-family: 'Tanker', serif;
+  font-family: var(--font-tanker); 
   font-size: 22px;
   color: #06060a;
   letter-spacing: 0.0em;
@@ -241,6 +238,13 @@
   100% {
     opacity: 1;
     transform: translate3d(-50%, -50%, 0) scale(1);
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .proj-card-image-wrap:hover
+  .proj-card-image-inner::after {
+    display: none;
   }
 }
 
@@ -385,7 +389,7 @@
 }
 
 .modal-title {
-  font-family: 'Tanker', serif; 
+  font-family: var(--font-tanker); 
   font-weight: 400;
   font-size: clamp(2rem, 4vw, 2.7rem);
   color: #f7f7ff; 
@@ -680,6 +684,11 @@
       "image"
       "info";
     height: auto;
+    box-shadow:
+    0 12px 28px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+
+    transition: none;
   }
 
   .proj-card-image-wrap {
@@ -700,11 +709,16 @@
     overflow: hidden;
   }
 
+  .proj-card-tech-pill {
+    transition: none;
+  }
+
   .proj-card-image {
     border-radius: 14px;
     height: 100%;
     width: 100%;
     object-fit: cover;
+    transition: none;
   }
 
   .proj-card-info {

@@ -69,10 +69,6 @@ html, body {
     margin-top: var(--pd-col-margin); 
 }
 
-.pd-mobile-only { 
-    display: none; 
-}
-
 .about-text-col {
     flex: 1 1 320px;
     max-width: 504px;
@@ -193,14 +189,10 @@ html, body {
         padding: 3.5rem 1.25rem 8rem;
        --about-gap: 2.5rem;
     }
-    
-    .pd-desktop-only { 
-        display: none; 
-    }
 
-    .pd-mobile-only { 
-        display: flex; 
-        justify-content: center; 
+    .pd-mobile-only {
+        display: flex;
+        justify-content: center;
     }
     
     .about-name {
@@ -208,7 +200,7 @@ html, body {
     }
     
     .about-paragraph {
-        font-size: 2rem;
+        font-size: 1rem;
         line-height: 1.75;
     }
 }

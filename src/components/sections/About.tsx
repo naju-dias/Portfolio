@@ -5,6 +5,7 @@ import "./About.css";
 import polaroid1 from "@/assets/polaroid1.jpeg";
 import polaroid4 from "@/assets/polaroid4.jpeg";
 import Image, { StaticImageData } from "next/image";
+import { useIsMobile } from "@/hooks/useIsMobile";
 
 type Card = {
   image: string | StaticImageData;
@@ -259,7 +260,10 @@ function PolaroidStackMobile({ cards, visible }: { cards: Card[]; visible: boole
                 cursor: isFront ? "pointer" : "default",
               }}
             >
-              <div className="pd-mobile-card-inner" style={{ position: "relative" }}>
+              <div
+                className="pd-mobile-card-inner"
+                style={{ position: "relative" }}
+              >
                 <Image
                   src={card.image}
                   alt={card.caption || "polaroid"}
@@ -270,6 +274,12 @@ function PolaroidStackMobile({ cards, visible }: { cards: Card[]; visible: boole
                   style={{ objectFit: "cover" }}
                 />
               </div>
+
+              {card.caption && (
+                <div className="pd-mobile-caption">
+                  {card.caption}
+                </div>
+              )}
             </div>
           );
         })}
@@ -284,6 +294,7 @@ export default function About() {
   const titleRef = useRef<HTMLHeadingElement>(null);
   const textContainerRef = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
+  const isMobile = useIsMobile(1024);
 
   useEffect(() => {
   const title = titleRef.current;
@@ -349,14 +360,25 @@ export default function About() {
 
         <div className="about-columns">
           {/* Polaroids — desktop */}
-          <div className="pd-desktop-only about-polaroid-col">
-            <PolaroidDuo visible={visible} cards={cards} />
-          </div>
+          <div className="about-polaroid-col">
+            {isMobile === true && (
+            <div className="pd-mobile-only about-polaroid-col">
+              <PolaroidStackMobile
+                visible={visible}
+                cards={cards}
+              />
+            </div>
+          )}
 
-          {/* Polaroids — mobile */}
-          <div className="pd-mobile-only about-polaroid-col">
-            <PolaroidStackMobile visible={visible} cards={cards} />
-          </div>
+          {isMobile === false && (
+            <div className="pd-desktop-only about-polaroid-col">
+              <PolaroidDuo
+                visible={visible}
+                cards={cards}
+              />
+            </div>
+              )}
+        </div>
 
           {/* Texto */}
           <div ref={textContainerRef} className="about-text-col">

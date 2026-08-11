@@ -1,7 +1,6 @@
 "use client";
 
 import "./Skills.css";
-import StaggerGroup, { StaggerItem } from "../shared/StaggerGroup";
 import Reveal from "../shared/Reveal";
 import { htmlIcon, cssIcon, tailwindIcon, javascriptIcon, typescriptIcon, reactIcon, pythonIcon, nextjsIcon, mysqlIcon, dockerIcon, gitIcon, githubIcon, jestIcon, figmaIcon, framerIcon, notionIcon, claudeIcon, fastapiIcon, postgresqlIcon, prismaIcon, vercelIcon } from "../../lib/icons";
 
@@ -37,30 +36,47 @@ const skills: Skill[] = [
 
 export default function Skills() {
   return (
-    <section id="skills" data-nav-theme="light" className="skills-section">
+    <section
+      id="skills"
+      data-nav-theme="light"
+      className="skills-section"
+    >
       <h2 className="skills-title">
-        <Reveal>
-        <span className="skills-title-accent">Skills & Tools</span>
+        <Reveal y={20} duration={0.45}>
+          <span className="skills-title-accent">
+            Skills & Tools
+          </span>
         </Reveal>
       </h2>
 
       <div className="skills-card">
-        <StaggerGroup className="skills-icons-grid">
-        {skills.map((skill) => (
-          <StaggerItem
-            key={skill.name}
-            className="skill-chip"
-            style={{ "--skill-color": skill.color } as React.CSSProperties}
-            aria-label={skill.name}
-          >
-            <span
-              className="skill-icon"
-              dangerouslySetInnerHTML={{ __html: skill.icon }}
-            />
-            <span className="skill-label">{skill.name}</span>
-          </StaggerItem>
-        ))}
-        </StaggerGroup>
+        <Reveal y={18} duration={0.45}>
+          <div className="skills-icons-grid">
+            {skills.map((skill) => (
+              <div
+                key={skill.name}
+                className="skill-chip"
+                style={
+                  {
+                    "--skill-color": skill.color,
+                  } as React.CSSProperties
+                }
+                aria-label={skill.name}
+              >
+                <span
+                  className="skill-icon"
+                  dangerouslySetInnerHTML={{
+                    __html: skill.icon,
+                  }}
+                />
+
+                <span className="skill-label">
+                  {skill.name}
+                </span>
+              </div>
+            ))}
+          </div>
+        </Reveal>
       </div>
     </section>
   );

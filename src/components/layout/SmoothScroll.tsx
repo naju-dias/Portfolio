@@ -1,19 +1,28 @@
 "use client";
 
-import { ReactLenis } from "lenis/react";
+import dynamic from "next/dynamic";
+import type { ReactNode } from "react";
+import { useIsMobile } from "@/hooks/useIsMobile";
 
-export default function SmoothScroll({ children }: { children: React.ReactNode }) {
+const DesktopSmoothScroll = dynamic(
+  () => import("./DesktopSmoothScroll"),
+  { ssr: false }
+);
+
+export default function SmoothScroll({
+  children,
+}: {
+  children: ReactNode;
+}) {
+  const isMobile = useIsMobile(1280);
+
+  if (isMobile !== false) {
+    return <>{children}</>;
+  }
+
   return (
-    <ReactLenis
-      root
-      options={{
-        lerp: 0.1,
-        duration: 1.2,
-        smoothWheel: true,
-        wheelMultiplier: 1,
-      }}
-    >
+    <DesktopSmoothScroll>
       {children}
-    </ReactLenis>
+    </DesktopSmoothScroll>
   );
 }
