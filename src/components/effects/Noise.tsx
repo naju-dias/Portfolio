@@ -1,50 +1,65 @@
-import type React from 'react';
-import { useRef, useEffect } from 'react';
-import './Noise.css';
+"use client";
+
+import { useEffect, useRef } from "react";
+import "./Noise.css";
 
 interface NoiseProps {
   patternSize?: number;
-  patternScaleX?: number;
-  patternScaleY?: number;
-  patternRefreshInterval?: number;
   patternAlpha?: number;
+  refreshRate?: number;
 }
 
-const Noise: React.FC<NoiseProps> = ({
-  patternSize = 250,
-  patternScaleX = 1,
-  patternScaleY = 1,
-  patternRefreshInterval = 2,
-  patternAlpha = 15
-}) => {
-  const grainRef = useRef<HTMLCanvasElement | null>(null);
+export default function Noise({
+  patternSize = 128,
+  patternAlpha = 8,
+  refreshRate = 120,
+}: NoiseProps) {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
-    const canvas = grainRef.current;
+    const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const ctx = canvas.getContext('2d', { alpha: true });
+    const ctx = canvas.getContext("2d", {
+      alpha: true,
+    });
+
     if (!ctx) return;
 
-    let frame = 0;
-    let animationId: number;
-    const canvasSize = 1024;
+    /*
+     * No mobile usamos ainda menos pixels.
+     */
+    const isMobile = window.matchMedia(
+      "(max-width: 768px)"
+    ).matches;
 
-    const resize = () => {
-      if (!canvas) return;
-      canvas.width = canvasSize;
-      canvas.height = canvasSize;
+    const size = isMobile
+      ? 64
+      : patternSize;
 
-      canvas.style.width = '100%';
-      canvas.style.height = '100%';
-    };
+    canvas.width = size;
+    canvas.height = size;
 
-    const drawGrain = () => {
-      const imageData = ctx.createImageData(canvasSize, canvasSize);
+    let timer: ReturnType<typeof setInterval> | null =
+      null;
+
+    let visible = true;
+
+    const draw = () => {
+      if (!visible || document.hidden) return;
+
+      const imageData =
+        ctx.createImageData(size, size);
+
       const data = imageData.data;
 
+      /*
+       * Só ~4 mil pixels no mobile,
+       * em vez de mais de 1 milhão.
+       */
       for (let i = 0; i < data.length; i += 4) {
         const value = Math.random() * 255;
+
         data[i] = value;
         data[i + 1] = value;
         data[i + 2] = value;
@@ -54,25 +69,46 @@ const Noise: React.FC<NoiseProps> = ({
       ctx.putImageData(imageData, 0, 0);
     };
 
-    const loop = () => {
-      if (frame % patternRefreshInterval === 0) {
-        drawGrain();
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        visible = entry.isIntersecting;
+      },
+      {
+        threshold: 0,
       }
-      frame++;
-      animationId = window.requestAnimationFrame(loop);
-    };
+    );
 
-    window.addEventListener('resize', resize);
-    resize();
-    loop();
+    observer.observe(canvas);
+
+    draw();
+
+    /*
+     * Não precisamos reconstruir noise a 30 FPS.
+     * 120ms ≈ 8 atualizações por segundo.
+     */
+    timer = setInterval(
+      draw,
+      isMobile ? 180 : refreshRate
+    );
 
     return () => {
-      window.removeEventListener('resize', resize);
-      window.cancelAnimationFrame(animationId);
+      observer.disconnect();
+
+      if (timer) {
+        clearInterval(timer);
+      }
     };
-  }, [patternSize, patternScaleX, patternScaleY, patternRefreshInterval, patternAlpha]);
+  }, [
+    patternSize,
+    patternAlpha,
+    refreshRate,
+  ]);
 
-  return <canvas className="noise-overlay" ref={grainRef} style={{ imageRendering: 'pixelated' }} />;
-};
-
-export default Noise;
+  return (
+    <canvas
+      ref={canvasRef}
+      className="noise-overlay"
+      aria-hidden="true"
+    />
+  );
+}

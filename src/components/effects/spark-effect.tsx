@@ -2,191 +2,267 @@
 
 import { useEffect, useRef } from "react";
 
-type Direction = {
+type Spark = {
   x: number;
   y: number;
-};
 
-type SparkEffectProps = {
-  selector?: string;
-  amount?: number;
-  speed?: number;
-  lifetime?: number;
-  direction?: Direction;
-  size?: [number, number];
-  maxopacity?: number;
-  color?: string;
-  randColor?: boolean;
-  acceleration?: [number, number];
-};
+  vx: number;
+  vy: number;
 
-type SparkType = {
-  x: number;
-  y: number;
-  age: number;
-  acceleration: number;
+  life: number;
+  maxLife: number;
+
+  size: number;
+
   color: string;
-  opacity: number;
-  go: () => void;
 };
+
+interface SparkEffectProps {
+  desktopAmount?: number;
+  mobileAmount?: number;
+}
 
 export function SparkEffect({
-  selector = "#sparks",
-  amount = 5000,
-  speed = 0.02,
-  lifetime = 200,
-  direction = { x: -0.9, y: 1 },
-  size = [2, 2],
-  maxopacity = 1,
-  color = "150, 150, 150",
-  randColor = true,
-  acceleration = [5, 1],
+  desktopAmount = 280,
+  mobileAmount = 70,
 }: SparkEffectProps) {
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const canvasRef =
+    useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
-    const OPT = {
-      selector,
-      amount,
-      speed: window.innerWidth < 520 ? 0.05 : speed,
-      lifetime,
-      direction,
-      size,
-      maxopacity,
-      color: window.innerWidth < 520 ? "150, 150, 150" : color,
-      randColor,
-      acceleration,
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext("2d", {
+      alpha: true,
+    });
+
+    if (!ctx) return;
+
+    const isMobile = window.matchMedia(
+      "(max-width: 768px)"
+    ).matches;
+
+    const amount = isMobile
+      ? mobileAmount
+      : desktopAmount;
+
+    let width = 0;
+    let height = 0;
+
+    let animationId = 0;
+    let running = true;
+
+    const sparks: Spark[] = [];
+
+    const resize = () => {
+      width = window.innerWidth;
+      height = window.innerHeight;
+
+      /*
+       * Não renderizamos canvas em Retina 2x/3x.
+       * Para partículas pequenas não faz diferença.
+       */
+      const dpr = Math.min(
+        window.devicePixelRatio,
+        1.25
+      );
+
+      canvas.width = Math.floor(
+        width * dpr
+      );
+
+      canvas.height = Math.floor(
+        height * dpr
+      );
+
+      canvas.style.width = `${width}px`;
+      canvas.style.height = `${height}px`;
+
+      ctx.setTransform(
+        dpr,
+        0,
+        0,
+        dpr,
+        0,
+        0
+      );
     };
 
-    const canvas = canvasRef.current!;
-    const ctx = canvas.getContext("2d")!;
+    const random = (
+      min: number,
+      max: number
+    ) =>
+      Math.random() * (max - min) + min;
 
-    let sparks: SparkType[] = [];
-    let interval: number;
+    const createSpark = (): Spark => ({
+      x: random(0, width),
+      y: random(0, height),
 
-    function setCanvasWidth() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+      vx: random(-0.06, 0.03),
+      vy: random(0.015, 0.08),
+
+      life: random(0, 200),
+      maxLife: random(160, 260),
+
+      size: isMobile
+        ? random(1, 1.7)
+        : random(1, 2),
+
+      color: `${Math.floor(
+        random(80, 230)
+      )}, ${Math.floor(
+        random(50, 190)
+      )}, ${Math.floor(
+        random(130, 255)
+      )}`,
+    });
+
+    const resetSpark = (
+      spark: Spark
+    ) => {
+      const next = createSpark();
+
+      Object.assign(spark, next);
+
+      /*
+       * Entrando preferencialmente pela parte
+       * de cima/lateral para não parecer reset.
+       */
+      spark.y = random(-40, height);
+    };
+
+    resize();
+
+    for (let i = 0; i < amount; i++) {
+      sparks.push(createSpark());
     }
 
-    function rand(min: number, max: number): number {
-      return Math.floor(Math.random() * (max - min + 1)) + min;
-    }
+    const draw = () => {
+      if (!running) return;
 
-    class Spark implements SparkType {
-      x: number;
-      y: number;
-      age: number;
-      acceleration: number;
-      color: string;
-      opacity: number;
+      if (document.hidden) {
+        animationId =
+          requestAnimationFrame(draw);
 
-      constructor(x: number, y: number) {
-        this.x = x;
-        this.y = y;
-        this.age = 0;
-
-        this.acceleration = rand(
-          OPT.acceleration[0],
-          OPT.acceleration[1]
-        );
-
-        this.color = OPT.randColor
-          ? `${rand(0, 255)},${rand(0, 255)},${rand(0, 255)}`
-          : OPT.color;
-
-        this.opacity =
-          OPT.maxopacity - this.age / (OPT.lifetime * rand(1, 10));
+        return;
       }
 
-      go() {
-        this.x +=
-          (OPT.speed * OPT.direction.x * this.acceleration) / 2;
+      ctx.clearRect(
+        0,
+        0,
+        width,
+        height
+      );
 
-        this.y +=
-          (OPT.speed * OPT.direction.y * this.acceleration) / 2;
+      for (let i = 0; i < sparks.length; i++) {
+        const spark = sparks[i];
 
-        this.opacity = OPT.maxopacity - ++this.age / OPT.lifetime;
-      }
-    }
+        spark.x += spark.vx;
+        spark.y += spark.vy;
 
-    function addSpark() {
-      const x = rand(-200, window.innerWidth + 200);
-      const y = rand(-200, window.innerHeight + 200);
+        spark.life++;
 
-      sparks.push(new Spark(x, y));
-    }
-
-    function drawSpark(spark: SparkType) {
-      const x = spark.x;
-      const y = spark.y;
-
-      spark.go();
-
-      ctx.beginPath();
-      ctx.fillStyle = `rgba(${spark.color}, ${spark.opacity})`;
-      ctx.rect(x, y, OPT.size[0], OPT.size[1]);
-      ctx.fill();
-    }
-
-    function draw() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      sparks = sparks.filter((spark) => spark.opacity > 0);
-
-      sparks.forEach((spark) => {
-        drawSpark(spark);
-      });
-
-      window.requestAnimationFrame(draw);
-    }
-
-    function init() {
-      setCanvasWidth();
-
-      interval = window.setInterval(() => {
-        if (sparks.length < OPT.amount) {
-          addSpark();
+        if (
+          spark.life >= spark.maxLife ||
+          spark.x < -50 ||
+          spark.x > width + 50 ||
+          spark.y > height + 50
+        ) {
+          resetSpark(spark);
+          continue;
         }
-      }, 1000 / OPT.amount);
 
-      window.requestAnimationFrame(draw);
-    }
+        const progress =
+          spark.life / spark.maxLife;
 
-    window.addEventListener("resize", setCanvasWidth);
+        /*
+         * Fade de entrada + saída.
+         */
+        const opacity =
+          Math.sin(
+            progress * Math.PI
+          ) * 0.8;
 
-    init();
+        ctx.fillStyle =
+          `rgba(${spark.color}, ${opacity})`;
+
+        ctx.fillRect(
+          spark.x,
+          spark.y,
+          spark.size,
+          spark.size
+        );
+      }
+
+      animationId =
+        requestAnimationFrame(draw);
+    };
+
+    const observer =
+      new IntersectionObserver(
+        ([entry]) => {
+          running =
+            entry.isIntersecting;
+
+          if (running) {
+            cancelAnimationFrame(
+              animationId
+            );
+
+            animationId =
+              requestAnimationFrame(draw);
+          }
+        },
+        {
+          threshold: 0,
+        }
+      );
+
+    observer.observe(canvas);
+
+    window.addEventListener(
+      "resize",
+      resize,
+      { passive: true }
+    );
+
+    animationId =
+      requestAnimationFrame(draw);
 
     return () => {
-      window.removeEventListener("resize", setCanvasWidth);
-      window.clearInterval(interval);
+      running = false;
+
+      cancelAnimationFrame(animationId);
+
+      observer.disconnect();
+
+      window.removeEventListener(
+        "resize",
+        resize
+      );
     };
   }, [
-    selector,
-    amount,
-    speed,
-    lifetime,
-    direction,
-    size,
-    maxopacity,
-    color,
-    randColor,
-    acceleration,
+    desktopAmount,
+    mobileAmount,
   ]);
 
   return (
     <canvas
       ref={canvasRef}
       id="sparks"
+      aria-hidden="true"
       style={{
         position: "absolute",
+        inset: 0,
+
         width: "100%",
         height: "100%",
-        top: 0,
-        left: 0,
+
         background: "transparent",
+
         pointerEvents: "none",
       }}
     />
-);
+  );
 }
