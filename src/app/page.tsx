@@ -19,11 +19,6 @@ const Lanyard = dynamic(
   { ssr: false }
 );
 
-const LoadingScreen = dynamic(
-  () => import("@/components/layout/LoadingScreen"),
-  { ssr: false }
-);
-
 export default function Home() {
   const isMobile = useIsMobile(1280);
   const idleReady = useIdleMount(3000);
@@ -49,8 +44,6 @@ export default function Home() {
 
   return (
     <main className="min-h-screen">
-      <LoadingScreen />
-
       <div className="relative w-full">
         <Hero>
           {isMobile === false && idleReady && (

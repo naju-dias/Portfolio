@@ -3,9 +3,9 @@
 import { useEffect, useRef, useState } from "react";
 import BootSequenceUI, { BOOT_LINES } from "./BootSequenceUI";
 
-const FIRST_STEP_MS = 150;
-const STEP_MS = 280;
-const HOLD_MS = 350;
+const FIRST_STEP_MS = 180;
+const STEP_MS = 420;
+const HOLD_MS = 450;
 const EXIT_MS = 1000;
 
 interface LoadingScreenProps {
@@ -64,7 +64,7 @@ export default function LoadingScreen({
 
   if (!mounted) return null;
 
-  const displayProgress =
+  const progressTarget =
     visibleLines === 0
       ? 0
       : BOOT_LINES[
@@ -77,7 +77,7 @@ export default function LoadingScreen({
   return (
     <BootSequenceUI
       exiting={exiting}
-      displayProgress={displayProgress}
+      displayProgress={progressTarget}
       visibleLines={visibleLines}
     />
   );

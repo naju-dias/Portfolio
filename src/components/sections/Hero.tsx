@@ -1,36 +1,37 @@
 "use client";
 
-import { useEffect, useRef } from "react";
 import Noise from "../effects/Noise";
 import { SparkEffect } from "../effects/spark-effect";
 import LocalTime from '@/components/shared/LocalTime';
 import TextScramble from "../shared/TextScramble";
+import Reveal from "../shared/Reveal";
 import "./Hero.css";
 
 export default function Hero({ children }: { children?: React.ReactNode }) {
-  const titleRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const el = titleRef.current;
-    if (!el) return;
-    el.style.opacity = "0";
-    el.style.transform = "translateY(18px)";
-    setTimeout(() => {
-      el.style.transition =
-        "opacity 0.9s cubic-bezier(0.16,1,0.3,1), transform 0.9s cubic-bezier(0.16,1,0.3,1)";
-      el.style.opacity = "1";
-      el.style.transform = "translateY(0)";
-    }, 100);
-  }, []);
-
+  
   return (
     <section
       id="hero"
-      className="relative w-full min-h-screen p-3 sm:p-5 bg-[#06060a]"
+      className="relative w-full min-h-100svh p-3 sm:p-5 bg-[#06060a]"
     >
       <div
-        className="hero-inner w-full min-h-[calc(100vh-24px)] sm:min-h-[calc(100vh-40px)] rounded-2xl sm:rounded-3xl relative flex flex-col items-start justify-center px-4 pt-16 sm:px-24 overflow-hidden"
-      >
+        className="
+        hero-inner 
+        w-full 
+        min-h-[calc(100svh-24px)]
+        sm:min-h-[calc(100svh-40px)]
+        rounded-2xl
+        sm:rounded-3xl
+        relative
+        flex
+        flex-col
+        items-start
+        justify-center
+        px-4
+        pt-16
+        sm:px-24
+        overflow-hidden"
+        >
         <div className="absolute inset-0 z-0 pointer-events-none">
           <SparkEffect />
           <Noise patternAlpha={8} />
@@ -42,7 +43,12 @@ export default function Hero({ children }: { children?: React.ReactNode }) {
         </div>
 
         <div className="hero-content-wrap">
-          <div ref={titleRef} className="hero-title-block">
+          <Reveal
+          y={18}
+          duration={0.55}
+          className="hero-title-reveal"
+          >
+            <div className="hero-title-block">
             <span className="hero-label">
               <span className="hero-label-slash">{'//'}</span> Olá, eu sou a
             </span>
@@ -56,6 +62,7 @@ export default function Hero({ children }: { children?: React.ReactNode }) {
               ideias complexas em experiências com propósito.
             </span>
           </div>
+          </Reveal>
         </div>
 
         {/* CTAs + LocalTime */}

@@ -1,24 +1,33 @@
 import type { Metadata } from "next";
 
-import localFont from "next/font/local"; 
-import { Geist, Geist_Mono, Instrument_Serif, Caveat, JetBrains_Mono } from "next/font/google";
-import "./globals.css";
-import { Analytics } from "@vercel/analytics/next"
-import { SpeedInsights } from "@vercel/speed-insights/next"
+import localFont from "next/font/local";
+import {
+  Geist,
+  Geist_Mono,
+  Instrument_Serif,
+  Caveat,
+  JetBrains_Mono,
+} from "next/font/google";
 
+import "./globals.css";
+
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
+
+import LoadingScreen from "@/components/layout/LoadingScreen";
 import Navbar from "@/components/layout/Navbar";
 import SmoothScroll from "@/components/layout/SmoothScroll";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
-  display: "swap"
+  display: "swap",
 });
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
-  display: "swap"
+  display: "swap",
 });
 
 const instrumentSerif = Instrument_Serif({
@@ -26,21 +35,20 @@ const instrumentSerif = Instrument_Serif({
   style: ["normal"],
   weight: "400",
   subsets: ["latin"],
-  display: "swap"
+  display: "swap",
 });
 
 const tanker = localFont({
-  src: '../../public/fonts/Tanker-Regular.woff2',
-  variable: '--font-tanker',
-  display: 'swap',
-})
-
+  src: "../../public/fonts/Tanker-Regular.woff2",
+  variable: "--font-tanker",
+  display: "swap",
+});
 
 const caveat = Caveat({
   variable: "--font-caveat",
   weight: ["500"],
   subsets: ["latin"],
-  display: "swap"
+  display: "swap",
 });
 
 const jetbrainsMono = JetBrains_Mono({
@@ -48,7 +56,7 @@ const jetbrainsMono = JetBrains_Mono({
   style: ["normal"],
   weight: "variable",
   subsets: ["latin"],
-  display: "swap"
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -56,15 +64,36 @@ export const metadata: Metadata = {
   description: "Portfolio Profissional",
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="pt-br">
-      <body className={`min-h-full ${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable} ${tanker.variable} ${caveat.variable} ${jetbrainsMono.variable}`}>
-        <div className="background-grid"></div>
+      <body
+        className={`
+          min-h-full
+          ${geistSans.variable}
+          ${geistMono.variable}
+          ${instrumentSerif.variable}
+          ${tanker.variable}
+          ${caveat.variable}
+          ${jetbrainsMono.variable}
+        `}
+      >
+        <LoadingScreen />
+
+        <div className="background-grid" />
+
         <Navbar />
-        <SmoothScroll>{children}</SmoothScroll>
+
+        <SmoothScroll>
+          {children}
+        </SmoothScroll>
+
         <Analytics />
-        <SpeedInsights/>
+        <SpeedInsights />
       </body>
     </html>
   );

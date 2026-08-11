@@ -12,7 +12,7 @@
 
     z-index: 1000;
 
-    font-family: 'Geist Mono', monospace;
+    font-family: var(--font-geist-mono);
 
     transition: top 0.3s ease;
 }
@@ -31,7 +31,7 @@
     letter-spacing: 0.02em;
     color: #806ded;
     text-decoration: none;
-    font-family: 'Tanker', sans-serif;
+    font-family: var(--font-tanker);
     grid-column: 1;
     justify-self: start;
     transition: transform 0.4s cubic-bezier(0.16,1,0.3,1), color 0.4s ease;
@@ -221,7 +221,7 @@
 }
 
 .nav-overlay-title {
-    font-family: 'Geist', sans-serif;
+    font-family: var(--font-geist);
     font-size: 12px;
     font-weight: 600;
     letter-spacing: 0.08em;
@@ -248,7 +248,7 @@
     align-items: center;
     justify-content: space-between;
     gap: 0.6rem;
-    font-family: 'Tanker', sans-serif;
+    font-family: var(--font-tanker);
     font-size: clamp(2.6rem, 11vw, 3.4rem);
     letter-spacing: 0.02em;
     text-transform: uppercase;

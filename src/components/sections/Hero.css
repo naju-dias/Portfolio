@@ -138,15 +138,21 @@
 
 .hero-localtime-wrap {
   position: absolute;
-  bottom: 1.4rem;
-  right: 8rem;
+  bottom: 1.6rem;
+  right: 7rem;
   z-index: 10;
+
+  /* reserva espaço antes do JS hidratar */
+  width: 92px;
+  min-height: 42px;
 }
 
 .local-time {
   display: flex;
   flex-direction: column;
   gap: 1px;
+  width: 100%;
+
   font-family: var(--font-geist-sans);
 }
 
@@ -162,16 +168,18 @@
   color: #f7f7ff;
 }
 
-.local-time__icon {
-  color: #806ded;
-  margin-bottom: 1px;
+.local-time__label,
+.local-time__value {
+  font-variant-numeric: tabular-nums;
 }
 
 .local-time__value {
-  font-size: 15px;
-  font-weight: 400;
-  color: #f7f7ff;
-  letter-spacing: 0.02em;
+  min-width: 8ch;
+}
+
+.local-time__icon {
+  color: #806ded;
+  margin-bottom: 1px;
 }
 
 /* ── Scroll indicador ─────────────────────────────────────────────────── */
@@ -271,6 +279,10 @@
     padding-left: 0;
     width: 100%;
     flex: 0 0 auto;
+
+    min-height: 300px;
+    display: flex;
+    align-items: center;
   }
 
   .hero-title-block {
@@ -330,9 +342,9 @@
   }
 
   .hero-localtime-wrap {
-    position: absolute;
-    bottom: 1.4rem;
-    right: 1.5rem;
+    right: 0.2rem;
+    width: 88px;
+    min-height: 50px;
   }
 
   .hero-scroll-indicator {
