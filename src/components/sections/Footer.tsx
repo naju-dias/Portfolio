@@ -11,10 +11,7 @@ import LocalTime from "../shared/LocalTime2";
 const scrollToTop = () => {
   if (typeof window !== "undefined") {
     try {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    } catch {
-      // Fallback para navegadores mobile legados
-      window.scrollTo(0, 0);
+      window.scrollTo({ top: 0, behavior: "smooth" });} catch {
     }
   }
 };

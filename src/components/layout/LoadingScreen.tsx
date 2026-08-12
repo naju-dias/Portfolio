@@ -3,10 +3,12 @@
 import { useEffect, useRef, useState } from "react";
 import BootSequenceUI, { BOOT_LINES } from "./BootSequenceUI";
 
-const FIRST_STEP_MS = 180;
-const STEP_MS = 420;
-const HOLD_MS = 450;
+const FIRST_STEP_MS = 120;
+const STEP_MS = 300;
+const HOLD_MS = 250;
 const EXIT_MS = 1000;
+
+const SESSION_KEY = "portfolio-loader-seen";
 
 interface LoadingScreenProps {
   onComplete?: () => void;
@@ -17,7 +19,7 @@ export default function LoadingScreen({
 }: LoadingScreenProps) {
   const [visibleLines, setVisibleLines] = useState(0);
   const [exiting, setExiting] = useState(false);
-  const [mounted, setMounted] = useState(true);
+  const [shouldShow, setShouldShow] = useState<boolean | null>(null);
 
   const onCompleteRef = useRef(onComplete);
 
@@ -26,16 +28,28 @@ export default function LoadingScreen({
   }, [onComplete]);
 
   useEffect(() => {
+    const alreadySeen =
+      sessionStorage.getItem(SESSION_KEY) === "true";
+
+    if (alreadySeen) {
+      setShouldShow(false);
+      onCompleteRef.current?.();
+      return;
+    }
+
+    sessionStorage.setItem(SESSION_KEY, "true");
+    setShouldShow(true);
+  }, []);
+
+  useEffect(() => {
+    if (shouldShow !== true) return;
+
     const timers: ReturnType<typeof setTimeout>[] = [];
 
     BOOT_LINES.forEach((_, index) => {
-      const delay =
-        FIRST_STEP_MS +
-        index * STEP_MS;
-
       const timer = setTimeout(() => {
         setVisibleLines(index + 1);
-      }, delay);
+      }, FIRST_STEP_MS + index * STEP_MS);
 
       timers.push(timer);
     });
@@ -44,25 +58,31 @@ export default function LoadingScreen({
       FIRST_STEP_MS +
       (BOOT_LINES.length - 1) * STEP_MS;
 
-    const exitTimer = setTimeout(() => {
-      setExiting(true);
-    }, sequenceDuration + HOLD_MS);
+    timers.push(
+      setTimeout(() => {
+        setExiting(true);
+      }, sequenceDuration + HOLD_MS)
+    );
 
-    timers.push(exitTimer);
-
-    const unmountTimer = setTimeout(() => {
-      setMounted(false);
-      onCompleteRef.current?.();
-    }, sequenceDuration + HOLD_MS + EXIT_MS);
-
-    timers.push(unmountTimer);
+    timers.push(
+      setTimeout(() => {
+        setShouldShow(false);
+        onCompleteRef.current?.();
+      }, sequenceDuration + HOLD_MS + EXIT_MS)
+    );
 
     return () => {
       timers.forEach(clearTimeout);
     };
-  }, []);
+  }, [shouldShow]);
 
-  if (!mounted) return null;
+  if (shouldShow === null) {
+    return null;
+  }
+
+  if (shouldShow === false) {
+    return null;
+  }
 
   const progressTarget =
     visibleLines === 0

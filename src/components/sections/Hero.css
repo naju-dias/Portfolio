@@ -21,6 +21,13 @@
   margin-top: -15px;
 }
 
+.hero-title-animated {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+}
+
 .hero-label {
   font-family: var(--font-geist-mono);
   font-size: 21px;
@@ -181,6 +188,7 @@
   color: #806ded;
   margin-bottom: 1px;
 }
+
 
 /* ── Scroll indicador ─────────────────────────────────────────────────── */
 

@@ -4,7 +4,6 @@ import Noise from "../effects/Noise";
 import { SparkEffect } from "../effects/spark-effect";
 import LocalTime from '@/components/shared/LocalTime';
 import TextScramble from "../shared/TextScramble";
-import Reveal from "../shared/Reveal";
 import "./Hero.css";
 
 export default function Hero({ children }: { children?: React.ReactNode }) {
@@ -43,26 +42,29 @@ export default function Hero({ children }: { children?: React.ReactNode }) {
         </div>
 
         <div className="hero-content-wrap">
-          <Reveal
-          y={18}
-          duration={0.55}
-          className="hero-title-reveal"
-          >
-            <div className="hero-title-block">
+          <div className="hero-title-block">
+
             <span className="hero-label">
-              <span className="hero-label-slash">{'//'}</span> Olá, eu sou a
+              <span className="hero-label-slash">
+                {"//"}
+              </span>{" "}
+              Olá, eu sou a
             </span>
 
-            <span className="hero-name">Ana Julia Dias</span>
+            <span className="hero-name">
+              Ana Julia Dias
+            </span>
 
-            <span className="hero-role">Engenheira de Software</span>
+            <span className="hero-role">
+              Engenheira de Software
+            </span>
 
             <span className="hero-desc">
-              Uma estudante curiosa que projeta com intenção e clareza, transformo
-              ideias complexas em experiências com propósito.
+              Uma estudante curiosa que projeta com intenção e clareza,
+              transformo ideias complexas em experiências com propósito.
             </span>
+
           </div>
-          </Reveal>
         </div>
 
         {/* CTAs + LocalTime */}
