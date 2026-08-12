@@ -6,13 +6,15 @@ import "./Noise.css";
 interface NoiseProps {
   patternSize?: number;
   patternAlpha?: number;
-  refreshRate?: number;
+  refreshInterval?: number;
+  frames?: number;
 }
 
 export default function Noise({
-  patternSize = 128,
-  patternAlpha = 8,
-  refreshRate = 120,
+  patternSize = 180,
+  patternAlpha = 10,
+  refreshInterval = 90,
+  frames = 4,
 }: NoiseProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -26,39 +28,37 @@ export default function Noise({
 
     if (!ctx) return;
 
-    /*
-     * No mobile usamos ainda menos pixels.
-     */
-    const isMobile = window.matchMedia(
-      "(max-width: 768px)"
-    ).matches;
-
-    const size = isMobile
-      ? 64
-      : patternSize;
-
-    canvas.width = size;
-    canvas.height = size;
-
-    let timer: ReturnType<typeof setInterval> | null =
-      null;
-
+    let timer: ReturnType<typeof setInterval> | null = null;
     let visible = true;
+    let currentFrame = 0;
 
-    const draw = () => {
-      if (!visible || document.hidden) return;
+    const textures: HTMLCanvasElement[] = [];
+
+    const createTexture = () => {
+      const textureCanvas =
+        document.createElement("canvas");
+
+      textureCanvas.width = patternSize;
+      textureCanvas.height = patternSize;
+
+      const textureCtx =
+        textureCanvas.getContext("2d");
+
+      if (!textureCtx) {
+        return textureCanvas;
+      }
 
       const imageData =
-        ctx.createImageData(size, size);
+        textureCtx.createImageData(
+          patternSize,
+          patternSize
+        );
 
       const data = imageData.data;
 
-      /*
-       * Só ~4 mil pixels no mobile,
-       * em vez de mais de 1 milhão.
-       */
       for (let i = 0; i < data.length; i += 4) {
-        const value = Math.random() * 255;
+        const value =
+          Math.random() * 255;
 
         data[i] = value;
         data[i + 1] = value;
@@ -66,33 +66,143 @@ export default function Noise({
         data[i + 3] = patternAlpha;
       }
 
-      ctx.putImageData(imageData, 0, 0);
+      textureCtx.putImageData(
+        imageData,
+        0,
+        0
+      );
+
+      return textureCanvas;
     };
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        visible = entry.isIntersecting;
-      },
-      {
-        threshold: 0,
+    for (let i = 0; i < frames; i++) {
+      textures.push(createTexture());
+    }
+
+    const resize = () => {
+      const rect =
+        canvas.getBoundingClientRect();
+
+      const dpr = Math.min(
+        window.devicePixelRatio || 1,
+        1.5
+      );
+
+      canvas.width =
+        Math.floor(rect.width * dpr);
+
+      canvas.height =
+        Math.floor(rect.height * dpr);
+
+      ctx.setTransform(
+        dpr,
+        0,
+        0,
+        dpr,
+        0,
+        0
+      );
+    };
+
+    const draw = () => {
+      if (!visible || document.hidden) {
+        return;
       }
+
+      const rect =
+        canvas.getBoundingClientRect();
+
+      const texture =
+        textures[currentFrame];
+
+      const pattern =
+        ctx.createPattern(
+          texture,
+          "repeat"
+        );
+
+      if (!pattern) return;
+
+      ctx.clearRect(
+        0,
+        0,
+        rect.width,
+        rect.height
+      );
+
+      ctx.save();
+
+      /*
+       * Pequeno deslocamento a cada frame
+       * deixa o grain mais "vivo".
+       */
+      const offsetX =
+        (currentFrame * 17) %
+        patternSize;
+
+      const offsetY =
+        (currentFrame * 29) %
+        patternSize;
+
+      ctx.translate(
+        -offsetX,
+        -offsetY
+      );
+
+      ctx.fillStyle = pattern;
+
+      ctx.fillRect(
+        offsetX,
+        offsetY,
+        rect.width + patternSize,
+        rect.height + patternSize
+      );
+
+      ctx.restore();
+
+      currentFrame =
+        (currentFrame + 1) %
+        textures.length;
+    };
+
+    resize();
+    draw();
+
+    timer = setInterval(
+      draw,
+      refreshInterval
     );
+
+    const observer =
+      new IntersectionObserver(
+        ([entry]) => {
+          visible =
+            entry.isIntersecting;
+
+          if (visible) {
+            draw();
+          }
+        },
+        {
+          threshold: 0,
+        }
+      );
 
     observer.observe(canvas);
 
-    draw();
-
-    /*
-     * Não precisamos reconstruir noise a 30 FPS.
-     * 120ms ≈ 8 atualizações por segundo.
-     */
-    timer = setInterval(
-      draw,
-      isMobile ? 180 : refreshRate
+    window.addEventListener(
+      "resize",
+      resize,
+      { passive: true }
     );
 
     return () => {
       observer.disconnect();
+
+      window.removeEventListener(
+        "resize",
+        resize
+      );
 
       if (timer) {
         clearInterval(timer);
@@ -101,7 +211,8 @@ export default function Noise({
   }, [
     patternSize,
     patternAlpha,
-    refreshRate,
+    refreshInterval,
+    frames,
   ]);
 
   return (
