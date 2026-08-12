@@ -44,7 +44,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                 alt={title}
                 width={1200}
                 height={800}
-                quality={100}
+                quality={85}
                 sizes="(max-width: 768px) 92vw, 720px"
                 className="modal-image"
                 />

@@ -1,7 +1,14 @@
 "use client";
 
-import { ReactLenis } from "lenis/react";
+import dynamic from "next/dynamic";
 import { useIsMobile } from "@/hooks/useIsMobile";
+
+const DesktopSmoothScroll = dynamic(
+  () => import("./DesktopSmoothScroll"),
+  {
+    ssr: false,
+  }
+);
 
 export default function SmoothScroll({
   children,
@@ -14,21 +21,17 @@ export default function SmoothScroll({
     return <>{children}</>;
   }
 
+  /*
+   * Mobile usa scroll nativo.
+   * O chunk do Lenis não precisa ser carregado.
+   */
   if (isMobile) {
     return <>{children}</>;
   }
 
   return (
-    <ReactLenis
-      root
-      options={{
-        lerp: 0.1,
-        duration: 1.2,
-        smoothWheel: true,
-        wheelMultiplier: 1,
-      }}
-    >
+    <DesktopSmoothScroll>
       {children}
-    </ReactLenis>
+    </DesktopSmoothScroll>
   );
 }

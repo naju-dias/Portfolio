@@ -1,81 +1,26 @@
-"use client";
-
-import dynamic from "next/dynamic";
-import { useMemo } from "react";
-
-import { useBgTransition } from "@/hooks/useBgTransition";
-import { useIsMobile } from "@/hooks/useIsMobile";
-import { useIdleMount } from "@/hooks/useIdleMount";
-
-import Hero from "@/components/sections/Hero";
+import HeroWithLanyard from "@/components/sections/HeroWithLanyard";
 import Projects from "@/components/sections/Projects";
 import About from "@/components/sections/About";
 import Skills from "@/components/sections/Skills";
 import Contact from "@/components/sections/Contact";
 import Footer from "@/components/sections/Footer";
 
-const Lanyard = dynamic(
-  () => import("@/components/effects/Lanyard"),
-  { ssr: false }
-);
+import HomeBackgroundTransitions from "@/components/layout/HomeBackgroundTransitions";
 
 export default function Home() {
-  const isMobile = useIsMobile(1280);
-  const idleReady = useIdleMount(3000);
-
-  const transitions = useMemo(
-    () => [
-      {
-        from: "#06060a",
-        to: "#dddadb",
-        zoneHeight: 700,
-      },
-      {
-        from: "#dddadb",
-        to: "#06060a",
-        zoneHeight: 900,
-      },
-    ],
-    []
-  );
-
-  const [aboutTrigger, contactTrigger] =
-    useBgTransition(transitions);
-
   return (
     <main className="min-h-screen">
       <div className="relative w-full">
-        <Hero>
-          {isMobile === false && idleReady && (
-            <div className="absolute inset-0 pointer-events-none z-5">
-              <div className="w-full h-full pointer-events-auto">
-                <Lanyard
-                  position={[0, 0, 10]}
-                  gravity={[0, -40, 0]}
-                  transparent
-                />
-              </div>
-            </div>
-          )}
-        </Hero>
+        <HeroWithLanyard />
 
         <Projects />
 
-        <div ref={aboutTrigger} aria-hidden />
-
-        <div className="about-skills-wrapper bg-transparent">
-          <About />
-          <Skills />
-        </div>
-
-        <div
-          ref={contactTrigger}
-          className="h-px"
-          aria-hidden
+        <HomeBackgroundTransitions
+          about={<About />}
+          skills={<Skills />}
+          contact={<Contact />}
+          footer={<Footer />}
         />
-
-        <Contact />
-        <Footer />
       </div>
     </main>
   );

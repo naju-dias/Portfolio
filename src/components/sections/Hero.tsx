@@ -1,5 +1,3 @@
-"use client";
-
 import Noise from "../effects/Noise";
 import { SparkEffect } from "../effects/spark-effect";
 import LocalTime from '@/components/shared/LocalTime';

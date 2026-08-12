@@ -33,7 +33,7 @@ type SparkType = {
 export function SparkEffect({
   selector = "#sparks",
   amount = 5000,
-  speed = 0.02,
+  speed = 0.016,
   lifetime = 200,
   direction = { x: -0.9, y: 1 },
   size = [2, 2],
@@ -45,32 +45,60 @@ export function SparkEffect({
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   useEffect(() => {
+    const canvasElement = canvasRef.current;
+    if (!canvasElement) return;
+
+    const context = canvasElement.getContext("2d");
+    if (!context) return;
+
+    const canvas: HTMLCanvasElement = canvasElement;
+    const ctx: CanvasRenderingContext2D = context;
+
+    const isMobile = window.innerWidth < 768;
+
     const OPT = {
       selector,
-      amount,
-      speed: window.innerWidth < 520 ? 0.05 : speed,
+
+      // quantidade
+      amount: isMobile ? 120 : amount,
+
+      // velocidade
+      speed: isMobile ? 0.01 : speed,
+
       lifetime,
       direction,
       size,
       maxopacity,
-      color: window.innerWidth < 520 ? "150, 150, 150" : color,
+
+      color:
+        window.innerWidth < 520
+          ? "150, 150, 150"
+          : color,
+
       randColor,
       acceleration,
     };
 
-    const canvas = canvasRef.current!;
-    const ctx = canvas.getContext("2d")!;
-
     let sparks: SparkType[] = [];
-    let interval: number;
+
+    let interval: number | null = null;
+    let animationId: number | null = null;
+
+    let isVisible = true;
 
     function setCanvasWidth() {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
     }
 
-    function rand(min: number, max: number): number {
-      return Math.floor(Math.random() * (max - min + 1)) + min;
+    function rand(
+      min: number,
+      max: number
+    ): number {
+      return Math.floor(
+        Math.random() *
+          (max - min + 1)
+      ) + min;
     }
 
     class Spark implements SparkType {
@@ -81,7 +109,10 @@ export function SparkEffect({
       color: string;
       opacity: number;
 
-      constructor(x: number, y: number) {
+      constructor(
+        x: number,
+        y: number
+      ) {
         this.x = x;
         this.y = y;
         this.age = 0;
@@ -92,74 +123,204 @@ export function SparkEffect({
         );
 
         this.color = OPT.randColor
-          ? `${rand(0, 255)},${rand(0, 255)},${rand(0, 255)}`
+          ? `${rand(0, 255)},${rand(
+              0,
+              255
+            )},${rand(0, 255)}`
           : OPT.color;
 
         this.opacity =
-          OPT.maxopacity - this.age / (OPT.lifetime * rand(1, 10));
+          OPT.maxopacity -
+          this.age /
+            (OPT.lifetime *
+              rand(1, 10));
       }
 
       go() {
         this.x +=
-          (OPT.speed * OPT.direction.x * this.acceleration) / 2;
+          (OPT.speed *
+            OPT.direction.x *
+            this.acceleration) /
+          2;
 
         this.y +=
-          (OPT.speed * OPT.direction.y * this.acceleration) / 2;
+          (OPT.speed *
+            OPT.direction.y *
+            this.acceleration) /
+          2;
 
-        this.opacity = OPT.maxopacity - ++this.age / OPT.lifetime;
+        this.opacity =
+          OPT.maxopacity -
+          ++this.age /
+            OPT.lifetime;
       }
     }
 
     function addSpark() {
-      const x = rand(-200, window.innerWidth + 200);
-      const y = rand(-200, window.innerHeight + 200);
+      const x = rand(
+        -200,
+        window.innerWidth + 200
+      );
 
-      sparks.push(new Spark(x, y));
+      const y = rand(
+        -200,
+        window.innerHeight + 200
+      );
+
+      sparks.push(
+        new Spark(x, y)
+      );
     }
 
-    function drawSpark(spark: SparkType) {
+    function drawSpark(
+      spark: SparkType
+    ) {
       const x = spark.x;
       const y = spark.y;
 
       spark.go();
 
       ctx.beginPath();
+
       ctx.fillStyle = `rgba(${spark.color}, ${spark.opacity})`;
-      ctx.rect(x, y, OPT.size[0], OPT.size[1]);
+
+      ctx.rect(
+        x,
+        y,
+        OPT.size[0],
+        OPT.size[1]
+      );
+
       ctx.fill();
     }
 
     function draw() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      if (!isVisible) {
+        animationId = null;
+        return;
+      }
 
-      sparks = sparks.filter((spark) => spark.opacity > 0);
+      ctx.clearRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+      );
 
-      sparks.forEach((spark) => {
-        drawSpark(spark);
-      });
+      sparks = sparks.filter(
+        (spark) =>
+          spark.opacity > 0
+      );
 
-      window.requestAnimationFrame(draw);
+      sparks.forEach(
+        (spark) => {
+          drawSpark(spark);
+        }
+      );
+
+      animationId =
+        window.requestAnimationFrame(
+          draw
+        );
+    }
+
+    function start() {
+      if (!isVisible) return;
+
+      if (interval === null) {
+        interval =
+          window.setInterval(() => {
+            if (
+              sparks.length <
+              OPT.amount
+            ) {
+              addSpark();
+            }
+          }, 1000 / OPT.amount);
+      }
+
+      if (
+        animationId === null
+      ) {
+        animationId =
+          window.requestAnimationFrame(
+            draw
+          );
+      }
+    }
+
+    function stop() {
+      if (interval !== null) {
+        window.clearInterval(
+          interval
+        );
+
+        interval = null;
+      }
+
+      if (
+        animationId !== null
+      ) {
+        window.cancelAnimationFrame(
+          animationId
+        );
+
+        animationId = null;
+      }
     }
 
     function init() {
       setCanvasWidth();
-
-      interval = window.setInterval(() => {
-        if (sparks.length < OPT.amount) {
-          addSpark();
-        }
-      }, 1000 / OPT.amount);
-
-      window.requestAnimationFrame(draw);
+      start();
     }
 
-    window.addEventListener("resize", setCanvasWidth);
+    const observer =
+      new IntersectionObserver(
+        ([entry]) => {
+          isVisible =
+            entry.isIntersecting;
+
+          if (isVisible) {
+            start();
+          } else {
+            stop();
+          }
+        },
+        {
+          threshold: 0,
+
+          /*
+           * Só desliga quando já saiu
+           * um pouquinho do Hero,
+           * para evitar liga/desliga
+           * na borda da viewport.
+           */
+          rootMargin:
+            "100px 0px",
+        }
+      );
+
+    observer.observe(canvas);
+
+    window.addEventListener(
+      "resize",
+      setCanvasWidth,
+      {
+        passive: true,
+      }
+    );
 
     init();
 
     return () => {
-      window.removeEventListener("resize", setCanvasWidth);
-      window.clearInterval(interval);
+      observer.disconnect();
+
+      window.removeEventListener(
+        "resize",
+        setCanvasWidth
+      );
+
+      stop();
     };
   }, [
     selector,
@@ -178,15 +339,17 @@ export function SparkEffect({
     <canvas
       ref={canvasRef}
       id="sparks"
+      aria-hidden="true"
       style={{
         position: "absolute",
         width: "100%",
         height: "100%",
         top: 0,
         left: 0,
-        background: "transparent",
+        background:
+          "transparent",
         pointerEvents: "none",
       }}
     />
-);
+  );
 }
