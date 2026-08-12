@@ -41,7 +41,7 @@ export default function About() {
             <Reveal y={24} duration={0.45}>
               <p className="about-name">
                 Olá! Sou a
-                <b style={{ color: "#3a3a4a" }}>
+                <b style={{ color: "#2b2938" }}>
                   {" "}
                   Ana Julia Dias {":)"}
                 </b>

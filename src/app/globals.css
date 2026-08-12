@@ -126,16 +126,33 @@
     @apply bg-background text-foreground;
   }
   html {
-    @apply font-sans;
+    @apply font-sans scroll-smooth;
+  }
+  
+  /* Estilos visíveis de foco para navegação via teclado */
+  *:focus-visible {
+    outline: 3px solid #6f60cc;
+    outline-offset: 2px;
+  }
+
+  /* Seleção */
+  ::selection {
+    background-color: #806ded;
+    color: #f7f7ff;
   }
 }
 
-html {
-  scroll-behavior: smooth;
-}
-
+/* Ocultar navbar enquanto carrega */
 body.is-loading .navbar-wrapper {
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
+}
+
+/* ScrollBar */
+html {
+  background: #06060a;
+  color-scheme: dark;
+  
+  scrollbar-color: rgba(128, 125, 131, 0.664) transparent;
 }

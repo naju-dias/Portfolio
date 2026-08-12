@@ -221,7 +221,7 @@
 }
 
 .nav-overlay-title {
-    font-family: var(--font-geist);
+    font-family: var(--font-geist-sans);
     font-size: 12px;
     font-weight: 600;
     letter-spacing: 0.08em;

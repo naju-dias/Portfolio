@@ -346,13 +346,13 @@
 
   .hero-cta {
     font-size: 16px;
-    padding: 0.65rem 0.85rem;
+    padding: 0.65rem 0.8rem;
   }
 
   .hero-localtime-wrap {
     right: 0.2rem;
     width: 88px;
-    min-height: 50px;
+    min-height: 20px;
   }
 
   .hero-scroll-indicator {

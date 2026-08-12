@@ -95,14 +95,14 @@ function PolaroidDuo({
         <div
           style={{
             position: "absolute",
-            top: "0px",
-            left: "-130px",
+            top: "-5px",
+            left: "-135px",
 
             fontFamily: "var(--font-caveat)",
             fontWeight: 500,
-            fontSize: "1.3rem",
+            fontSize: "1.4rem",
 
-            color: "#4a3e72",
+            color: "#5e50b1",
             lineHeight: 1.4,
             maxWidth: "240px",
 
@@ -136,7 +136,7 @@ function PolaroidDuo({
             <path
               d="M8 6 C 6 20, 19 20, 33.6 36"
               fill="none"
-              stroke="#4a3e72"
+              stroke="#5e50b1"
               strokeWidth="2"
               strokeLinecap="round"
             />
