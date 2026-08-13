@@ -10,12 +10,14 @@ type Transition = {
 };
 
 function hexToRgb(hex: string) {
-  const r = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex)!;
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+
+  if (!result) return { r: 0, g: 0, b: 0 };
 
   return {
-    r: parseInt(r[1], 16),
-    g: parseInt(r[2], 16),
-    b: parseInt(r[3], 16),
+    r: parseInt(result[1], 16),
+    g: parseInt(result[2], 16),
+    b: parseInt(result[3], 16),
   };
 }
 
@@ -32,7 +34,6 @@ function ease(t: number) {
 export function useBgTransition(
   transitions: Transition[]
 ): RefObject<HTMLDivElement | null>[] {
-
   const refs = useMemo(
     () => transitions.map(() => createRef<HTMLDivElement>()),
     [transitions.length]
@@ -40,24 +41,32 @@ export function useBgTransition(
 
   useEffect(() => {
     let raf = 0;
+    let lastBackgroundColor = '';
+    let lastBackgroundImage = '';
+
+    const setBackground = (color: string, image: string) => {
+      if (color !== lastBackgroundColor) {
+        document.body.style.backgroundColor = color;
+        lastBackgroundColor = color;
+      }
+
+      if (image !== lastBackgroundImage) {
+        document.body.style.backgroundImage = image;
+        lastBackgroundImage = image;
+      }
+    };
 
     const update = () => {
-
       let active = -1;
       let progress = 0;
 
       for (let i = 0; i < refs.length; i++) {
-
         const el = refs[i].current;
-
         if (!el) continue;
 
         const zone = transitions[i].zoneHeight ?? 900;
-
         const rect = el.getBoundingClientRect();
-
         const vh = window.innerHeight;
-
         const dist = vh / 2 - rect.top;
 
         const p = Math.min(
@@ -79,72 +88,38 @@ export function useBgTransition(
 
       if (active === -1) {
         const first = hexToRgb(transitions[0].from);
-
-        document.body.style.backgroundColor =
-          `rgb(${first.r},${first.g},${first.b})`;
-
-        document.body.style.backgroundImage = 'none';
-
+        setBackground(`rgb(${first.r},${first.g},${first.b})`, 'none');
         return;
       }
 
       const tr = transitions[active];
-
       const from = hexToRgb(tr.from);
-
       const to = hexToRgb(tr.to);
-
       const p = ease(progress);
 
       const r = lerp(from.r, to.r, p);
       const g = lerp(from.g, to.g, p);
       const b = lerp(from.b, to.b, p);
 
-      document.body.style.backgroundColor =
-        `rgb(${r},${g},${b})`;
+      let backgroundImage = 'none';
 
-    if (tr.backgroundImage) {
-
-      if (progress < 1) {
-        document.body.style.backgroundImage = `
-          radial-gradient(
-            circle at top left,
-            rgba(214,214,214,${p * 0.18}),
-            transparent 40%
-          )
-        `;
+      if (tr.backgroundImage) {
+        backgroundImage =
+          progress < 1
+            ? `radial-gradient(circle at top left, rgba(214,214,214,${p * 0.18}), transparent 40%)`
+            : tr.backgroundImage;
       } else {
-        document.body.style.backgroundImage = tr.backgroundImage;
+        const isLight =
+          to.r + to.g + to.b > from.r + from.g + from.b;
+
+        if (progress > 0.03) {
+          backgroundImage = isLight
+            ? `radial-gradient(circle at top left, rgba(214,214,214,${p * 0.18}), transparent 40%)`
+            : `radial-gradient(circle at top left, rgba(214,214,214,${(1 - p) * 0.18}), transparent 40%)`;
+        }
       }
 
-    }
-
-    else {
-      const isLight =
-        to.r + to.g + to.b >
-        from.r + from.g + from.b;
-
-      if (progress > 0.03) {
-        document.body.style.backgroundImage = isLight
-          ? `
-            radial-gradient(
-              circle at top left,
-              rgba(214,214,214,${p * .18}),
-              transparent 40%
-            )
-          `
-          : `
-            radial-gradient(
-              circle at top left,
-              rgba(214,214,214,${(1-p) * .18}),
-              transparent 40%
-            )
-          `;
-      } else {
-        document.body.style.backgroundImage = 'none';
-      }
-    }
-
+      setBackground(`rgb(${r},${g},${b})`, backgroundImage);
     };
 
     const onScroll = () => {
@@ -152,19 +127,19 @@ export function useBgTransition(
       raf = requestAnimationFrame(update);
     };
 
-    window.addEventListener('scroll', onScroll, {
-      passive: true,
-    });
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
 
     update();
 
     return () => {
       cancelAnimationFrame(raf);
       window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
 
+      document.body.style.backgroundColor = '';
       document.body.style.backgroundImage = '';
     };
-
   }, [refs, transitions]);
 
   return refs;

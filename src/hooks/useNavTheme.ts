@@ -1,48 +1,66 @@
-"use client";
+'use client';
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from 'react';
 
-export function useNavTheme(navTopOffset: number = 48) {
-  const [theme, setTheme] = useState<"dark" | "light">("dark");
+type NavTheme = 'dark' | 'light';
+
+type SectionData = {
+  element: HTMLElement;
+  theme: NavTheme;
+};
+
+export function useNavTheme(navTopOffset = 48) {
+  const [theme, setTheme] = useState<NavTheme>('dark');
 
   useEffect(() => {
-    const sections = Array.from(
-      document.querySelectorAll<HTMLElement>("[data-nav-theme]")
-    );
+    let sections: SectionData[] = [];
+    let raf = 0;
 
-    let ticking = false;
+    const collectSections = () => {
+      sections = Array.from(
+        document.querySelectorAll<HTMLElement>('[data-nav-theme]')
+      ).map((element) => ({
+        element,
+        theme:
+          (element.getAttribute('data-nav-theme') as NavTheme) || 'dark',
+      }));
+    };
 
     const checkTheme = () => {
-      let detected: "dark" | "light" = "dark";
+      let detected: NavTheme = 'dark';
 
       for (const section of sections) {
-        const rect = section.getBoundingClientRect();
-        if (rect.top <= navTopOffset && rect.bottom >= navTopOffset) {
-          detected =
-            (section.getAttribute("data-nav-theme") as "light" | "dark") ??
-            "dark";
+        const rect = section.element.getBoundingClientRect();
+
+        if (
+          rect.top <= navTopOffset &&
+          rect.bottom >= navTopOffset
+        ) {
+          detected = section.theme;
           break;
         }
       }
 
-      setTheme(detected);
-      ticking = false;
+      setTheme((current) =>
+        current === detected ? current : detected
+      );
     };
 
-    const onScroll = () => {
-      if (!ticking) {
-        ticking = true;
-        requestAnimationFrame(checkTheme);
-      }
+    const scheduleCheck = () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(checkTheme);
     };
 
+    collectSections();
     checkTheme();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
+
+    window.addEventListener('scroll', scheduleCheck, { passive: true });
+    window.addEventListener('resize', scheduleCheck);
 
     return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
+      cancelAnimationFrame(raf);
+      window.removeEventListener('scroll', scheduleCheck);
+      window.removeEventListener('resize', scheduleCheck);
     };
   }, [navTopOffset]);
 
