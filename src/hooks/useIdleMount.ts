@@ -16,7 +16,7 @@ export function useIdleMount(fallbackDelayMs = 2000) {
       return () => (window as any).cancelIdleCallback?.(id);
     }
 
-    // Safari não tem requestIdleCallback — fallback com timeout fixo
+    // Safari não tem requestIdleCallback
     const t = setTimeout(() => setReady(true), fallbackDelayMs);
     return () => clearTimeout(t);
   }, [fallbackDelayMs]);
