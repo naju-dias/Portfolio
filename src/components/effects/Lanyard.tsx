@@ -36,13 +36,7 @@ import * as THREE from "three";
 const cardGLB = "./card.glb";
 const lanyard = "./lanyard.png";
 
-useGLTF.preload(cardGLB);
-useTexture.preload(lanyard);
-
-extend({
-  MeshLineGeometry,
-  MeshLineMaterial,
-});
+extend({ MeshLineGeometry, MeshLineMaterial });
 
 declare global {
   namespace JSX {

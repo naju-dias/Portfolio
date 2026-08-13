@@ -7,12 +7,7 @@ import Hero from "./Hero";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { useIdleMount } from "@/hooks/useIdleMount";
 
-const Lanyard = dynamic(
-  () => import("@/components/effects/Lanyard"),
-  {
-    ssr: false,
-  }
-);
+import LazyLanyard from "@/components/effects/LazyLanyard";
 
 export default function HeroWithLanyard() {
   const isMobile = useIsMobile(1280);
@@ -20,17 +15,15 @@ export default function HeroWithLanyard() {
 
   return (
     <Hero>
-      {/* {isMobile === false && idleReady && (
+      {isMobile === false && idleReady && (
         <div className="absolute inset-0 pointer-events-none z-5">
           <div className="w-full h-full pointer-events-auto">
-            <Lanyard
-              position={[0, 0, 10]}
-              gravity={[0, -40, 0]}
-              transparent
+            <LazyLanyard
+              
             />
           </div> 
-        </div> 
-      )}*/}
+        </div>
+      )}
     </Hero>
   );
 }
