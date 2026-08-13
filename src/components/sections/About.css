@@ -98,6 +98,11 @@ html, body {
     margin: 0; 
 }
 
+.about-text-reveal {
+  width: 100%;
+  max-width: 504px;
+}
+
 /* ── Linha de pontos ── */
 .dots-line {
     margin-top: 2.5rem;
@@ -203,6 +208,11 @@ html, body {
         font-size: 1rem;
         line-height: 1.75;
     }
+
+    .about-text-reveal {
+    max-width: 100%;
+    }
+
 }
 
 /* ── Telas muito pequenas ── */
