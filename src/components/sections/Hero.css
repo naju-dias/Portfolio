@@ -85,6 +85,10 @@
   display: contents;
 }
 
+.hero-lanyard-inner {
+  display: contents;
+}
+
 .hero-bottom-row {
   display: contents;
 }
@@ -227,6 +231,35 @@
    RESPONSIVIDADE (Media Queries)
    ========================================================================== */
 
+/* ── Desktop menor / notebooks ── */
+@media (min-width: 1281px) and (max-width: 1500px) {
+  .hero-lanyard-inner {
+    transform: translateX(3vw);
+  }
+  
+  .hero-content-wrap {
+    padding-left: clamp(2.5rem, 8vw, 7rem);
+    width: 50%;
+  }
+
+  .hero-name {
+    font-size: 54px;
+  }
+
+  .hero-role {
+    font-size: 52px;
+  }
+
+  .hero-desc {
+    font-size: 22px;
+    max-width: 700px;
+  }
+
+  .hero-lanyard-slot {
+    transform: translateX(3vw);
+  }
+}
+
 /* ── Notebooks pequenos e tablets grandes ── */
 @media (max-width: 1280px) {
   .hero-lanyard-slot {
@@ -240,16 +273,16 @@
   }
 
   .hero-name {
-    font-size: clamp(2.6rem, 6vw, 3.6rem);
+    font-size: clamp(2.8rem, 6vw, 3.8rem);
   }
 
   .hero-role {
-    font-size: clamp(2.4rem, 5.6vw, 3.4rem);
+    font-size: clamp(2.6rem, 5.6vw, 3.6rem);
   }
 
   .hero-desc {
-    font-size: 19px;
-    max-width: 460px;
+    font-size: 21px;
+    max-width: 490px;
   }
 
   .hero-localtime-wrap {
@@ -295,8 +328,7 @@
 
   .hero-title-block {
     align-items: flex-start;
-    margin-top: 0;
-    margin-top: -25px;
+    margin-top: -160px;
   }
 
   .hero-label {
@@ -335,7 +367,7 @@
     flex-wrap: wrap;
     align-items: center;
     gap: 0.5rem;
-    margin-top: 6rem;
+    margin-top: 0rem;
     padding-left: 0;
     margin-left: 0;
   }

@@ -63,6 +63,7 @@ export default function Skills() {
               >
                 <span
                   className="skill-icon"
+                  aria-hidden="true"
                   dangerouslySetInnerHTML={{
                     __html: skill.icon,
                   }}

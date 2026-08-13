@@ -540,12 +540,7 @@ function Band({
   return (
     <>
       <group
-        position={[
-          1.6,
-          4.3,
-          0,
-        ]}
-      >
+        position={[ 1.6, 4.3, 0 ]} >
         <RigidBody
           ref={fixed}
           {...segmentProps}
@@ -555,11 +550,7 @@ function Band({
         />
 
         <RigidBody
-          position={[
-            0.5,
-            0,
-            0,
-          ]}
+          position={[ 0.5, 0, 0 ]}
           ref={j1}
           {...segmentProps}
           type={
@@ -589,11 +580,7 @@ function Band({
         </RigidBody>
 
         <RigidBody
-          position={[
-            1.5,
-            0,
-            0,
-          ]}
+          position={[ 1.5, 0, 0 ]}
           ref={j3}
           {...segmentProps}
           type={
@@ -606,11 +593,7 @@ function Band({
         </RigidBody>
 
         <RigidBody
-          position={[
-            2,
-            0,
-            0,
-          ]}
+          position={[ 2, 0, 0 ]}
           ref={card}
           {...segmentProps}
           type={
@@ -624,20 +607,12 @@ function Band({
           }
         >
           <CuboidCollider
-            args={[
-              0.8,
-              1.125,
-              0.01,
-            ]}
+            args={[ 0.8, 1.125, 0.01 ]}
           />
 
           <group
             scale={2.25}
-            position={[
-              0,
-              -1.2,
-              -0.05,
-            ]}
+            position={[ 0, -1.2, -0.05 ]}
             onPointerOver={() =>
               hover(true)
             }

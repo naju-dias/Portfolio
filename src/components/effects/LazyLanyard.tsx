@@ -12,66 +12,52 @@ type LazyLanyardProps = {
 };
 
 export default function LazyLanyard({
-  delay = 2500,
+  delay = 50,
 }: LazyLanyardProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-
   const [shouldLoad, setShouldLoad] = useState(false);
-  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    // Segurança extra: nunca carrega o 3D em mobile/tablet
     const desktop = window.matchMedia("(min-width: 1280px)");
 
     if (!desktop.matches) return;
 
-    let timeoutId: ReturnType<typeof setTimeout> | undefined;
+    let loaded = false;
+    let timerId: ReturnType<typeof setTimeout> | undefined;
     let idleId: number | undefined;
 
     const load = () => {
-      timeoutId = setTimeout(() => {
-        setShouldLoad(true);
-      }, delay);
+      if (loaded) return;
+
+      loaded = true;
+      setShouldLoad(true);
     };
 
-    // Espera o navegador ficar livre antes de sequer iniciar o delay
+    /*
+     * Se o browser ficar livre antes,
+     * pode carregar antecipadamente.
+     */
     if ("requestIdleCallback" in window) {
       idleId = window.requestIdleCallback(load, {
-        timeout: 3000,
+        timeout: delay,
       });
-    } else {
-      timeoutId = setTimeout(() => {
-        setShouldLoad(true);
-      }, delay);
     }
 
+    /*
+     * Mas nunca espera mais que `delay`.
+     */
+    timerId = setTimeout(load, delay);
+
     return () => {
+      if (timerId) {
+        clearTimeout(timerId);
+      }
+
       if (idleId !== undefined) {
         window.cancelIdleCallback(idleId);
       }
-
-      if (timeoutId !== undefined) {
-        clearTimeout(timeoutId);
-      }
     };
   }, [delay]);
-
-  useEffect(() => {
-    if (!shouldLoad || !containerRef.current) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        setIsVisible(entry.isIntersecting);
-      },
-      {
-        threshold: 0.05,
-      }
-    );
-
-    observer.observe(containerRef.current);
-
-    return () => observer.disconnect();
-  }, [shouldLoad]);
 
   return (
     <div
@@ -79,12 +65,31 @@ export default function LazyLanyard({
       style={{
         width: "100%",
         height: "100%",
-        opacity: shouldLoad && isVisible ? 1 : 0,
-        transition: "opacity 0.6s ease",
-        pointerEvents: shouldLoad && isVisible ? "auto" : "none",
       }}
     >
-      {shouldLoad && isVisible && <Lanyard />}
+      {shouldLoad && (
+        <div
+          style={{
+            width: "100%",
+            height: "100%",
+            animation: "lanyardFadeIn 0.45s ease forwards",
+          }}
+        >
+          <Lanyard />
+        </div>
+      )}
+
+      <style jsx>{`
+        @keyframes lanyardFadeIn {
+          from {
+            opacity: 0;
+          }
+
+          to {
+            opacity: 1;
+          }
+        }
+      `}</style>
     </div>
   );
 }

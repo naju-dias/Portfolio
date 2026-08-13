@@ -18,9 +18,7 @@ export default function HeroWithLanyard() {
       {isMobile === false && idleReady && (
         <div className="absolute inset-0 pointer-events-none z-5">
           <div className="w-full h-full pointer-events-auto">
-            <LazyLanyard
-              
-            />
+            <LazyLanyard />
           </div> 
         </div>
       )}

@@ -2,6 +2,7 @@ import "./About.css";
 
 import AboutPolaroids from "../effects/AboutPolaroids";
 import Reveal from "../shared/Reveal";
+import { SparkEffect } from "../effects/spark-effect";
 
 import polaroid1 from "@/assets/polaroid1.jpeg";
 import polaroid4 from "@/assets/polaroid4.jpeg";

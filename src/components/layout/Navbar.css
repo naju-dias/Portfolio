@@ -206,6 +206,9 @@
     flex-direction: column;
     justify-content: space-between;
     padding: 0 clamp(1.5rem, 6vw, 3.5rem) 2.5rem;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    touch-action: pan-y;
 }
 
 .nav-overlay-content {
@@ -300,6 +303,11 @@
     .nav-links,
     .nav-contato {
         display: none;
+    }
+
+    .nav-overlay {
+        height: 100dvh;
+        max-height: 100dvh;
     }
 
     .nav-burger {

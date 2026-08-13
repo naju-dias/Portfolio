@@ -36,7 +36,9 @@ export default function Hero({ children }: { children?: React.ReactNode }) {
 
         {/* Lanyard some no mobile */}
         <div className="hero-lanyard-slot">
-          {children}
+          <div className="hero-lanyard-inner">
+            {children}
+          </div>
         </div>
 
         <div className="hero-content-wrap">

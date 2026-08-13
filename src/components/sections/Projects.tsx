@@ -252,6 +252,7 @@ export default function Projects() {
                       >
                         <span
                           className="proj-card-tech-icon"
+                          aria-hidden="true"
                           dangerouslySetInnerHTML={{
                             __html: tech.icon,
                           }}
