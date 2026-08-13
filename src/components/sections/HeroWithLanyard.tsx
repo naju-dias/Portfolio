@@ -20,7 +20,7 @@ export default function HeroWithLanyard() {
 
   return (
     <Hero>
-      {isMobile === false && idleReady && (
+      {/* {isMobile === false && idleReady && (
         <div className="absolute inset-0 pointer-events-none z-5">
           <div className="w-full h-full pointer-events-auto">
             <Lanyard
@@ -28,9 +28,9 @@ export default function HeroWithLanyard() {
               gravity={[0, -40, 0]}
               transparent
             />
-          </div>
-        </div>
-      )}
+          </div> 
+        </div> 
+      )}*/}
     </Hero>
   );
 }

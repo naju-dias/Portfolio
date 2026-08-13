@@ -1,9 +1,6 @@
 "use client";
 
-import {
-  useMemo,
-  type ReactNode,
-} from "react";
+import { useMemo, type ReactNode } from "react";
 
 import { useBgTransition } from "@/hooks/useBgTransition";
 
@@ -36,10 +33,7 @@ export default function HomeBackgroundTransitions({
     []
   );
 
-  const [
-    aboutTrigger,
-    contactTrigger,
-  ] = useBgTransition(transitions);
+  const [ aboutTrigger, contactTrigger] = useBgTransition(transitions);
 
   return (
     <>
