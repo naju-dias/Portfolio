@@ -1,21 +1,70 @@
 /* eslint-disable react/no-unknown-property */
+
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { Canvas, extend, useFrame, useThree } from "@react-three/fiber";
+import {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 
-import { useGLTF, useTexture, Environment, Lightformer } from "@react-three/drei";
+import {
+  Canvas,
+  extend,
+  useFrame,
+  useThree,
+} from "@react-three/fiber";
 
-import { BallCollider, CuboidCollider, Physics, RigidBody, useRopeJoint, useSphericalJoint, RigidBodyProps } from "@react-three/rapier";
+import {
+  Environment,
+  Lightformer,
+  useGLTF,
+  useTexture,
+} from "@react-three/drei";
 
-import { MeshLineGeometry, MeshLineMaterial } from "meshline";
+import {
+  BallCollider,
+  CuboidCollider,
+  Physics,
+  RigidBody,
+  type RigidBodyProps,
+  useRopeJoint,
+  useSphericalJoint,
+} from "@react-three/rapier";
+
+import {
+  MeshLineGeometry,
+  MeshLineMaterial,
+} from "meshline";
 
 import * as THREE from "three";
 
-const cardGLB = "./card.glb";
-const lanyard = "./lanyard.png";
+/* ────────────────────────────────────────────────────────────── */
+/* ASSETS                                                        */
+/* ────────────────────────────────────────────────────────────── */
 
-extend({ MeshLineGeometry, MeshLineMaterial });
+const cardGLB = "/card.glb";
+const lanyard = "/lanyard.png";
+
+/*
+ * Não usamos:
+ *
+ * useGLTF.preload(cardGLB)
+ * useTexture.preload(lanyard)
+ *
+ * Assim o browser não começa a puxar os assets 3D
+ * antes do componente realmente ser necessário.
+ */
+
+extend({
+  MeshLineGeometry,
+  MeshLineMaterial,
+});
+
+/* ────────────────────────────────────────────────────────────── */
+/* JSX TYPES                                                     */
+/* ────────────────────────────────────────────────────────────── */
 
 declare global {
   namespace JSX {
@@ -25,6 +74,10 @@ declare global {
     }
   }
 }
+
+/* ────────────────────────────────────────────────────────────── */
+/* LANYARD                                                       */
+/* ────────────────────────────────────────────────────────────── */
 
 interface LanyardProps {
   position?: [number, number, number];
@@ -40,9 +93,20 @@ export default function Lanyard({
   const wrapperRef =
     useRef<HTMLDivElement | null>(null);
 
+  /*
+   * Começa true porque o Lanyard só deve ser montado
+   * quando estivermos no desktop/Hero.
+   */
   const [isVisible, setIsVisible] =
     useState(true);
 
+  /*
+   * Pausa a física quando o Hero sai da viewport.
+   *
+   * Isso preserva o Canvas/estado do cartão,
+   * mas impede Rapier de continuar simulando
+   * enquanto o usuário está em Projects/About/etc.
+   */
   useEffect(() => {
     const element =
       wrapperRef.current;
@@ -60,11 +124,9 @@ export default function Lanyard({
           threshold: 0,
 
           /*
-           * Mantém a física ativa um pouco antes
-           * de o Hero realmente entrar/sair da tela.
-           *
-           * Isso evita aquele liga/desliga brusco
-           * exatamente na borda da viewport.
+           * Pequena margem para a física acordar
+           * antes de o Hero voltar completamente
+           * para a tela.
            */
           rootMargin: "150px 0px",
         }
@@ -97,17 +159,17 @@ export default function Lanyard({
         frameloop="demand"
         onCreated={({ gl }) => {
           gl.setClearColor(
-            new THREE.Color(
-              0x000000
-            ),
+            new THREE.Color(0x000000),
             transparent ? 0 : 1
           );
         }}
       >
+        {/* Luz ambiente */}
         <ambientLight
           intensity={Math.PI}
         />
 
+        {/* Física */}
         <Physics
           paused={!isVisible}
           gravity={gravity}
@@ -118,6 +180,7 @@ export default function Lanyard({
           <Band />
         </Physics>
 
+        {/* Iluminação original */}
         <Environment blur={0.75}>
           <Lightformer
             intensity={2}
@@ -192,6 +255,10 @@ export default function Lanyard({
   );
 }
 
+/* ────────────────────────────────────────────────────────────── */
+/* BAND                                                          */
+/* ────────────────────────────────────────────────────────────── */
+
 interface BandProps {
   maxSpeed?: number;
   minSpeed?: number;
@@ -201,6 +268,8 @@ function Band({
   maxSpeed = 50,
   minSpeed = 0,
 }: BandProps) {
+  /* ── Refs ── */
+
   const band =
     useRef<any>(null);
 
@@ -219,6 +288,8 @@ function Band({
   const card =
     useRef<any>(null);
 
+  /* ── R3F ── */
+
   const {
     width,
     height,
@@ -226,29 +297,69 @@ function Band({
     (state) => state.size
   );
 
-  const {
-    invalidate,
-  } = useThree();
+  const invalidate =
+    useThree(
+      (state) => state.invalidate
+    );
 
-  const vec =
-    new THREE.Vector3();
+  /* ── Vetores reaproveitados ── */
 
-  const ang =
-    new THREE.Vector3();
+  /*
+   * Antes esses Vector3 eram recriados sempre que
+   * Band renderizava.
+   *
+   * Agora cada um existe uma única vez.
+   */
+  const vec = useMemo(
+    () => new THREE.Vector3(),
+    []
+  );
 
-  const rot =
-    new THREE.Vector3();
+  const ang = useMemo(
+    () => new THREE.Vector3(),
+    []
+  );
 
-  const dir =
-    new THREE.Vector3();
+  const rot = useMemo(
+    () => new THREE.Vector3(),
+    []
+  );
 
-  const segmentProps: any = {
-    type: "dynamic" as RigidBodyProps["type"],
-    canSleep: true,
-    colliders: false,
-    angularDamping: 4,
-    linearDamping: 4,
-  };
+  const dir = useMemo(
+    () => new THREE.Vector3(),
+    []
+  );
+
+  /* ── Props compartilhadas dos RigidBodies ── */
+
+  /*
+   * IMPORTANTE:
+   *
+   * "type" NÃO fica aqui.
+   *
+   * Cada RigidBody recebe seu próprio type
+   * explicitamente abaixo.
+   *
+   * Isso corrige o erro de TypeScript que estava
+   * aparecendo nos componentes RigidBody.
+   */
+  const segmentProps =
+    useMemo<
+      Omit<
+        RigidBodyProps,
+        "type"
+      >
+    >(
+      () => ({
+        canSleep: true,
+        colliders: false,
+        angularDamping: 4,
+        linearDamping: 4,
+      }),
+      []
+    );
+
+  /* ── Assets ── */
 
   const {
     nodes,
@@ -259,6 +370,8 @@ function Band({
 
   const texture =
     useTexture(lanyard);
+
+  /* ── Curva da corda ── */
 
   const [curve] =
     useState(
@@ -271,6 +384,8 @@ function Band({
         ])
     );
 
+  /* ── Interação ── */
+
   const [
     dragged,
     drag,
@@ -282,6 +397,10 @@ function Band({
     hovered,
     hover,
   ] = useState(false);
+
+  /* ──────────────────────────────────────────────────────────── */
+  /* JOINTS                                                      */
+  /* ──────────────────────────────────────────────────────────── */
 
   useRopeJoint(
     fixed,
@@ -322,33 +441,47 @@ function Band({
     ]
   );
 
-  useEffect(() => {
-    if (hovered) {
-      document.body.style.cursor =
-        dragged
-          ? "grabbing"
-          : "grab";
+  /* ──────────────────────────────────────────────────────────── */
+  /* CURSOR                                                      */
+  /* ──────────────────────────────────────────────────────────── */
 
-      return () => {
-        document.body.style.cursor =
-          "auto";
-      };
-    }
+  useEffect(() => {
+    if (!hovered) return;
+
+    document.body.style.cursor =
+      dragged
+        ? "grabbing"
+        : "grab";
+
+    return () => {
+      document.body.style.cursor =
+        "auto";
+    };
   }, [
     hovered,
     dragged,
   ]);
+
+  /* ──────────────────────────────────────────────────────────── */
+  /* FRAME                                                       */
+  /* ──────────────────────────────────────────────────────────── */
 
   useFrame(
     (
       state,
       delta
     ) => {
+      /*
+       * Impede delta enorme caso o browser pule frames
+       * ou a física tenha acabado de voltar da pausa.
+       */
       const dt =
         Math.min(
           delta,
           1 / 30
         );
+
+      /* ── Drag ── */
 
       if (
         dragged &&
@@ -378,14 +511,20 @@ function Band({
           )
         );
 
+        /*
+         * Acorda todos os corpos quando
+         * o usuário começa a arrastar.
+         */
         [
           card,
           j1,
           j2,
           j3,
           fixed,
-        ].forEach((ref) =>
-          ref.current?.wakeUp()
+        ].forEach(
+          (ref) => {
+            ref.current?.wakeUp();
+          }
         );
 
         card.current?.setNextKinematicTranslation(
@@ -405,8 +544,14 @@ function Band({
         );
       }
 
+      /* ── Cordão ── */
+
       if (
-        fixed.current
+        fixed.current &&
+        j1.current &&
+        j2.current &&
+        j3.current &&
+        card.current
       ) {
         [
           j1,
@@ -414,7 +559,8 @@ function Band({
         ].forEach(
           (ref) => {
             if (
-              !ref.current.lerped
+              !ref.current
+                .lerped
             ) {
               ref.current.lerped =
                 new THREE.Vector3().copy(
@@ -422,19 +568,23 @@ function Band({
                 );
             }
 
+            const distance =
+              ref.current.lerped.distanceTo(
+                ref.current.translation()
+              );
+
             const clampedDistance =
               Math.max(
                 0.1,
                 Math.min(
                   1,
-                  ref.current.lerped.distanceTo(
-                    ref.current.translation()
-                  )
+                  distance
                 )
               );
 
             ref.current.lerped.lerp(
               ref.current.translation(),
+
               dt *
                 (
                   minSpeed +
@@ -464,6 +614,13 @@ function Band({
           fixed.current.translation()
         );
 
+        /*
+         * Mantemos 32 pontos.
+         *
+         * Diminuir isso poderia melhorar um pouco
+         * performance, mas também alteraria a
+         * suavidade visual da corda.
+         */
         if (
           band.current
         ) {
@@ -471,6 +628,8 @@ function Band({
             curve.getPoints(32)
           );
         }
+
+        /* ── Rotação do cartão ── */
 
         ang.copy(
           card.current.angvel()
@@ -480,27 +639,30 @@ function Band({
           card.current.rotation()
         );
 
-        card.current.setAngvel(
-          {
-            x: ang.x,
+        card.current.setAngvel({
+          x: ang.x,
 
-            y:
-              ang.y -
-              rot.y *
-                0.25,
+          y:
+            ang.y -
+            rot.y * 0.25,
 
-            z: ang.z,
-          }
-        );
+          z: ang.z,
+        });
       }
 
+      /* ── Render sob demanda ── */
+
       const stillMoving =
-        dragged ||
+        Boolean(dragged) ||
         !card.current?.isSleeping?.() ||
         !j1.current?.isSleeping?.() ||
         !j2.current?.isSleeping?.() ||
         !j3.current?.isSleeping?.();
 
+      /*
+       * Só pede outro frame enquanto a física
+       * realmente estiver em movimento.
+       */
       if (
         stillMoving
       ) {
@@ -509,37 +671,58 @@ function Band({
     }
   );
 
+  /* ──────────────────────────────────────────────────────────── */
+  /* TEXTURA / CURVA                                             */
+  /* ──────────────────────────────────────────────────────────── */
+
   curve.curveType =
     "chordal";
 
   texture.wrapS =
-    texture.wrapT =
-      THREE.RepeatWrapping;
+    THREE.RepeatWrapping;
+
+  texture.wrapT =
+    THREE.RepeatWrapping;
+
+  /* ──────────────────────────────────────────────────────────── */
+  /* SCENE                                                       */
+  /* ──────────────────────────────────────────────────────────── */
 
   return (
     <>
       <group
-        position={[ 1.6, 4.3, 0 ]} >
+        position={[
+          1.6,
+          4.3,
+          0,
+        ]}
+      >
+        {/* FIXED */}
+
         <RigidBody
           ref={fixed}
           {...segmentProps}
-          type={
-            "fixed" as RigidBodyProps["type"]
-          }
+          type="fixed"
         />
 
+        {/* JOINT 1 */}
+
         <RigidBody
-          position={[ 0.5, 0, 0 ]}
+          position={[
+            0.5,
+            0,
+            0,
+          ]}
           ref={j1}
           {...segmentProps}
-          type={
-            "dynamic" as RigidBodyProps["type"]
-          }
+          type="dynamic"
         >
           <BallCollider
             args={[0.1]}
           />
         </RigidBody>
+
+        {/* JOINT 2 */}
 
         <RigidBody
           position={[
@@ -549,55 +732,67 @@ function Band({
           ]}
           ref={j2}
           {...segmentProps}
-          type={
-            "dynamic" as RigidBodyProps["type"]
-          }
+          type="dynamic"
         >
           <BallCollider
             args={[0.1]}
           />
         </RigidBody>
 
+        {/* JOINT 3 */}
+
         <RigidBody
-          position={[ 1.5, 0, 0 ]}
+          position={[
+            1.5,
+            0,
+            0,
+          ]}
           ref={j3}
           {...segmentProps}
-          type={
-            "dynamic" as RigidBodyProps["type"]
-          }
+          type="dynamic"
         >
           <BallCollider
             args={[0.1]}
           />
         </RigidBody>
 
+        {/* CARD */}
+
         <RigidBody
-          position={[ 2, 0, 0 ]}
+          position={[
+            2,
+            0,
+            0,
+          ]}
           ref={card}
           {...segmentProps}
           type={
             dragged
-              ? (
-                  "kinematicPosition" as RigidBodyProps["type"]
-                )
-              : (
-                  "dynamic" as RigidBodyProps["type"]
-                )
+              ? "kinematicPosition"
+              : "dynamic"
           }
         >
           <CuboidCollider
-            args={[ 0.8, 1.125, 0.01 ]}
+            args={[
+              0.8,
+              1.125,
+              0.01,
+            ]}
           />
 
           <group
             scale={2.25}
-            position={[ 0, -1.2, -0.05 ]}
-            onPointerOver={() =>
-              hover(true)
-            }
-            onPointerOut={() =>
-              hover(false)
-            }
+            position={[
+              0,
+              -1.2,
+              -0.05,
+            ]}
+            onPointerOver={() => {
+              hover(true);
+            }}
+            onPointerOut={() => {
+              hover(false);
+            }}
             onPointerUp={(
               e: any
             ) => {
@@ -627,6 +822,8 @@ function Band({
               );
             }}
           >
+            {/* CARD BASE */}
+
             <mesh
               geometry={
                 nodes.card
@@ -657,6 +854,8 @@ function Band({
               />
             </mesh>
 
+            {/* CLIP */}
+
             <mesh
               geometry={
                 nodes.clip
@@ -670,6 +869,8 @@ function Band({
               }
             />
 
+            {/* CLAMP */}
+
             <mesh
               geometry={
                 nodes.clamp
@@ -682,6 +883,8 @@ function Band({
           </group>
         </RigidBody>
       </group>
+
+      {/* LANYARD / CORDA */}
 
       <mesh
         ref={band}

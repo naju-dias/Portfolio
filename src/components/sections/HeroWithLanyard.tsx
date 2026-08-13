@@ -7,7 +7,10 @@ import Hero from "./Hero";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { useIdleMount } from "@/hooks/useIdleMount";
 
-import Lanyard from "@/components/effects/Lanyard";
+const Lanyard = dynamic(
+  () => import("@/components/effects/Lanyard"),
+  { ssr: false }
+);
 
 export default function HeroWithLanyard() {
   const isMobile = useIsMobile(1280);
