@@ -88,9 +88,9 @@ export default function RootLayout({
 
         <Navbar />
 
-        <SmoothScroll>
-          {children}
-        </SmoothScroll>
+        <SmoothScroll /> 
+        <main>{children}</main>
+       
 
         <Analytics />
         <SpeedInsights />
