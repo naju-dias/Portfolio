@@ -12,6 +12,8 @@ interface ProjectModalProps {
 export default function ProjectModal({ project, onClose }: ProjectModalProps) {
   const { image, title, type, longDescription, liveUrl, codeUrl, techs } = project;
 
+  const isMobile = typeof window !== "undefined" && window.innerWidth <= 768;
+
   return (
     <motion.div
       className="modal-backdrop"
@@ -23,10 +25,10 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
     >
       <motion.div
         className="modal"
-        initial={{ opacity: 0, y: 30, scale: 0.98 }}
-        animate={{ opacity: 1, y: 0, scale: 1 }}
-        exit={{ opacity: 0, y: 20, scale: 0.98 }}
-        transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+        initial={isMobile ? { opacity: 0 } : { opacity: 0, y: 30, scale: 0.98 }}
+        animate={isMobile ? { opacity: 1 } : { opacity: 1, y: 0, scale: 1 }}
+        exit={isMobile ? { opacity: 0 } : { opacity: 0, y: 20, scale: 0.98 }}
+        transition={{ duration: isMobile ? 0.18 : 0.3, ease: [0.16, 1, 0.3, 1] }}
         onClick={(e) => e.stopPropagation()}
       >
         <button className="modal-close" onClick={onClose}>✕</button>

@@ -13,10 +13,18 @@ import "./Projects.css";
 const MotionImage = motion.create(Image);
 const ProjectModal = dynamic(() => import("./ProjectModal"), { ssr: false });
 
-// preload do modal: dispara no hover/touch, antes do clique de fato
+// preload do modal
 let modalPromise: Promise<unknown> | null = null;
-function preloadProjectModal() {
+const preloadedImages = new Set<string>();
+
+function preloadProjectModal(imageSrc?: string) {
   if (!modalPromise) modalPromise = import("./ProjectModal");
+
+  if (imageSrc && !preloadedImages.has(imageSrc)) {
+    preloadedImages.add(imageSrc);
+    const img = new window.Image();
+    img.src = imageSrc;
+  }
 }
 
 const desktopHeaderContainerVariants: Variants = {
@@ -140,8 +148,8 @@ export default function Projects() {
                   <button
                     className="proj-card-link"
                     onClick={() => setSelected(project)}
-                    onMouseEnter={preloadProjectModal}
-                    onTouchStart={preloadProjectModal}
+                    onMouseEnter={preloadProjectModal.bind(null, project.image)}
+                    onTouchStart={preloadProjectModal.bind(null, project.image)}
                   >
                     Ver Projeto
                     <svg className="proj-link-arrow-icon" xmlns="http://www.w3.org/2000/svg" width="21" height="21" fill="#f7f7ff" viewBox="0 0 256 256" aria-hidden="true">
@@ -153,7 +161,7 @@ export default function Projects() {
                 <div
                   className="proj-card-image-wrap"
                   onClick={() => setSelected(project)}
-                  onTouchStart={preloadProjectModal}
+                  onTouchStart={preloadProjectModal.bind(null, project.image)}
                   onMouseEnter={(e) => {
                     preloadProjectModal();
                     if (isDesktop) handleMouseEnter(e, project.id);
