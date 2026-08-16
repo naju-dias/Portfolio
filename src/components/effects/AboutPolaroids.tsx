@@ -102,7 +102,7 @@ function PolaroidDuo({
             fontWeight: 500,
             fontSize: "1.4rem",
 
-            color: "#5e50b1",
+            color: "#2b2938",
             lineHeight: 1.4,
             maxWidth: "240px",
 
@@ -136,7 +136,7 @@ function PolaroidDuo({
             <path
               d="M8 6 C 6 20, 19 20, 33.6 36"
               fill="none"
-              stroke="#5e50b1"
+              stroke="#2b2938"
               strokeWidth="2"
               strokeLinecap="round"
             />

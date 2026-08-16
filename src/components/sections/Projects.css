@@ -62,7 +62,7 @@
   gap: 0;
   border-radius: 28px;
   height: 560px;
-  background: #14151a;
+  background: #1c1d24;
   border: 1px solid rgba(255, 255, 255, 0.212);
   box-shadow: 
     0 24px 48px rgba(0, 0, 0, 0.6), 
@@ -312,7 +312,7 @@
 @keyframes fadeIn { from{opacity:0} to{opacity:1} }
 
 .modal {
-  background: #14151a;
+  background: #1c1d24;
   border: 1px solid rgba(255, 255, 255, 0.212);
   border-radius: 18px;
   max-width: 720px;
@@ -590,7 +590,7 @@
    RESPONSIVIDADE (Media Queries)
    ========================================================================== */
 
-/* ──── Tablet (≤1024px) ──── */
+/* ──── Tablet ──── */
 @media (max-width: 1024px) {
   .proj-header {
     flex-direction: column;
@@ -655,7 +655,7 @@
   }
 }
 
-/* ──── Mobile (≤768px) ──── */
+/* ──── Mobile ──── */
 @media (max-width: 768px) {
   .proj-header {
     flex-direction: column;
@@ -763,6 +763,10 @@
   }
   .modal-techs {
     gap: 1rem;
+  }
+  .modal-backdrop {
+    backdrop-filter: none;
+    background: rgba(0, 0, 0, 0.92);
   }
 }
 
