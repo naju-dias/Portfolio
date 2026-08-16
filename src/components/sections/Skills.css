@@ -164,8 +164,6 @@ html, body {
   box-shadow: 0 14px 34px rgba(0,0,0,0.18), 0 6px 14px rgba(0,0,0,0.1);
 }
 
-/* cantos tipo mira/blueprint — reforça o motivo de "[ ]" da marca sem
-   repetir o clichê da barra de terminal com 3 bolinhas */
 .skills-card::before,
 .skills-card::after {
   content: "";
