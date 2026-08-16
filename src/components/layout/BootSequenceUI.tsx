@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect } from "react";
-
 import {
   motion,
   animate,
@@ -11,26 +10,10 @@ import {
 } from "framer-motion";
 
 export const BOOT_LINES = [
-  {
-    label: "CARTA CORINGA",
-    status: "INVOCANDO",
-    threshold: 25,
-  },
-  {
-    label: "CENA 3D",
-    status: "RENDERIZANDO",
-    threshold: 50,
-  },
-  {
-    label: "ATIVOS DO PORTFÓLIO",
-    status: "CARREGANDO",
-    threshold: 75,
-  },
-  {
-    label: "SISTEMA",
-    status: "PRONTO",
-    threshold: 100,
-  },
+  { label: "CARTA CORINGA", status: "INVOCANDO", threshold: 25 },
+  { label: "CENA 3D", status: "RENDERIZANDO", threshold: 50 },
+  { label: "ATIVOS DO PORTFÓLIO", status: "CARREGANDO", threshold: 75 },
+  { label: "SISTEMA", status: "PRONTO", threshold: 100 },
 ];
 
 const EASE = [0.76, 0, 0.24, 1] as const;
@@ -47,65 +30,36 @@ export default function BootSequenceUI({
   visibleLines,
 }: BootSequenceUIProps) {
   const progress = useMotionValue(0);
-
-  const roundedProgress = useTransform(
-    progress,
-    (latest) => Math.round(latest)
-  );
+  const roundedProgress = useTransform(progress, (latest) => Math.round(latest));
 
   useEffect(() => {
-    const controls = animate(
-      progress,
-      displayProgress,
-      {
-        duration: 0.38,
-        ease: "easeOut",
-      }
-    );
+    const controls = animate(progress, displayProgress, {
+      duration: 0.38,
+      ease: "easeOut",
+    });
 
-    return () => {
-      controls.stop();
-    };
+    return () => controls.stop();
   }, [displayProgress, progress]);
 
   const slideUp: Variants = {
-    initial: {
-      y: "0%",
-    },
-
+    initial: { y: "0%" },
     exit: {
       y: "-100%",
-      transition: {
-        duration: 0.8,
-        ease: EASE,
-        delay: 0.2,
-      },
+      transition: { duration: 0.8, ease: EASE, delay: 0.2 },
     },
   };
 
   const lineVariants: Variants = {
     hidden: {},
-
-    visible: {
-      transition: {
-        staggerChildren: 0.12,
-      },
-    },
+    visible: { transition: { staggerChildren: 0.12 } },
   };
 
   const pieceVariants: Variants = {
-    hidden: {
-      opacity: 0,
-      y: 4,
-    },
-
+    hidden: { opacity: 0, y: 4 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: {
-        duration: 0.25,
-        ease: EASE,
-      },
+      transition: { duration: 0.25, ease: EASE },
     },
   };
 
@@ -209,10 +163,7 @@ export default function BootSequenceUI({
               fontVariantNumeric: "tabular-nums",
             }}
           >
-            <motion.span>
-              {roundedProgress}
-            </motion.span>
-            %
+            <motion.span>{roundedProgress}</motion.span>%
           </span>
         </div>
 
@@ -230,29 +181,20 @@ export default function BootSequenceUI({
               key={line.label}
               variants={lineVariants}
               initial="hidden"
-              animate={
-                i < visibleLines
-                  ? "visible"
-                  : "hidden"
-              }
+              animate={i < visibleLines ? "visible" : "hidden"}
               style={{
                 display: "flex",
                 alignItems: "baseline",
                 gap: "clamp(4px, 1.2vw, 8px)",
-                fontFamily:
-                  "var(--font-jetbrains-mono)",
-                fontSize:
-                  "clamp(10px, 3.2vw, 15px)",
+                fontFamily: "var(--font-jetbrains-mono)",
+                fontSize: "clamp(10px, 3.2vw, 15px)",
                 letterSpacing: "0.02em",
                 textTransform: "uppercase",
               }}
             >
               <motion.span
                 variants={pieceVariants}
-                style={{
-                  color: "#a9a9af",
-                  whiteSpace: "nowrap",
-                }}
+                style={{ color: "#a9a9af", whiteSpace: "nowrap" }}
               >
                 {line.label}
               </motion.span>
@@ -265,10 +207,8 @@ export default function BootSequenceUI({
                   whiteSpace: "nowrap",
                   letterSpacing: "1px",
                   color: "#a9a9af",
-                  fontFamily:
-                    "var(--font-jetbrains-mono)",
-                  fontSize:
-                    "clamp(10px, 3.2vw, 15px)",
+                  fontFamily: "var(--font-jetbrains-mono)",
+                  fontSize: "clamp(10px, 3.2vw, 15px)",
                   transform: "translateY(-1px)",
                 }}
               >

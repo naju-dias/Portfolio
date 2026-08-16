@@ -9,7 +9,7 @@ export default function Hero({ children }: { children?: React.ReactNode }) {
   return (
     <section
       id="hero"
-      className="relative w-full min-h-100svh p-3 sm:p-5 bg-[#06060a]"
+      className="relative w-full min-h-100svh p-3 sm:p-5 bg-[#1c1d24z]"
     >
       <div
         className="

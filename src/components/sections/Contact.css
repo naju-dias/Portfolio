@@ -31,6 +31,9 @@
   line-height: 0.96;
   letter-spacing: -0.00em;
 
+  /* Adicione isto para equilibrar o texto */
+  text-wrap: balance; 
+
   background: linear-gradient(180deg, #f7f7ff 0%, #f7f7ff 40%, #5e50b1 90%);
   background-clip: text;
   -webkit-background-clip: text;

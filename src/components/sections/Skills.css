@@ -5,6 +5,7 @@ html, body {
 
 /* ── Skills Section ──────────────────────────────────────────────────────── */
 .skills-section {
+  position: relative;
   width: 100%;
   padding: 12rem 1.5rem 15rem;
   display: flex;
@@ -15,9 +16,16 @@ html, body {
   overflow: visible;
 }
 
-/* ── Título ──────────────────────────────────────────────────────────────── */
+/* ── Título e paragráfo ──────────────────────────────────────────────────────── */
+.skills-heading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.7rem;
+}
+
 .skills-title {
-  font-family: 'Tanker', serif;
+  font-family: var(--font-tanker);
   font-weight: 400;
   font-size: clamp(3.5rem, 10vw, 6.5rem);
   letter-spacing: -0.03em;
@@ -31,32 +39,151 @@ html, body {
   letter-spacing: 00.01em;
 }
 
-/* ── Grid de ícones ──────────────────────────────────────────────────────── */
+.skills-card-noise {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+  border-radius: inherit;
+}
+
+.skills-heading,
+.skills-categories {
+  position: relative;
+  z-index: 1;
+}
+
+.skills-subtitle {
+  font-family: var(--font-geist-mono);
+  color: #524e64;
+  font-size: clamp(0.9rem, 2vw, 1.125rem);
+  text-transform: none;
+  font-weight: 500;
+  padding-top: 15px;
+  padding-bottom: 30px;
+  text-align: center;
+}
+
+.skills-bracket {
+  font-family: var(--font-geist-mono);
+  font-size: 20px;
+  font-weight: 700;
+  color: #5e50b1;
+}
+
+/* ── Categorias ──────────────────────────────────────────────────────── */
+.skills-categories {
+  position: relative;
+  width: 100%;
+  max-width: 1200px;
+
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+
+  gap: 4rem 2.5rem;
+
+  align-items: stretch;
+  z-index: 1;
+}
+
+.skills-category {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.skills-category-header {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  margin-bottom: 1.25rem;
+}
+
+.skills-category-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  padding: 4px;
+  color: #2b2938;
+}
+
+.skills-category-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.skills-category-label {
+  font-family: var(--font-geist-mono);
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: #1c1d24;
+}
+
+/* ── Card ───────────────────────────────────────────────────────────────── */
 .skills-card {
-  background: rgba(95, 80, 177, 0.199);
-  border: 1px solid rgba(0, 0, 0, 0.07);
+  position: relative;
+  flex: 1;
+  background: #1c1d24;
+  background-size: 18px 18px, auto;
+  border: 1px solid rgba(223, 196, 196, 0.07);
   border-radius: 20px;
   padding: 2rem 2.25rem;
   backdrop-filter: blur(8px);
-  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 14px 34px rgba(0,0,0,0.18), 0 6px 14px rgba(0,0,0,0.1);
 }
 
+/* cantos tipo mira/blueprint — reforça o motivo de "[ ]" da marca sem
+   repetir o clichê da barra de terminal com 3 bolinhas */
+.skills-card::before,
+.skills-card::after {
+  content: "";
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  pointer-events: none;
+  border-color: rgba(128, 109, 237, 0.55);
+}
+
+.skills-card::before {
+  top: -1px;
+  left: -1px;
+  border-top: 2px solid;
+  border-left: 2px solid;
+  border-top-left-radius: 8px;
+}
+
+.skills-card::after {
+  bottom: -1px;
+  right: -1px;
+  border-bottom: 2px solid;
+  border-right: 2px solid;
+  border-bottom-right-radius: 8px;
+}
+
+/* ── Grid de ícones ───────────────────────────────────────────────────────── */
 .skills-icons-grid {
-  display: flex;
-  flex-wrap: wrap;
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(88px, 1fr));
+  align-content: center;
   gap: 1.25rem;
-  justify-content: center;
-  max-width: 820px;
 }
 
 /* ── Chip ────────────────────────────────────────────────────────────────── */
 .skill-chip {
   position: relative;
-  width: 100px;
-  padding: 1.1rem 0.5rem 0.9rem;
-  border-radius: 20px;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  background: rgba(255, 255, 255, 0.788);
+  width: 100%;
+  padding: 1.1rem 0.75rem 0.9rem;
+  border-radius: 16px;
+  border: 1px solid rgba(121, 109, 143, 0.404);
+  background: #31333f;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -69,12 +196,45 @@ html, body {
     background 0.2s ease;
 }
 
+.skill-chip::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1.5px;
+  background: linear-gradient(
+    180deg,
+    var(--skill-color) 0%,
+    color-mix(in srgb, var(--skill-color) 35%, transparent) 7%,
+    transparent 12%
+  );
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  filter:
+    drop-shadow(0 0 4px var(--skill-color))
+    drop-shadow(0 0 14px var(--skill-color))
+    drop-shadow(0 0 26px var(--skill-color));
+  opacity: 1;
+  pointer-events: none;
+  transition: filter 0.2s ease, opacity 0.2s ease;
+}
+
 .skill-chip:hover {
   transform: translateY(-6px) scale(1.03);
-  background: color-mix(in srgb, var(--skill-color) 10%, #fff);
+  background: color-mix(in srgb, var(--skill-color) 10%, #f7f7ff);
   box-shadow:
     0 12px 32px rgba(0, 0, 0, 0.1),
     0 0 0 2px color-mix(in srgb, var(--skill-color) 35%, transparent);
+}
+
+.skill-chip:hover::before {
+  opacity: 0.9;
 }
 
 /* ── Ícone SVG ───────────────────────────────────────────────────────────── */
@@ -94,14 +254,17 @@ html, body {
 
 /* ── Label abaixo do ícone ───────────────────────────────── */
 .skill-label {
-  font-family: var(--font-geist-mono);
+  font-family: var(--font-geist-sans);
   font-size: 0.72rem;
   font-weight: 600;
-  letter-spacing: 0.01em;
-  color: #2b2938;
+  letter-spacing: 0.05em;
+  color: #f7f7ff;
   text-align: center;
   line-height: 1.2;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
   transition: color 0.2s ease;
 }
 
@@ -113,9 +276,19 @@ html, body {
    RESPONSIVIDADE (Media Queries)
    ========================================================================== */
 
-@media (min-width: 1025px) {
-  .skills-card {
-    backdrop-filter: blur(8px);
+/* ── Notebooks ── */
+@media (max-width: 1440px) {
+  .skills-section {
+    padding: 9rem 1.5rem 11rem;
+  }
+}
+
+/* ── Desktop médio ── */
+@media (max-width: 1100px) {
+  .skills-categories {
+    max-width: 850px;
+    grid-template-columns: 1fr;
+    gap: 3rem;
   }
 }
 
@@ -124,6 +297,10 @@ html, body {
   .skills-section {
     padding: 8rem 1.5rem 10rem;
     gap: 2.5rem;
+  }
+
+  .skills-categories {
+    gap: 3rem 2rem;
   }
 
   .skills-card {
@@ -138,22 +315,20 @@ html, body {
     gap: 2rem;
   }
 
+  .skills-categories {
+    gap: 2.5rem;
+  }
+
   .skills-card {
-    width: 100%;
-    max-width: 100%;
     padding: 1.25rem 1rem;
-    box-sizing: border-box;
   }
 
   .skills-icons-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(auto-fill, minmax(84px, 1fr));
     gap: 1rem;
-    max-width: 100%;
   }
 
   .skill-chip {
-    width: 100%;
     padding: 1.3rem 0.5rem 1.1rem;
   }
 
@@ -169,6 +344,10 @@ html, body {
   .skill-chip:hover {
     transform: translateY(-4px) scale(1.02);
   }
+
+  .skills-category-label {
+    font-size: 1rem;
+  }
 }
 
 /* ── Telas muito pequenas ── */
@@ -178,6 +357,7 @@ html, body {
   }
 
   .skills-icons-grid {
+    grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
     gap: 0.75rem;
   }
 
@@ -187,11 +367,12 @@ html, body {
   }
 
   .skill-icon {
-    width: 40px;
-    height: 40px;
+    width: 36px;
+    height: 36px;
   }
 
   .skill-label {
-    font-size: 0.72rem;
+    font-size: 0.65rem;
+    letter-spacing: 0.02em;
   }
 }

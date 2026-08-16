@@ -18,8 +18,12 @@ export default function LoadingScreen({
   onComplete,
 }: LoadingScreenProps) {
   const [visibleLines, setVisibleLines] = useState(0);
+
+  // Começa mostrando para impedir o flash do site.
+  const [shouldShow, setShouldShow] = useState(true);
+
   const [exiting, setExiting] = useState(false);
-  const [shouldShow, setShouldShow] = useState<boolean | null>(null);
+  const [sessionChecked, setSessionChecked] = useState(false);
 
   const onCompleteRef = useRef(onComplete);
 
@@ -33,16 +37,18 @@ export default function LoadingScreen({
 
     if (alreadySeen) {
       setShouldShow(false);
+      setSessionChecked(true);
       onCompleteRef.current?.();
       return;
     }
 
     sessionStorage.setItem(SESSION_KEY, "true");
-    setShouldShow(true);
+
+    setSessionChecked(true);
   }, []);
 
   useEffect(() => {
-    if (shouldShow !== true) return;
+    if (!sessionChecked || !shouldShow) return;
 
     const timers: ReturnType<typeof setTimeout>[] = [];
 
@@ -74,13 +80,9 @@ export default function LoadingScreen({
     return () => {
       timers.forEach(clearTimeout);
     };
-  }, [shouldShow]);
+  }, [sessionChecked, shouldShow]);
 
-  if (shouldShow === null) {
-    return null;
-  }
-
-  if (shouldShow === false) {
+  if (!shouldShow) {
     return null;
   }
 
