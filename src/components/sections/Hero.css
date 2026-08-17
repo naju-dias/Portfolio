@@ -328,7 +328,7 @@
 
   .hero-title-block {
     align-items: flex-start;
-    margin-top: -160px;
+    margin-top: clamp(-18rem, -18vh, -7rem);
   }
 
   .hero-label {

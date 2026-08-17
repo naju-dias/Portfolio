@@ -3,29 +3,7 @@ import "./Skills.css";
 import Reveal from "../shared/Reveal";
 import { SparkEffect } from "../effects/spark-effect";
 
-import {
-  htmlIcon,
-  cssIcon,
-  tailwindIcon,
-  javascriptIcon,
-  typescriptIcon,
-  reactIcon,
-  pythonIcon,
-  nextjsIcon,
-  mysqlIcon,
-  dockerIcon,
-  gitIcon,
-  githubIcon,
-  jestIcon,
-  figmaIcon,
-  framerIcon,
-  notionIcon,
-  claudeIcon,
-  fastapiIcon,
-  postgresqlIcon,
-  prismaIcon,
-  vercelIcon,
-} from "../../lib/icons";
+import {htmlIcon, cssIcon, tailwindIcon, javascriptIcon, typescriptIcon, reactIcon, pythonIcon, nextjsIcon, mysqlIcon, dockerIcon, gitIcon, githubIcon, jestIcon, figmaIcon, framerIcon, notionIcon, claudeIcon, fastapiIcon, postgresqlIcon, prismaIcon, vercelIcon } from "../../lib/icons";
 
 type Skill = {
   name: string;
@@ -35,15 +13,11 @@ type Skill = {
 
 type SkillCategory = {
   label: string;
-  /** SVG string do ícone da categoria (mostrado no badge no lugar do número) */
   icon: string;
   skills: Skill[];
 };
 
-// TODO: troca esses placeholders pelos SVGs que você escolher.
-// Dica: desenha/exporta com fill="currentColor" (sem cor fixa) pra herdar
-// o branco do badge automaticamente, tipo os ícones da skills-icons-grid.
-const frontendCategoryIcon = `<svg xmlns="http://www.w3.org/2000/svg" fill="#2b2938" width="32" height="32" stroke="currentColor" viewBox="0 0 256 256" stroke-width="2"><path d="M208,40H48A24,24,0,0,0,24,64V176a24,24,0,0,0,24,24h72v16H96a8,8,0,0,0,0,16h64a8,8,0,0,0,0-16H136V200h72a24,24,0,0,0,24-24V64A24,24,0,0,0,208,40ZM48,56H208a8,8,0,0,1,8,8v80H40V64A8,8,0,0,1,48,56ZM208,184H48a8,8,0,0,1-8-8V160H216v16A8,8,0,0,1,208,184Z"></path ></svg>`;
+const frontendCategoryIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M6 21v-2l1-1H4q-.825 0-1.412-.587T2 16V5q0-.825.588-1.412T4 3h16q.825 0 1.413.588T22 5v11q0 .825-.587 1.413T20 18h-3l1 1v2zm-2-5h16V5H4zm0 0V5z"/></svg>`;
 const backendCategoryIcon = `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><ellipse cx="12" cy="5" rx="8" ry="3" stroke="currentColor" stroke-width="2"/><path d="M4 5V19C4 20.6569 7.58172 22 12 22C16.4183 22 20 20.6569 20 19V5" stroke="currentColor" stroke-width="2"/><path d="M4 12C4 13.6569 7.58172 15 12 15C16.4183 15 20 13.6569 20 12" stroke="currentColor" stroke-width="2"/></svg>`;
 const toolingCategoryIcon = `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
 const designCategoryIcon = `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="13.5" cy="6.5" r="2.5" stroke="currentColor" stroke-width="2"/><circle cx="19" cy="12" r="2.5" stroke="currentColor" stroke-width="2"/><circle cx="6" cy="12" r="4" stroke="currentColor" stroke-width="2"/><circle cx="13.5" cy="17.5" r="2.5" stroke="currentColor" stroke-width="2"/></svg>`;

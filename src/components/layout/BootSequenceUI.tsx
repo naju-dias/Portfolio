@@ -65,6 +65,7 @@ export default function BootSequenceUI({
 
   return (
     <motion.div
+      className="portfolio-loader"
       variants={slideUp}
       initial="initial"
       animate={exiting ? "exit" : "initial"}

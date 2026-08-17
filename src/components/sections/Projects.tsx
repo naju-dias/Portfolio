@@ -58,10 +58,35 @@ export default function Projects() {
   const cardRectRef = useRef<DOMRect | null>(null);
   const rafRef = useRef<number | null>(null);
 
+ const positionCursor = (clientX: number, clientY: number, rect: DOMRect) => {
+  const cursor = cursorRef.current;
+  if (!cursor) return;
+
+  const cursorWidth = cursor.offsetWidth;
+  const cursorHeight = cursor.offsetHeight;
+  const rawX = clientX - rect.left;
+  const rawY = clientY - rect.top;
+  const padding = 12;
+
+  const x = Math.min(Math.max(rawX, cursorWidth / 2 + padding), rect.width - cursorWidth / 2 - padding);
+  const y = Math.min(Math.max(rawY, cursorHeight / 2 + padding), rect.height - cursorHeight / 2 - padding);
+
+  const roundedX = Math.round(x - cursorWidth / 2);
+  const roundedY = Math.round(y - cursorHeight / 2);
+
+  cursor.style.transform = `translate3d(${roundedX}px, ${roundedY}px, 0)`;
+};
+
   const handleMouseEnter = (e: React.MouseEvent<HTMLDivElement>, projectId: string | number) => {
     if (!isDesktop) return;
-    cardRectRef.current = e.currentTarget.getBoundingClientRect();
+    const rect = e.currentTarget.getBoundingClientRect();
+    cardRectRef.current = rect;
     setActiveCardId(projectId);
+
+    // posiciona ANTES do fade-in do AnimatePresence, evitando o "salto" inicial
+    const clientX = e.clientX;
+    const clientY = e.clientY;
+    requestAnimationFrame(() => positionCursor(clientX, clientY, rect));
   };
 
   const handleMouseLeave = () => {
@@ -73,22 +98,14 @@ export default function Projects() {
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!isDesktop || !cursorRef.current || !cardRectRef.current) return;
 
+    const clientX = e.clientX;
+    const clientY = e.clientY;
     const rect = cardRectRef.current;
-    const cursor = cursorRef.current;
-    const cursorWidth = cursor.offsetWidth;
-    const cursorHeight = cursor.offsetHeight;
-    const rawX = e.clientX - rect.left;
-    const rawY = e.clientY - rect.top;
-    const padding = 12;
-
-    const x = Math.min(Math.max(rawX, cursorWidth / 2 + padding), rect.width - cursorWidth / 2 - padding);
-    const y = Math.min(Math.max(rawY, cursorHeight / 2 + padding), rect.height - cursorHeight / 2 - padding);
 
     if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
 
     rafRef.current = requestAnimationFrame(() => {
-      if (!cursorRef.current) return;
-      cursorRef.current.style.transform = `translate3d(${x - cursorWidth / 2}px, ${y - cursorHeight / 2}px, 0)`;
+      positionCursor(clientX, clientY, rect);
     });
   };
 

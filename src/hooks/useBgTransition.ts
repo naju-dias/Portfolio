@@ -1,6 +1,6 @@
 'use client';
 
-import { createRef, RefObject, useEffect, useMemo } from 'react';
+import { createRef, RefObject, useLayoutEffect, useMemo, useRef } from 'react';
 
 type Transition = {
   from: string;
@@ -8,6 +8,8 @@ type Transition = {
   zoneHeight?: number;
   backgroundImage?: string;
 };
+
+const BACKGROUND_KEY = 'portfolio-background-color';
 
 function hexToRgb(hex: string) {
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
@@ -39,7 +41,10 @@ export function useBgTransition(
     [transitions.length]
   );
 
-  useEffect(() => {
+  const transitionsRef = useRef(transitions);
+  transitionsRef.current = transitions;
+
+  useLayoutEffect(() => {
     let raf = 0;
     let lastBackgroundColor = '';
     let lastBackgroundImage = '';
@@ -47,6 +52,15 @@ export function useBgTransition(
     const setBackground = (color: string, image: string) => {
       if (color !== lastBackgroundColor) {
         document.body.style.backgroundColor = color;
+
+        // Mantém html e body com a mesma cor
+        document.documentElement.style.setProperty('--page-background', color);
+
+        // Guarda a última cor para restaurar antes do paint no F5
+        try {
+          sessionStorage.setItem(BACKGROUND_KEY, color);
+        } catch {}
+
         lastBackgroundColor = color;
       }
 
@@ -57,16 +71,24 @@ export function useBgTransition(
     };
 
     const update = () => {
+      const currentTransitions = transitionsRef.current;
+
+      if (currentTransitions.length === 0) return;
+
       let active = -1;
       let progress = 0;
+
+      const vh = window.innerHeight;
 
       for (let i = 0; i < refs.length; i++) {
         const el = refs[i].current;
         if (!el) continue;
 
-        const zone = transitions[i].zoneHeight ?? 900;
+        const transition = currentTransitions[i];
+        if (!transition) continue;
+
+        const zone = transition.zoneHeight ?? 900;
         const rect = el.getBoundingClientRect();
-        const vh = window.innerHeight;
         const dist = vh / 2 - rect.top;
 
         const p = Math.min(
@@ -87,12 +109,17 @@ export function useBgTransition(
       }
 
       if (active === -1) {
-        const first = hexToRgb(transitions[0].from);
-        setBackground(`rgb(${first.r},${first.g},${first.b})`, 'none');
+        const first = hexToRgb(currentTransitions[0].from);
+
+        setBackground(
+          `rgb(${first.r}, ${first.g}, ${first.b})`,
+          'none'
+        );
+
         return;
       }
 
-      const tr = transitions[active];
+      const tr = currentTransitions[active];
       const from = hexToRgb(tr.from);
       const to = hexToRgb(tr.to);
       const p = ease(progress);
@@ -119,7 +146,7 @@ export function useBgTransition(
         }
       }
 
-      setBackground(`rgb(${r},${g},${b})`, backgroundImage);
+      setBackground(`rgb(${r}, ${g}, ${b})`, backgroundImage);
     };
 
     const onScroll = () => {
@@ -129,18 +156,15 @@ export function useBgTransition(
 
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', onScroll);
-
+    
     update();
 
     return () => {
       cancelAnimationFrame(raf);
       window.removeEventListener('scroll', onScroll);
       window.removeEventListener('resize', onScroll);
-
-      document.body.style.backgroundColor = '';
-      document.body.style.backgroundImage = '';
     };
-  }, [refs, transitions]);
+  }, [refs]);
 
   return refs;
 }

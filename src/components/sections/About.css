@@ -46,7 +46,7 @@ html, body {
 }
 
 .about-title {
-    font-family: 'Tanker', serif;
+    font-family: var(--font-tanker);
     font-weight: 400;
     font-size: clamp(3.5rem, 10vw, 6.5rem);
     color: #5e50b1;
@@ -90,7 +90,7 @@ html, body {
     font-weight: 500;
     font-size: clamp(1rem, 1.8vw, 1.15rem);
     color: #2b2938;
-    line-height: 1.9;
+    line-height: 1.75;
     margin: 0 0 1.4rem;
 }
 

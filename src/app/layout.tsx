@@ -1,13 +1,7 @@
 import type { Metadata } from "next";
 
 import localFont from "next/font/local";
-import {
-  Geist,
-  Geist_Mono,
-  Instrument_Serif,
-  Caveat,
-  JetBrains_Mono,
-} from "next/font/google";
+import { Geist, Geist_Mono, Instrument_Serif, Caveat, JetBrains_Mono } from "next/font/google";
 
 import "./globals.css";
 
@@ -63,13 +57,50 @@ export const metadata: Metadata = {
   description: "Portfolio Profissional",
 };
 
+const loaderScript = `
+  try {
+    if (sessionStorage.getItem("portfolio-loader-seen") === "true") {
+      document.documentElement.dataset.loaderSeen = "true";
+    }
+
+    const savedBackground =
+      sessionStorage.getItem("portfolio-background-color");
+
+    if (savedBackground) {
+      document.documentElement.style.setProperty(
+        "--page-background",
+        savedBackground
+      );
+    }
+
+    document.documentElement.classList.add("is-restoring-scroll");
+    history.scrollRestoration = "auto";
+
+    window.addEventListener("load", () => {
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          document.documentElement.classList.remove("is-restoring-scroll");
+        });
+      });
+    });
+  } catch {}
+`;
+
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <html lang="pt-br">
+    <html lang="pt-br" suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: loaderScript,
+          }}
+        />
+      </head>
+
       <body
         className={`
           min-h-full

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import BootSequenceUI, { BOOT_LINES } from "./BootSequenceUI";
 
 const FIRST_STEP_MS = 120;
@@ -19,9 +19,7 @@ export default function LoadingScreen({
 }: LoadingScreenProps) {
   const [visibleLines, setVisibleLines] = useState(0);
 
-  // Começa mostrando para impedir o flash do site.
   const [shouldShow, setShouldShow] = useState(true);
-
   const [exiting, setExiting] = useState(false);
   const [sessionChecked, setSessionChecked] = useState(false);
 
@@ -31,7 +29,14 @@ export default function LoadingScreen({
     onCompleteRef.current = onComplete;
   }, [onComplete]);
 
-  useEffect(() => {
+  /*
+   * IMPORTANTE:
+   * useLayoutEffect verifica a sessionStorage antes do paint do React.
+   *
+   * Assim, ao dar F5 depois que o loader já foi visto,
+   * ele é removido antes de aparecer visualmente.
+   */
+  useLayoutEffect(() => {
     const alreadySeen =
       sessionStorage.getItem(SESSION_KEY) === "true";
 
@@ -43,7 +48,6 @@ export default function LoadingScreen({
     }
 
     sessionStorage.setItem(SESSION_KEY, "true");
-
     setSessionChecked(true);
   }, []);
 
@@ -72,6 +76,8 @@ export default function LoadingScreen({
 
     timers.push(
       setTimeout(() => {
+        document.documentElement.dataset.loaderSeen = "true";
+
         setShouldShow(false);
         onCompleteRef.current?.();
       }, sequenceDuration + HOLD_MS + EXIT_MS)

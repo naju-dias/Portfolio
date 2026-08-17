@@ -114,6 +114,10 @@
 }
 
 /* ---- TEMA CLARO (sobre fundo branco) ---- */
+.navbar-wrapper.theme-light .nav-logo {
+    color: #5e50b1;
+}
+
 .navbar-wrapper.theme-light .nav-item {
     color: #1c1d24;
 }

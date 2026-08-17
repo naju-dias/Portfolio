@@ -31,7 +31,6 @@
   line-height: 0.96;
   letter-spacing: -0.00em;
 
-  /* Adicione isto para equilibrar o texto */
   text-wrap: balance; 
 
   background: linear-gradient(180deg, #f7f7ff 0%, #f7f7ff 40%, #5e50b1 90%);
@@ -40,15 +39,6 @@
   -webkit-text-fill-color: transparent;
 
   margin-bottom: 2.2rem;
-}
-
-.contact-subtitle {
-  font-family: var(--font-geist-sans);
-  font-size: 18px;
-  line-height: 1.5;
-  color: rgba(217, 213, 197, 0.65);
-  max-width: 380px;
-  margin-bottom: 3rem;
 }
 
 .contact-micro-label {
@@ -60,7 +50,7 @@
   font-size: 1.3rem;
   font-weight: 500;
   letter-spacing: 0.05em;
-  color: #dddadb;
+  color: #aaa8b8;
 
   margin-top: -2.8rem;
   margin-bottom: 1.6rem;
@@ -69,7 +59,7 @@
 .contact-micro-slash {
   font-family: var(--font-jetbrains-mono);
   font-weight: 700;
-  color: #97999d;
+  color: #806ded;
 }
 
 /* ──── Formulário ─────────────────────────────────────────────────── */
@@ -129,7 +119,7 @@
 
 .contact-field input:focus,
 .contact-field textarea:focus {
-  border-color: #ffffff;
+  border-color: #806ded;
 }
 
 /* ──── Botão ─────────────────────────────────────────────────── */

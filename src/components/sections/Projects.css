@@ -35,7 +35,7 @@
 .proj-description {
   font-family: var(--font-geist-sans);
   font-size: 1.15rem; 
-  color: #c8c5d9;
+  color: #aaa8b8;
   max-width: 420px; 
   margin: 0;
   line-height: 1.5;
@@ -116,7 +116,7 @@
 .proj-card-desc {
   font-family: var(--font-geist-sans);
   font-size: 18px; 
-  color: #c8c5d9;
+  color: #b4b1c2;
   line-height: 1.6; 
   margin: 0.25rem 0 0;
 }
@@ -379,6 +379,11 @@
   display: block;
   pointer-events: none;
   flex-shrink: 0;
+  
+  transform: translateZ(0);
+  transform-origin: center;
+
+  backface-visibility: hidden;
 }
 
 .modal-header {
@@ -437,7 +442,7 @@
 .modal-desc {
   font-family: var(--font-geist-sans);
   font-size: 16.5px;
-  color: #c8c5d9; 
+  color: #c8c5d9;
   line-height: 1.7; 
   margin: 0;
   margin-bottom: 1.3rem;
@@ -597,9 +602,6 @@
   display: flex; 
   align-items: center; 
   justify-content: center;
-
-  filter: drop-shadow(0 2px 8px rgba(56, 37, 110, 0.582));
-  transition: filter 0.3s ease;
 }
 
 .modal-tech-icon svg { 
