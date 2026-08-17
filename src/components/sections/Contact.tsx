@@ -12,9 +12,7 @@ export default function Contact() {
     message: "",
   });
 
-  const [status, setStatus] = useState<
-    "idle" | "loading" | "success" | "error"
-  >("idle");
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -54,7 +52,7 @@ export default function Contact() {
     <section id="contact" className="contact">
       <div className="contact-container">
 
-        <Reveal y={24} duration={0.55}>
+        <Reveal y={24} duration={550}>
           <div className="contact-heading">
             <span className="contact-micro-label">
               <span className="contact-micro-slash">
@@ -71,7 +69,7 @@ export default function Contact() {
 
         <div className="contact-form-wrapper">
 
-          <Reveal y={18} duration={0.4}>
+          <Reveal y={18} duration={400} delay={0}>
             <div className="contact-field">
               <label>NOME</label>
 
@@ -85,7 +83,7 @@ export default function Contact() {
             </div>
           </Reveal>
 
-          <Reveal y={18} duration={0.4}>
+          <Reveal y={18} duration={400} delay={80}>
             <div className="contact-field">
               <label>EMAIL</label>
 
@@ -99,7 +97,7 @@ export default function Contact() {
             </div>
           </Reveal>
 
-          <Reveal y={18} duration={0.4}>
+          <Reveal y={18} duration={400} delay={160}>
             <div className="contact-field">
               <label>SUA MENSAGEM</label>
 
@@ -124,7 +122,7 @@ export default function Contact() {
             </p>
           )}
 
-          <Reveal y={12} duration={0.35}>
+          <Reveal y={12} duration={350} delay={240}>
             <div className="container-botao-direita">
               <button
                 className="btn-enviar-scramble"

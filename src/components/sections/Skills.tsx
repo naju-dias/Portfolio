@@ -1,4 +1,7 @@
+"use client";
+
 import type { CSSProperties } from "react";
+import { motion, type Variants } from "framer-motion";
 import "./Skills.css";
 import Reveal from "../shared/Reveal";
 import { SparkEffect } from "../effects/spark-effect";
@@ -70,6 +73,25 @@ const skillCategories: SkillCategory[] = [
   },
 ];
 
+const EASE = [0.16, 1, 0.3, 1] as const;
+
+const chipContainerVariants: Variants = {
+  hidden: {},
+  visible: {
+    transition: { staggerChildren: 0.045, delayChildren: 0.1 },
+  },
+};
+
+const chipItemVariants: Variants = {
+  hidden: { opacity: 0, y: 12, scale: 0.94 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: { duration: 0.55, ease: EASE },
+  },
+};
+
 export default function Skills() {
   return (
     <section id="skills" data-nav-theme="light" className="skills-section">
@@ -77,18 +99,19 @@ export default function Skills() {
       <Reveal y={40} duration={450}>
         <div className="skills-heading">
           <h2 className="skills-title">
-            <span className="skills-title-accent">Skills & Tools</span>
+            <Reveal variant="lines" duration={700} stagger={45}>
+              Skills & Tools
+            </Reveal>
           </h2>
           <Reveal y={40} duration={450} delay={150}>
-          <p className="skills-subtitle">{'<'} As cartas que eu sei jogar {'>'}</p>
+            <p className="skills-subtitle">{'<'} As cartas que eu sei jogar {'>'}</p>
           </Reveal>
         </div>
       </Reveal>
 
-
       <div className="skills-categories">
         {skillCategories.map((category, idx) => (
-          <Reveal y={30} duration={450} key={category.label} delay={idx * 80}>
+          <Reveal y={30} duration={700} key={category.label} delay={idx * 100}>
             <div className="skills-category">
               <div className="skills-category-header">
                 <span
@@ -96,23 +119,30 @@ export default function Skills() {
                   aria-hidden="true"
                   dangerouslySetInnerHTML={{ __html: category.icon }}
                 />
-
                 <span className="skills-bracket">[</span>
                 <span className="skills-category-label">{category.label}</span>
                 <span className="skills-bracket">]</span>
-
               </div>
- 
+
               <div className="skills-card">
                 <div className="skills-card-noise" aria-hidden="true">
                   <SparkEffect />
                 </div>
 
-                <div className="skills-icons-grid">
+                <motion.div
+                  className="skills-icons-grid"
+                  variants={chipContainerVariants}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true, amount: 0.3 }}
+                >
                   {category.skills.map((skill) => (
-                    <div
+                    <motion.div
                       key={skill.name}
                       className="skill-chip"
+                      variants={chipItemVariants}
+                      whileHover={{ y: -3, scale: 1.03 }}
+                      transition={{ duration: 0.25, ease: EASE }}
                       style={{ "--skill-color": skill.color } as CSSProperties}
                       aria-label={skill.name}
                     >
@@ -122,9 +152,9 @@ export default function Skills() {
                         dangerouslySetInnerHTML={{ __html: skill.icon }}
                       />
                       <span className="skill-label">{skill.name}</span>
-                    </div>
+                    </motion.div>
                   ))}
-                </div>
+                </motion.div>
               </div>
             </div>
           </Reveal>

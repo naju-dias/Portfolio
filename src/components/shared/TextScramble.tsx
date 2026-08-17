@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useEffect, useRef, useLayoutEffect, startTransition } from "react";
+import { useState, useEffect, useRef, startTransition } from "react";
 import type { CSSProperties } from "react";
+import { useInView } from "framer-motion";
 
 interface TextScrambleProps {
   text: string;
@@ -10,6 +11,8 @@ interface TextScrambleProps {
   scrambleIntensity?: number;
   className?: string;
   style?: CSSProperties;
+  playOnView?: boolean;
+  viewDelay?: number;
 }
 
 export default function TextScramble({
@@ -19,13 +22,23 @@ export default function TextScramble({
   scrambleIntensity = 100,
   className,
   style,
+  playOnView = false,
+  viewDelay = 0,
 }: TextScrambleProps) {
-  const [displayText, setDisplayText] = useState(text);
+  const [displayText, setDisplayText] = useState(
+    playOnView ? "" : text
+  );
   const [isHovering, setIsHovering] = useState(false);
+  const [viewTriggered, setViewTriggered] = useState(false);
+  const hasPlayedOnViewRef = useRef(false);
+
   const frameRef = useRef<number>(0);
   const startTimeRef = useRef(0);
   const measureRef = useRef<HTMLSpanElement>(null);
+  const containerRef = useRef<HTMLSpanElement>(null);
   const [lockedWidth, setLockedWidth] = useState<number | undefined>(undefined);
+
+  const isInView = useInView(containerRef, { once: true, amount: 0.4 });
 
   useEffect(() => {
     if (measureRef.current) {
@@ -34,9 +47,23 @@ export default function TextScramble({
     }
   }, [text, className]);
 
+  // dispara o scramble quando entra em viewport
   useEffect(() => {
-    if (!isHovering) {
-      startTransition(() => setDisplayText(text));
+    if (!playOnView || hasPlayedOnViewRef.current || !isInView) return;
+
+    const timeout = setTimeout(() => {
+      hasPlayedOnViewRef.current = true;
+      setViewTriggered(true);
+    }, viewDelay);
+
+    return () => clearTimeout(timeout);
+  }, [playOnView, isInView, viewDelay]);
+
+  const active = isHovering || viewTriggered;
+
+  useEffect(() => {
+    if (!active) {
+      if (!playOnView) startTransition(() => setDisplayText(text));
       return;
     }
 
@@ -50,6 +77,7 @@ export default function TextScramble({
 
       if (progress >= 1) {
         startTransition(() => setDisplayText(text));
+        if (viewTriggered) setViewTriggered(false);
         return;
       }
 
@@ -82,10 +110,11 @@ export default function TextScramble({
     return () => {
       if (frameRef.current) cancelAnimationFrame(frameRef.current);
     };
-  }, [isHovering, text, duration, characters, scrambleIntensity]);
+  }, [active, text, duration, characters, scrambleIntensity]);
 
   return (
     <span
+      ref={containerRef}
       className={className}
       style={{
         ...style,

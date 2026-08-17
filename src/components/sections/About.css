@@ -85,6 +85,11 @@ html, body {
     line-height: 1.15;
 }
 
+.about-name-highlight {
+  color: #2b2938;
+  font-weight: 700;
+}
+
 .about-paragraph {
     font-family: var(--font-geist-sans);
     font-weight: 500;
