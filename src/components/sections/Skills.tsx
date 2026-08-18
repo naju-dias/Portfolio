@@ -2,7 +2,7 @@
 
 import type { CSSProperties } from "react";
 import { motion, type Variants } from "framer-motion";
-import "./Skills.css";
+import "./Skills.scss";
 import Reveal from "../shared/Reveal";
 import { SparkEffect } from "../effects/spark-effect";
 

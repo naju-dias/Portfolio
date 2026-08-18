@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import TextScramble from "../shared/TextScramble";
 import LocalTime from "../shared/LocalTime";
 import { useNavTheme } from "../../hooks/useNavTheme";
-import "./Navbar.css";
+import "./Navbar.scss";
 
 // Links exclusivos para o Overlay
 const overlayNavItems = [

@@ -1,4 +1,4 @@
-import "./About.css";
+import "./About.scss";
 
 import AboutPolaroids from "../effects/AboutPolaroids";
 import Reveal from "../shared/Reveal";

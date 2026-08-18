@@ -3,25 +3,37 @@
   width: 100%;
   overflow: hidden;
   padding: 12rem 1.5rem 10rem 1.5rem;
+
+  @media (max-width: 768px) {
+    padding: 8rem 1.5rem 6rem;
+  }
 }
 
 .contact-container {
   max-width: 1310px;
   margin: 0 auto;
-
   display: grid;
   grid-template-columns: 0.9fr 1fr;
   gap: 10rem;
   align-items: flex-start;
+
+  @media (max-width: 968px) {
+    grid-template-columns: 1fr;
+    gap: 4rem;
+  }
 }
 
-/* ──── Coluna esquerda ─────────────────────────────────────────────────── */
-
+/* ----- Coluna esquerda ------ */
 .contact-heading {
   position: sticky;
   top: -5px;
   display: flex;
   flex-direction: column;
+
+  @media (max-width: 968px) {
+    position: relative;
+    top: 0;
+  }
 }
 
 .contact-heading h2 {
@@ -30,45 +42,52 @@
   font-size: clamp(4rem, 8vw, 8.2rem);
   line-height: 0.96;
   letter-spacing: -0.00em;
-
-  text-wrap: balance; 
-
-  background: linear-gradient(180deg, #f7f7ff 0%, #f7f7ff 40%, #5e50b1 90%);
+  text-wrap: balance;
+  background: linear-gradient(180deg, var(--foreground) 0%, var(--foreground) 40%, #5e50b1 90%);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-
   margin-bottom: 2.2rem;
+
+  @media (max-width: 968px) {
+    font-size: clamp(3.5rem, 14vw, 8rem);
+  }
 }
 
 .contact-micro-label {
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-
   font-family: var(--font-geist-mono);
   font-size: 1.3rem;
   font-weight: 500;
   letter-spacing: 0.05em;
   color: #aaa8b8;
-
   margin-top: -2.8rem;
   margin-bottom: 1.6rem;
+
+  @media (max-width: 968px) {
+    margin-top: 0;
+  }
 }
 
 .contact-micro-slash {
   font-family: var(--font-jetbrains-mono);
   font-weight: 700;
-  color: #806ded;
+  color: var(--accent);
 }
 
-/* ──── Formulário ─────────────────────────────────────────────────── */
-
+/* ----- Formulário ------ */
 .contact-form-wrapper {
   display: flex;
   flex-direction: column;
   gap: 4rem;
   margin-top: 1.1rem;
+  font-family: var(--font-geist-sans);
+
+  @media (max-width: 768px) {
+    gap: 3rem;
+  }
 }
 
 .contact-field {
@@ -82,28 +101,20 @@
   font-size: 1rem;
   font-weight: 700;
   letter-spacing: 0.02em;
-
-  color: #f7f7ff;
+  color: var(--foreground);
 }
 
 .contact-field input,
 .contact-field textarea {
   width: 100%;
-
   background: transparent;
-
   border: none;
   border-bottom: 1px solid rgba(255, 255, 255, 0.4);
-
   padding-bottom: 1rem;
-
   font-family: var(--font-geist-sans);
   font-size: 1.4rem;
-
   color: #ffffff;
-
   outline: none;
-
   transition: all 0.3s ease;
 }
 
@@ -119,11 +130,10 @@
 
 .contact-field input:focus,
 .contact-field textarea:focus {
-  border-color: #806ded;
+  border-color: var(--accent);
 }
 
-/* ──── Botão ─────────────────────────────────────────────────── */
-
+/* ----- Botão form ------ */
 .container-botao-direita {
   display: flex;
   justify-content: flex-end;
@@ -135,19 +145,16 @@
   display: inline-flex;
   align-items: center;
   gap: 0.3rem;
-  
   background: transparent;
   border: none;
   padding: 0.4rem 0;
   cursor: pointer;
-
   font-family: var(--font-geist-sans);
   font-size: 24px;
   font-weight: 600;
   letter-spacing: 0.03em;
   text-transform: uppercase;
-  color: #f7f7ff;
-
+  color: var(--foreground);
   transition: color 0.4s ease, border-color 0.4s ease;
 }
 
@@ -160,7 +167,7 @@
   display: inline-block;
   line-height: 1;
   padding-bottom: 2px;
-  border-bottom: 1px solid #f7f7ff;
+  border-bottom: 1px solid var(--foreground);
   transition: border-color 0.4s ease;
 }
 
@@ -171,7 +178,6 @@
   color: #5e50b1;
   width: 1.4em;
   height: 1.4em;
-
   transition: transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -179,71 +185,32 @@
   transform: rotate(45deg) translateY(-3);
 }
 
-/* ──── Feedback ─────────────────────────────────────────────────── */
-
-.contact-form-wrapper {
-  font-family: var(--font-geist-sans);
-  display: flex;
-  flex-direction: column;
-  gap: 4rem;
-}
-
+/* ----- Feedback form ----- */
 .form-feedback {
   font-size: 0.85rem;
   padding: 0.5rem 0;
   font-weight: 500;
 }
 
-.form-feedback.success { 
-  color: #6ee7b7; 
+.form-feedback.success {
+  color: #6ee7b7;
 }
 
-.form-feedback.error { 
-  color: #fca5a5; 
+.form-feedback.error {
+  color: #fca5a5;
 }
 
-/* ==========================================================================
-   RESPONSIVIDADE (Media Queries)
-   ========================================================================== */
-
-/* ── Tablets ── */
-@media (max-width: 968px) {
-  .contact-container {
-    grid-template-columns: 1fr;
-    gap: 4rem;
-  }
-
-  .contact-heading {
-    position: relative;
-    top: 0;
-  }
-
-  .contact-heading h2 {
-    font-size: clamp(3.5rem, 14vw, 8rem);
-  }
-
-  .contact-micro-label {
-    margin-top: 0;
-  }
-}
-
-
-/* ── Mobile ── */
-@media (max-width: 768px) {
-  .contact {
-    padding: 8rem 1.5rem 6rem;
-  }
-
-  .contact-form-wrapper {
-    gap: 3rem;
-  }
-
-  .contact-field input,
+.contact-field input,
   .contact-field textarea {
+
+  @media (max-width: 768px) {
     font-size: 1rem;
   }
+}
 
-  .contact-button {
+.contact-button {
+
+  @media (max-width: 768px) {
     font-size: 2rem;
   }
 }

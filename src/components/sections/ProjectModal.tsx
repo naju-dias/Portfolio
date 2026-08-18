@@ -88,7 +88,7 @@ function ModalContent({ project, onClose }: ProjectModalProps) {
 export default function ProjectModal({ project, onClose }: ProjectModalProps) {
   const isMobile = useIsMobile(768);
 
-  // Mobile: CSS puro (@keyframes)
+  // Mobile:
   if (isMobile) {
     return (
       <div className="modal-backdrop modal-backdrop--css" onClick={onClose}>

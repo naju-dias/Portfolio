@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import "./Noise.css";
+import "./Noise.scss";
 
 interface NoiseProps {
   patternSize?: number;

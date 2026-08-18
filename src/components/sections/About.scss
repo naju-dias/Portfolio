@@ -1,31 +1,41 @@
-html, body { 
-    margin: 0; 
-    padding: 0; 
-    overflow-x: 
-    hidden; 
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
 }
 
-#about * { 
-    box-sizing: border-box;
-    -webkit-font-smoothing: antialiased;
-    text-rendering: optimizeLegibility;
+#about * {
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
 #about.about-section {
-    position: relative;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 5rem 2rem 5rem;
-    overflow: hidden;
-    background: transparent;
-    --about-gap: clamp(6rem, 8vw, 12rem);
-    --pd-col-margin: 3.5rem;
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 5rem 2rem 5rem;
+  overflow: hidden;
+  background: transparent;
+  --about-gap: clamp(6rem, 8vw, 12rem);
+  --pd-col-margin: 3.5rem;
+
+  @media (max-width: 768px) {
+    padding: 3.5rem 1.25rem 8rem;
+    --about-gap: 2.5rem;
+  }
+
+  @media (max-width: 480px) {
+    padding: 3rem 1rem 7rem;
+  }
 }
 
-.about-glow {
+.about {
+
+  &-glow {
     position: absolute;
     top: 40%;
     left: 30%;
@@ -36,16 +46,16 @@ html, body {
     filter: blur(80px);
     pointer-events: none;
     z-index: 1;
-}
+  }
 
-.about-inner {
+  &-inner {
     position: relative;
     z-index: 2;
     width: 100%;
     max-width: 1100px;
-}
+  }
 
-.about-title {
+  &-title {
     font-family: var(--font-tanker);
     font-weight: 400;
     font-size: clamp(3.5rem, 10vw, 6.5rem);
@@ -54,28 +64,36 @@ html, body {
     margin-top: clamp(2rem, 7vw, 5rem);
     line-height: 0.92;
     text-align: center;
-}
+  }
 
- .about-columns {
+  &-columns {
     display: flex;
     align-items: center;
     gap: var(--about-gap);
     flex-wrap: wrap;
     justify-content: center;
     margin-top: clamp(2rem, 7vw, 5rem);
-}
 
-.about-polaroid-col { 
-    margin-top: var(--pd-col-margin); 
-}
+    @media (max-width: 968px) {
+      flex-direction: column;
+    }
+  }
 
-.about-text-col {
+  &-polaroid-col {
+    margin-top: var(--pd-col-margin);
+
+    @media (max-width: 968px) {
+      margin-top: 1.5rem;
+    }
+  }
+
+  &-text-col {
     flex: 1 1 320px;
     max-width: 504px;
     padding-top: 1rem;
-}
+  }
 
- .about-name {
+  &-name {
     font-family: var(--font-instrument-serif);
     letter-spacing: 0.07em;
     font-weight: 600;
@@ -83,60 +101,85 @@ html, body {
     color: #5e50b1;
     margin: 0 0 1.4rem;
     line-height: 1.15;
-}
 
-.about-name-highlight {
-  color: #2b2938;
-  font-weight: 700;
-}
+    @media (max-width: 768px) {
+      font-size: 1.75rem;
+    }
+  }
 
-.about-paragraph {
+  &-name-highlight {
+    color: #2b2938;
+    font-weight: 700;
+  }
+
+  &-paragraph {
     font-family: var(--font-geist-sans);
     font-weight: 500;
     font-size: clamp(1rem, 1.8vw, 1.15rem);
     color: #2b2938;
     line-height: 1.75;
     margin: 0 0 1.4rem;
-}
 
-.about-paragraph--last { 
-    margin: 0; 
-}
+    @media (max-width: 768px) {
+      font-size: 1rem;
+      line-height: 1.75;
+    }
 
-.about-text-reveal {
-  width: 100%;
-  max-width: 504px;
-}
+    @media (max-width: 480px) {
+      font-size: 1rem;
+    }
+  }
 
-/* ── Linha de pontos ── */
-.dots-line {
-    margin-top: 2.5rem;
+  &-paragraph--last {
+    margin: 0;
+  }
+
+  &-text-reveal {
     width: 100%;
-    height: 4px;
-    background-image: repeating-linear-gradient(
+    max-width: 504px;
+
+    @media (max-width: 768px) {
+      max-width: 100%;
+    }
+  }
+}
+
+/* ----- Linha de pontos ----- */
+.dots-line {
+  margin-top: 2.5rem;
+  width: 100%;
+  height: 4px;
+  background-image: repeating-linear-gradient(
                 to right,
                 #5e50b1 0px, #5e50b1 4px, transparent 4px 8px,
                 #c8c4d9 8px, #c8c4d9 12px, transparent 12px 16px,
                 #c8c4d9 16px, #c8c4d9 20px, transparent 20px 24px
             );
-    background-repeat: repeat-x;
+  background-repeat: repeat-x;
 }
 
-/* ── Pilha mobile ── */
-.pd-mobile-wrapper {
+/* ----- Pilha mobile ----- */
+.pd {
+
+  &-mobile-wrapper {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 1rem;
-}
+  }
 
-.pd-mobile-stack {
+  &-mobile-stack {
     position: relative;
     width: 240px;
     height: 300px;
-}
 
-.pd-mobile-card {
+    @media (max-width: 480px) {
+      width: 208px;
+      height: 262px;
+    }
+  }
+
+  &-mobile-card {
     position: absolute;
     inset: 0;
     background: linear-gradient(180deg, #dddadb 0%, #dddadb 50%, #5e50b1 100%);
@@ -145,24 +188,24 @@ html, body {
     box-shadow: 0 14px 34px rgba(0,0,0,0.18), 0 6px 14px rgba(0,0,0,0.1);
     transform-origin: center center;
     transition: transform 0.5s cubic-bezier(0.34, 1.3, 0.64, 1), box-shadow 0.3s ease;
-}
+  }
 
-.pd-mobile-card-inner {
+  &-mobile-card-inner {
     width: 100%;
     height: 100%;
     border-radius: 12px;
     overflow: hidden;
     background: #e7e7e7;
-}
+  }
 
-.pd-mobile-card-inner img {
+  &-mobile-card-inner img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     display: block;
-}
+  }
 
-.pd-mobile-caption {
+  &-mobile-caption {
     position: absolute;
     bottom: 12px;
     left: 0;
@@ -172,66 +215,17 @@ html, body {
     font-size: 1.15rem;
     color: #f0eef5;
     user-select: none;
-}
+  }
 
-.pd-desktop-only.about-polaroid-col {
-  margin-left: 65px;
-}
+  &-desktop-only.about-polaroid-col {
+    margin-left: 65px;
+  }
 
-/* ==========================================================================
-   RESPONSIVIDADE (Media Queries)
-   ========================================================================== */
+  &-mobile-only {
 
-/* ── Tablets ── */
-@media (max-width: 968px) {
-    .about-columns {
-        flex-direction: column;
+    @media (max-width: 768px) {
+      display: flex;
+      justify-content: center;
     }
-    
-    .about-polaroid-col { 
-        margin-top: 1.5rem; 
-    }
-}
-
-/* ── Mobile ── */
-@media (max-width: 768px) {
-    #about.about-section {
-        padding: 3.5rem 1.25rem 8rem;
-       --about-gap: 2.5rem;
-    }
-
-    .pd-mobile-only {
-        display: flex;
-        justify-content: center;
-    }
-    
-    .about-name {
-        font-size: 1.75rem;
-    }
-    
-    .about-paragraph {
-        font-size: 1rem;
-        line-height: 1.75;
-    }
-
-    .about-text-reveal {
-    max-width: 100%;
-    }
-
-}
-
-/* ── Telas muito pequenas ── */
-@media (max-width: 480px) {
-    #about.about-section {
-        padding: 3rem 1rem 7rem;
-    }
-    
-    .pd-mobile-stack {
-        width: 208px;
-        height: 262px;
-    }
-    
-    .about-paragraph {
-        font-size: 1rem;
-    }
+  }
 }

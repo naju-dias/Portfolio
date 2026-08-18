@@ -8,24 +8,24 @@ import { motion, AnimatePresence, type Variants } from "framer-motion";
 import { projects, type Project } from "@/data/projects";
 import { useIsMobile } from "@/hooks/useIsMobile";
 
-import "./Projects.css";
+import "./Projects.scss";
 
 const MotionImage = motion.create(Image);
 const ProjectModal = dynamic(() => import("./ProjectModal"), { ssr: false });
 
-// preload do modal
 let modalPromise: Promise<unknown> | null = null;
 const preloadedImages = new Set<string>();
 
 function preloadProjectModal(imageSrc?: string) {
   if (!modalPromise) modalPromise = import("./ProjectModal");
-
   if (imageSrc && !preloadedImages.has(imageSrc)) {
     preloadedImages.add(imageSrc);
     const img = new window.Image();
     img.src = imageSrc;
   }
 }
+
+const EASE = [0.16, 1, 0.3, 1] as const;
 
 const desktopHeaderContainerVariants: Variants = {
   hidden: { opacity: 0 },
@@ -34,7 +34,7 @@ const desktopHeaderContainerVariants: Variants = {
 
 const desktopHeaderItemVariants: Variants = {
   hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: EASE } },
 };
 
 const mobileHeaderContainerVariants: Variants = {
@@ -45,6 +45,39 @@ const mobileHeaderContainerVariants: Variants = {
 const mobileHeaderItemVariants: Variants = {
   hidden: { opacity: 0, y: 12 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.3, ease: "easeOut" } },
+};
+
+const imageMaskVariants: Variants = {
+  hidden: { clipPath: "inset(9% 0% 9% 0%)" },
+  visible: {
+    clipPath: "inset(0% 0% 0% 0%)",
+    transition: { duration: 1, ease: EASE },
+  },
+};
+
+const imageInnerVariants: Variants = {
+  hidden: { scale: 1.08, filter: "blur(4px)" },
+  visible: {
+    scale: 1,
+    filter: "blur(0px)",
+    transition: { duration: 1.1, ease: EASE },
+  },
+};
+
+const infoContainerVariants: Variants = {
+  hidden: {},
+  visible: {
+    transition: { staggerChildren: 0.09, delayChildren: 0.15 },
+  },
+};
+
+const infoItemVariants: Variants = {
+  hidden: { opacity: 0, y: 16 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, ease: EASE },
+  },
 };
 
 export default function Projects() {
@@ -58,24 +91,24 @@ export default function Projects() {
   const cardRectRef = useRef<DOMRect | null>(null);
   const rafRef = useRef<number | null>(null);
 
- const positionCursor = (clientX: number, clientY: number, rect: DOMRect) => {
-  const cursor = cursorRef.current;
-  if (!cursor) return;
+  const positionCursor = (clientX: number, clientY: number, rect: DOMRect) => {
+    const cursor = cursorRef.current;
+    if (!cursor) return;
 
-  const cursorWidth = cursor.offsetWidth;
-  const cursorHeight = cursor.offsetHeight;
-  const rawX = clientX - rect.left;
-  const rawY = clientY - rect.top;
-  const padding = 12;
+    const cursorWidth = cursor.offsetWidth;
+    const cursorHeight = cursor.offsetHeight;
+    const rawX = clientX - rect.left;
+    const rawY = clientY - rect.top;
+    const padding = 12;
 
-  const x = Math.min(Math.max(rawX, cursorWidth / 2 + padding), rect.width - cursorWidth / 2 - padding);
-  const y = Math.min(Math.max(rawY, cursorHeight / 2 + padding), rect.height - cursorHeight / 2 - padding);
+    const x = Math.min(Math.max(rawX, cursorWidth / 2 + padding), rect.width - cursorWidth / 2 - padding);
+    const y = Math.min(Math.max(rawY, cursorHeight / 2 + padding), rect.height - cursorHeight / 2 - padding);
 
-  const roundedX = Math.round(x - cursorWidth / 2);
-  const roundedY = Math.round(y - cursorHeight / 2);
+    const roundedX = Math.round(x - cursorWidth / 2);
+    const roundedY = Math.round(y - cursorHeight / 2);
 
-  cursor.style.transform = `translate3d(${roundedX}px, ${roundedY}px, 0)`;
-};
+    cursor.style.transform = `translate3d(${roundedX}px, ${roundedY}px, 0)`;
+  };
 
   const handleMouseEnter = (e: React.MouseEvent<HTMLDivElement>, projectId: string | number) => {
     if (!isDesktop) return;
@@ -83,7 +116,6 @@ export default function Projects() {
     cardRectRef.current = rect;
     setActiveCardId(projectId);
 
-    // posiciona ANTES do fade-in do AnimatePresence, evitando o "salto" inicial
     const clientX = e.clientX;
     const clientY = e.clientY;
     requestAnimationFrame(() => positionCursor(clientX, clientY, rect));
@@ -137,32 +169,49 @@ export default function Projects() {
               key={project.id}
               className="proj-card-wrapper"
               initial={isMobile ? { opacity: 0, y: 16 } : { opacity: 0, y: 60 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              whileInView="visible"
+              animate={undefined}
               viewport={{ once: true, amount: isMobile ? 0.05 : 0.15 }}
-              transition={
-                isMobile
-                  ? { duration: 0.3, ease: "easeOut" }
-                  : { duration: 0.8, delay: index * 0.08, ease: [0.16, 1, 0.3, 1] }
-              }
+              variants={{
+                visible: {
+                  opacity: 1,
+                  y: 0,
+                  transition: isMobile
+                    ? { duration: 0.3, ease: "easeOut" }
+                    : { duration: 0.8, delay: index * 0.08, ease: EASE },
+                },
+              }}
             >
               <div className="proj-card">
-                <div className="proj-card-info">
+                <motion.div
+                  className="proj-card-info"
+                  variants={infoContainerVariants}
+                  initial="hidden"
+                  animate="visible"
+                >
                   <div className="proj-card-info-top">
-                    <h3 className="proj-card-title">{project.title}</h3>
-                    <p className="proj-card-type">{project.type}</p>
-                    <p className="proj-card-desc">{project.description}</p>
+                    <motion.h3 variants={infoItemVariants} className="proj-card-title">
+                      {project.title}
+                    </motion.h3>
+                    <motion.p variants={infoItemVariants} className="proj-card-type">
+                      {project.type}
+                    </motion.p>
+                    <motion.p variants={infoItemVariants} className="proj-card-desc">
+                      {project.description}
+                    </motion.p>
                   </div>
 
-                  <div className="proj-card-techs">
+                  <motion.div variants={infoItemVariants} className="proj-card-techs">
                     {project.techs.map((tech) => (
                       <div key={tech.name} className="proj-card-tech-pill" style={{ ["--tech-color" as any]: tech.color }}>
                         <span className="proj-card-tech-icon" aria-hidden="true" dangerouslySetInnerHTML={{ __html: tech.icon }} />
                         <span>{tech.name}</span>
                       </div>
                     ))}
-                  </div>
+                  </motion.div>
 
-                  <button
+                  <motion.button
+                    variants={infoItemVariants}
                     className="proj-card-link"
                     onClick={() => setSelected(project)}
                     onMouseEnter={preloadProjectModal.bind(null, project.image)}
@@ -172,8 +221,8 @@ export default function Projects() {
                     <svg className="proj-link-arrow-icon" xmlns="http://www.w3.org/2000/svg" width="21" height="21" fill="#f7f7ff" viewBox="0 0 256 256" aria-hidden="true">
                       <path d="M221.66,133.66l-72,72a8,8,0,0,1-11.32-11.32L196.69,136H40a8,8,0,0,1,0-16H196.69L138.34,61.66a8,8,0,0,1,11.32-11.32l72,72A8,8,0,0,1,221.66,133.66Z" />
                     </svg>
-                  </button>
-                </div>
+                  </motion.button>
+                </motion.div>
 
                 <div
                   className="proj-card-image-wrap"
@@ -204,22 +253,30 @@ export default function Projects() {
                     </AnimatePresence>
                   )}
 
-                  <div className="proj-card-image-inner">
+                  <motion.div
+                    className="proj-card-image-inner"
+                    variants={imageMaskVariants}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true, amount: 0.2 }}
+                  >
                     {isDesktop ? (
-                      <MotionImage
-                        src={project.image}
-                        alt={project.title}
-                        fill
-                        quality={85}
-                        sizes="(max-width: 1024px) 90vw, 62vw"
-                        className="proj-card-image"
-                        whileHover={{ scale: 1.035 }}
-                        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                      />
+                      <motion.div variants={imageInnerVariants} style={{ width: "100%", height: "100%" }}>
+                        <MotionImage
+                          src={project.image}
+                          alt={project.title}
+                          fill
+                          quality={85}
+                          sizes="(max-width: 1024px) 90vw, 62vw"
+                          className="proj-card-image"
+                          whileHover={{ scale: 1.035 }}
+                          transition={{ duration: 0.8, ease: EASE }}
+                        />
+                      </motion.div>
                     ) : (
                       <Image src={project.image} alt={project.title} fill quality={85} sizes="92vw" className="proj-card-image" />
                     )}
-                  </div>
+                  </motion.div>
                 </div>
               </div>
             </motion.div>

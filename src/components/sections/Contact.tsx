@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import "./Contact.css";
+import "./Contact.scss";
 import TextScramble from "@/components/shared/TextScramble";
 import Reveal from "@/components/shared/Reveal";
 

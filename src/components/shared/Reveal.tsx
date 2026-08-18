@@ -4,7 +4,7 @@ import { motion, useInView, useReducedMotion, type Variants } from "framer-motio
 import { useRef, isValidElement } from "react";
 import type { ReactNode } from "react";
 
-import "./Reveal.css";
+import "./Reveal.scss";
 
 type RevealVariant = "soft" | "mask" | "media" | "fade" | "lines";
 

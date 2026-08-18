@@ -1,4 +1,4 @@
-import "./Footer.css";
+import "./Footer.scss";
 import stickerLogo from "@/assets/stickerLogo.png";
 import Noise from "../effects/Noise";
 import TextScramble from "../shared/TextScramble";
