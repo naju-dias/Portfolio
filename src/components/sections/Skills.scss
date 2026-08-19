@@ -54,15 +54,6 @@ html, body {
     line-height: 1;
   }
 
-  &-card-noise {
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-    pointer-events: none;
-    overflow: hidden;
-    border-radius: inherit;
-  }
-
   &-heading,
   &-categories {
     position: relative;
@@ -233,6 +224,15 @@ html, body {
     border-bottom: 2px solid;
     border-right: 2px solid;
     border-bottom-right-radius: 8px;
+  }
+
+  &-card-noise {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+    border-radius: inherit;
   }
 
   /* ----- Grid de ícones ----- */

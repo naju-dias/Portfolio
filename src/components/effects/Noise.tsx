@@ -132,10 +132,6 @@ export default function Noise({
 
       ctx.save();
 
-      /*
-       * Pequeno deslocamento a cada frame
-       * deixa o grain mais "vivo".
-       */
       const offsetX =
         (currentFrame * 17) %
         patternSize;

@@ -51,7 +51,7 @@ const imageMaskVariants: Variants = {
   hidden: { clipPath: "inset(9% 0% 9% 0%)" },
   visible: {
     clipPath: "inset(0% 0% 0% 0%)",
-    transition: { duration: 1, ease: EASE },
+    transition: { duration: 1.4, ease: EASE },
   },
 };
 
@@ -60,14 +60,14 @@ const imageInnerVariants: Variants = {
   visible: {
     scale: 1,
     filter: "blur(0px)",
-    transition: { duration: 1.1, ease: EASE },
+    transition: { duration: 1.5, ease: EASE },
   },
 };
 
 const infoContainerVariants: Variants = {
   hidden: {},
   visible: {
-    transition: { staggerChildren: 0.09, delayChildren: 0.15 },
+    transition: { staggerChildren: 0.12, delayChildren: 0.35 },
   },
 };
 
@@ -178,7 +178,7 @@ export default function Projects() {
                   y: 0,
                   transition: isMobile
                     ? { duration: 0.3, ease: "easeOut" }
-                    : { duration: 0.8, delay: index * 0.08, ease: EASE },
+                    : { duration: 1.1, delay: index * 0.12, ease: EASE },
                 },
               }}
             >

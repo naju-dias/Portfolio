@@ -5,9 +5,12 @@ import { motion, AnimatePresence } from "framer-motion";
 import TextScramble from "../shared/TextScramble";
 import LocalTime from "../shared/LocalTime";
 import { useNavTheme } from "../../hooks/useNavTheme";
+import { heroTiming, tc } from "@/config/heroTiming";
+import { useLoaderDone } from "@/context/LoaderContext";
 import "./Navbar.scss";
 
-// Links exclusivos para o Overlay
+const EASE = [0.16, 1, 0.3, 1] as const;
+
 const overlayNavItems = [
   { label: "Início", href: "#hero" },
   { label: "Projetos", href: "#projects" },
@@ -16,7 +19,6 @@ const overlayNavItems = [
   { label: "Contato", href: "#contact" },
 ];
 
-// Links para a barra do Desktop
 const desktopNavItems = overlayNavItems.filter((item) => item.label !== "Início" && item.label !== "Contato");
 
 export default function Navbar() {
@@ -24,10 +26,18 @@ export default function Navbar() {
   const [visible, setVisible] = useState(true);
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [hasEntered, setHasEntered] = useState(false);
+  const [hasScrolledOnce, setHasScrolledOnce] = useState(false);
+  const { loaderDone } = useLoaderDone();
   const lastScrollY = useRef(0);
 
   const theme = useNavTheme(48);
-  
+
+  useEffect(() => {
+    if (!loaderDone) return;
+    const timeout = setTimeout(() => setHasEntered(true), tc(heroTiming.ctasDelay));
+    return () => clearTimeout(timeout);
+  }, [loaderDone]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -35,6 +45,7 @@ export default function Navbar() {
       const diff = currentY - lastScrollY.current;
 
       setScrolled(currentY > 20);
+      if (!hasScrolledOnce && currentY > 4) setHasScrolledOnce(true);
 
       if (Math.abs(diff) > 4) {
         if (currentY < 80) {
@@ -50,9 +61,9 @@ export default function Navbar() {
 
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [hasScrolledOnce]);
 
-    useEffect(() => {
+  useEffect(() => {
     if (!menuOpen) return;
 
     const scrollY = window.scrollY;
@@ -85,6 +96,14 @@ export default function Navbar() {
     }
   };
 
+  const navAnimate = !hasScrolledOnce
+    ? { y: hasEntered ? 0 : -20, opacity: hasEntered ? 1 : 0 }
+    : { y: visible || menuOpen ? 0 : "-130%", opacity: visible || menuOpen ? 1 : 0 };
+
+  const navTransition = !hasScrolledOnce
+    ? { duration: tc(700) / 1000, ease: EASE }
+    : { type: "spring" as const, stiffness: 300, damping: 30, mass: 0.8 };
+
   return (
     <>
       <motion.nav
@@ -93,17 +112,9 @@ export default function Navbar() {
         }`}
         role="navigation"
         aria-label="Navegação principal"
-        initial={false}
-        animate={{
-          y: visible || menuOpen ? 0 : "-130%",
-          opacity: visible || menuOpen ? 1 : 0,
-        }}
-        transition={{
-          type: "spring",
-          stiffness: 300,
-          damping: 30,
-          mass: 0.8,
-        }}
+        initial={{ y: -20, opacity: 0 }}
+        animate={navAnimate}
+        transition={navTransition}
       >
         <a
           href="#hero"
@@ -113,7 +124,6 @@ export default function Navbar() {
           AJ
         </a>
 
-        {/* DESKTOP NAV (Usa desktopNavItems: Projetos, Sobre, Skills) */}
         <div className="nav-links">
           {desktopNavItems.map(({ label, href }) => (
             <a
@@ -158,7 +168,6 @@ export default function Navbar() {
         </button>
       </motion.nav>
 
-      {/* OVERLAY MENU (Usa overlayNavItems: Início, Projetos, Sobre, Skills, Contato) */}
       <AnimatePresence>
         {menuOpen && (
           <motion.div
@@ -223,10 +232,9 @@ export default function Navbar() {
                     </a>
                   </div>
                 </div>
-                
+
                 <div className="nav-overlay-time-wrapper">
                   <span className="nav-local-time"><LocalTime /></span>
-                
                 </div>
               </div>
             </div>

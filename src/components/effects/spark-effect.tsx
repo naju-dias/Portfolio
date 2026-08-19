@@ -289,12 +289,7 @@ export function SparkEffect({
         {
           threshold: 0,
 
-          /*
-           * Só desliga quando já saiu
-           * um pouquinho do Hero,
-           * para evitar liga/desliga
-           * na borda da viewport.
-           */
+          /* Só desliga quando sai um pouquinho do Hero */
           rootMargin:
             "100px 0px",
         }

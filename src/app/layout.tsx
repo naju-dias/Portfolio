@@ -8,8 +8,9 @@ import "./globals.css";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
-import LoadingScreen from "@/components/layout/LoadingScreen";
+import LoadingScreenConnected from "@/components/layout/LoadingScreenConnected";
 import Navbar from "@/components/layout/Navbar";
+import { LoaderProvider } from "@/context/LoaderContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -112,13 +113,15 @@ export default function RootLayout({
           ${jetbrainsMono.variable}
         `}
       >
-        <LoadingScreen />
+        <LoaderProvider>
+          <LoadingScreenConnected />
 
-        <div className="background-grid" />
+          <div className="background-grid" />
 
-        <Navbar />
+          <Navbar />
 
-        {children}
+          {children}
+        </LoaderProvider>
 
         <Analytics />
         <SpeedInsights />

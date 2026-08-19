@@ -5,7 +5,7 @@ import BootSequenceUI, { BOOT_LINES } from "./BootSequenceUI";
 
 const FIRST_STEP_MS = 120;
 const STEP_MS = 300;
-const HOLD_MS = 250;
+const HOLD_MS = 700;
 const EXIT_MS = 1000;
 
 const SESSION_KEY = "portfolio-loader-seen";
@@ -71,15 +71,15 @@ export default function LoadingScreen({
     timers.push(
       setTimeout(() => {
         setExiting(true);
+
+        onCompleteRef.current?.();
       }, sequenceDuration + HOLD_MS)
     );
 
     timers.push(
       setTimeout(() => {
         document.documentElement.dataset.loaderSeen = "true";
-
         setShouldShow(false);
-        onCompleteRef.current?.();
       }, sequenceDuration + HOLD_MS + EXIT_MS)
     );
 
