@@ -23,7 +23,7 @@ export default function About() {
 
       <div className="about-inner">
         <h2 className="about-title">
-          <Reveal variant="lines" duration={700} stagger={45}>
+          <Reveal variant="lines" duration={1000} stagger={75}>
             Sobre mim
           </Reveal>
         </h2>
@@ -40,6 +40,7 @@ export default function About() {
                   scrambleIntensity={50}
                   playOnView
                   viewDelay={250}
+                  hoverEnabled={false}
                 />{" "}
                 <TextScramble
                   text="Ana Julia Dias :)"
@@ -47,6 +48,7 @@ export default function About() {
                   scrambleIntensity={50}
                   playOnView
                   viewDelay={550}
+                  hoverEnabled={false}
                   className="about-name-highlight"
                 />
               </p>

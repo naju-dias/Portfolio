@@ -4,6 +4,7 @@ import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useRef, useState } from "react";
 import { motion, AnimatePresence, type Variants } from "framer-motion";
+import Reveal from "../shared/Reveal";
 
 import { projects, type Project } from "@/data/projects";
 import { useIsMobile } from "@/hooks/useIsMobile";
@@ -33,8 +34,8 @@ const desktopHeaderContainerVariants: Variants = {
 };
 
 const desktopHeaderItemVariants: Variants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: EASE } },
+  hidden: { y: "115%" },
+  visible: { y: "0%", transition: { duration: 1, ease: EASE } },
 };
 
 const mobileHeaderContainerVariants: Variants = {
@@ -43,8 +44,8 @@ const mobileHeaderContainerVariants: Variants = {
 };
 
 const mobileHeaderItemVariants: Variants = {
-  hidden: { opacity: 0, y: 12 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.3, ease: "easeOut" } },
+  hidden: { y: "115%" },
+  visible: { y: "0%", transition: { duration: 0.5, ease: EASE } },
 };
 
 const imageMaskVariants: Variants = {
@@ -154,9 +155,18 @@ export default function Projects() {
           whileInView="visible"
           viewport={{ once: true, margin: isMobile ? "-20px" : "-100px" }}
         >
-          <motion.h2 variants={headerItemVariants} className="proj-heading">
-            Projetos <br /> Selecionados
-          </motion.h2>
+          <h2 className="proj-heading">
+            <span className="proj-heading-line-mask">
+              <motion.span variants={headerItemVariants} className="proj-heading-line proj-heading-line--first">
+                Projetos
+              </motion.span>
+            </span>
+            <span className="proj-heading-line-mask">
+              <motion.span variants={headerItemVariants} className="proj-heading-line proj-heading-line--second">
+                Selecionados
+              </motion.span>
+            </span>
+          </h2>
 
           <motion.p variants={headerItemVariants} className="proj-description">
             Criando experiências imersivas com foco em desempenho, qualidade de código e solução.

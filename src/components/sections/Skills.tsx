@@ -78,17 +78,17 @@ const EASE = [0.16, 1, 0.3, 1] as const;
 const chipContainerVariants: Variants = {
   hidden: {},
   visible: {
-    transition: { staggerChildren: 0.045, delayChildren: 0.1 },
+    transition: { staggerChildren: 0.07, delayChildren: 0.15 },
   },
 };
 
 const chipItemVariants: Variants = {
-  hidden: { opacity: 0, y: 12, scale: 0.94 },
+  hidden: { opacity: 0, y: 12, scale: 0.98 },
   visible: {
     opacity: 1,
     y: 0,
     scale: 1,
-    transition: { duration: 0.55, ease: EASE },
+    transition: { duration: 0.93, ease: EASE },
   },
 };
 
@@ -96,14 +96,14 @@ export default function Skills() {
   return (
     <section id="skills" data-nav-theme="light" className="skills-section">
 
-      <Reveal y={40} duration={450}>
+      <Reveal y={56} duration={1000}>
         <div className="skills-heading">
           <h2 className="skills-title">
-            <Reveal variant="lines" duration={700} stagger={45}>
+            <Reveal variant="lines" duration={1000} stagger={75}>
               Skills & Tools
             </Reveal>
           </h2>
-          <Reveal y={40} duration={450} delay={150}>
+          <Reveal y={56} duration={1000} delay={150}>
             <p className="skills-subtitle">{'<'} As cartas que eu sei jogar {'>'}</p>
           </Reveal>
         </div>
@@ -111,7 +111,7 @@ export default function Skills() {
 
       <div className="skills-categories">
         {skillCategories.map((category, idx) => (
-          <Reveal y={30} duration={700} key={category.label} delay={idx * 100}>
+          <Reveal y={40} duration={900} key={category.label} delay={idx * 120}>
             <div className="skills-category">
               <div className="skills-category-header">
                 <span

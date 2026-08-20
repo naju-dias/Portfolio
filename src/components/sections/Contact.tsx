@@ -38,11 +38,7 @@ export default function Contact() {
 
     if (res.ok) {
       setStatus("success");
-      setForm({
-        name: "",
-        email: "",
-        message: "",
-      });
+      setForm({ name: "", email: "", message: "" });
     } else {
       setStatus("error");
     }
@@ -52,61 +48,84 @@ export default function Contact() {
     <section id="contact" className="contact">
       <div className="contact-container">
 
-        <Reveal y={24} duration={550}>
+        <Reveal y={32} duration={800}>
           <div className="contact-heading">
             <span className="contact-micro-label">
-              <span className="contact-micro-slash">
-                {"//"}
-              </span>{" "}
+              <span className="contact-micro-slash">{"//"}</span>{" "}
               contato
             </span>
 
-            <h2>
-              Vamos fazer as coisas se encaixarem
-            </h2>
+            <h2>Vamos fazer as coisas se encaixarem</h2>
           </div>
         </Reveal>
 
         <div className="contact-form-wrapper">
 
-          <Reveal y={18} duration={400} delay={0}>
-            <div className="contact-field">
-              <label>NOME</label>
+          <Reveal y={40} duration={900} delay={200}>
+            <div className="contact-fields-group">
 
-              <input
-                type="text"
-                name="name"
-                placeholder="Seu nome *"
-                value={form.name}
-                onChange={handleChange}
-              />
-            </div>
-          </Reveal>
+              <div className="contact-field">
+                <label>
+                  <TextScramble
+                    text="NOME"
+                    duration={1500}
+                    scrambleIntensity={60}
+                    playOnView
+                    viewDelay={200}
+                    hoverEnabled={false}
+                  />
+                </label>
 
-          <Reveal y={18} duration={400} delay={80}>
-            <div className="contact-field">
-              <label>EMAIL</label>
+                <input
+                  type="text"
+                  name="name"
+                  placeholder="Seu nome *"
+                  value={form.name}
+                  onChange={handleChange}
+                />
+              </div>
 
-              <input
-                type="email"
-                name="email"
-                placeholder="exemplo@email.com *"
-                value={form.email}
-                onChange={handleChange}
-              />
-            </div>
-          </Reveal>
+              <div className="contact-field">
+                <label>
+                  <TextScramble
+                    text="EMAIL"
+                    duration={1500}
+                    scrambleIntensity={60}
+                    playOnView
+                    viewDelay={280}
+                    hoverEnabled={false}
+                  />
+                </label>
 
-          <Reveal y={18} duration={400} delay={160}>
-            <div className="contact-field">
-              <label>SUA MENSAGEM</label>
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="exemplo@email.com *"
+                  value={form.email}
+                  onChange={handleChange}
+                />
+              </div>
 
-              <textarea
-                name="message"
-                placeholder="Olá Ana, você pode me ajudar com... *"
-                value={form.message}
-                onChange={handleChange}
-              />
+              <div className="contact-field">
+                <label>
+                  <TextScramble
+                    text="SUA MENSAGEM"
+                    duration={1500}
+                    scrambleIntensity={60}
+                    playOnView
+                    viewDelay={360}
+                    hoverEnabled={false}
+                  />
+                </label>
+
+                <textarea
+                  name="message"
+                  placeholder="Olá Ana, você pode me ajudar com... *"
+                  value={form.message}
+                  onChange={handleChange}
+                />
+              </div>
+
             </div>
           </Reveal>
 
@@ -122,7 +141,7 @@ export default function Contact() {
             </p>
           )}
 
-          <Reveal y={12} duration={350} delay={240}>
+          <Reveal y={28} duration={800} delay={400}>
             <div className="container-botao-direita">
               <button
                 className="btn-enviar-scramble"
@@ -131,11 +150,7 @@ export default function Contact() {
               >
                 <span className="btn-text-underline">
                   <TextScramble
-                    text={
-                      status === "loading"
-                        ? "ENVIANDO..."
-                        : "ENVIAR MENSAGEM"
-                    }
+                    text={status === "loading" ? "ENVIANDO..." : "ENVIAR MENSAGEM"}
                     duration={900}
                   />
                 </span>

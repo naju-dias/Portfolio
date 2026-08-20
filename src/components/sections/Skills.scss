@@ -207,22 +207,24 @@ html, body {
     width: 16px;
     height: 16px;
     pointer-events: none;
-    border-color: rgba(128, 109, 237, 0.55);
+    z-index: 2;
   }
 
   &-card::before {
     top: -1px;
     left: -1px;
-    border-top: 2px solid;
-    border-left: 2px solid;
+
+    border: 2px solid var(--card);
+
     border-top-left-radius: 8px;
   }
 
   &-card::after {
     bottom: -1px;
     right: -1px;
-    border-bottom: 2px solid;
-    border-right: 2px solid;
+
+    border: 2px solid var(--card);
+
     border-bottom-right-radius: 8px;
   }
 

@@ -4,6 +4,7 @@ import Noise from "../effects/Noise";
 import TextScramble from "../shared/TextScramble";
 import Image from "next/image";
 import BackToTopButton from "../ui/BackToTopButton";
+import Reveal from "@/components/shared/Reveal";
 
 import LocalTime from "../shared/LocalTime2";
 
@@ -33,85 +34,92 @@ export default function Footer() {
         </div>
 
         <div className="footer-container">
+          <div className="footer-top">
+            <Reveal
+              y={22}
+              duration={950}
+              threshold={0.2}
+            >
+              <div className="footer-brand">
+                <Image
+                  src={stickerLogo}
+                  alt="Naju Dias"
+                  width={166}
+                  height={166}
+                  quality={90}
+                  className="footer-brand__image"
+                />
 
-        <div className="footer-top">
+                <div className="footer-brand__text">
+                  <h3>Naju Dias</h3>
+                  <h4>Engenheira de Software</h4>
+                </div>
+              </div>
+            </Reveal>
 
-        {/* LOGO */}
-        <div className="footer-brand">
-          <Image
-            src={stickerLogo}
-            alt="Naju Dias"
-            width={166}
-            height={166}
-            quality={90}
-            className="footer-brand__image"
-          />
-          <div className="footer-brand__text">
-            <h3>Naju Dias <br /></h3>
-            <h4>Engenheira de Software</h4>
+            <Reveal
+              y={22}
+              duration={950}
+              delay={100}
+              threshold={0.2}
+            >
+              <div className="footer-right-group">
+                <div className="footer-socials-wrapper">
+                  <span className="footer-socials-title">
+                    REDES SOCIAIS
+                  </span>
+                  
+              <div className="footer-socials">
+                <a
+                  href="https://www.linkedin.com/in/najudias"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="footer-social-btn linkedin"
+                >
+                  <TextScramble text="LinkedIn" duration={800} />
+                </a>
+
+                <a
+                  href="https://github.com/naju-dias"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="footer-social-btn github"
+                >
+                  <TextScramble text="GitHub" duration={800} />
+                </a>
+
+                <a
+                  href="mailto:anajuliaalvesd10@gmail.com"
+                  className="footer-social-btn email"
+                >
+                  <TextScramble text="Email" duration={800} />
+                </a>
+              </div>
+              </div>
+
+                <div className="footer-local-time">
+                  <span className="footer-socials-title">
+                    HORA LOCAL
+                  </span>
+
+                  <LocalTime />
+                </div>
+              </div>
+            </Reveal>
           </div>
-        </div>
 
-        {/* SOCIALS + LOCAL TIME */}
-        <div className="footer-right-group">
+          <div className="footer-divider" />
+          <div className="footer-bottom">
+            <p className="footer-bottom__copy">
+              © 2026 Ana Julia Dias
+            </p>
 
-          
-        <div className="footer-socials-wrapper">
-        <span className="footer-socials-title">REDES SOCIAIS</span>
-        <div className="footer-socials">
-          <a
-            href="https://www.linkedin.com/in/najudias"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="footer-social-btn linkedin"
-          >
-            <TextScramble text="LinkedIn" duration={800} />
-          </a>
-
-          <a
-            href="https://github.com/naju-dias"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="footer-social-btn github"
-          >
-            <TextScramble text="GitHub" duration={800} />
-          </a>
-
-          <a
-            href="mailto:anajuliaalvesd10@gmail.com"
-            className="footer-social-btn email"
-          >
-            <TextScramble text="Email" duration={800} />
-          </a>
+            <p className="footer-bottom__made">
+              Feito com <span className="footer-heart">♥</span> e Next.js
+            </p>
         </div>
       </div>
 
-        <div className="footer-local-time">
-          <span className="footer-socials-title">HORA LOCAL</span>
-          <LocalTime />
-        </div>
-
-      </div>
-
-      </div>
-
-      {/* CENTER LINE */}
-      <div className="footer-divider" />
-
-      <div className="footer-bottom">
-      {/* COPYRIGHT */}
-          <p className="footer-bottom__copy">
-            © 2026 Ana Julia Dias
-          </p>
-
-          <p className="footer-bottom__made">
-            Feito com <span className="footer-heart">♥ </span> e Next.js
-          </p>
-
-      </div>
-    </div>
-
-    {/* BACK TO TOP */}
     <BackToTopButton />
 
     </footer>

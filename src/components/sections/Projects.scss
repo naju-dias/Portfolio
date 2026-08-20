@@ -37,15 +37,34 @@
     font-family: var(--font-tanker);
     font-weight: 400;
     font-size: clamp(2.8rem, 6vw, 5rem);
-    background: linear-gradient(180deg, var(--foreground) 0%, var(--foreground) 45%, #5e50b1 90%);
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
     margin: 0;
     letter-spacing: 0.02em;
     line-height: 1;
     text-transform: uppercase;
     flex-shrink: 0;
+  }
+
+  &-heading-line-mask {
+    display: block;
+    overflow: hidden;
+  }
+
+  &-heading-line {
+    display: inline-block;
+    background: linear-gradient(180deg, var(--foreground) 0%, var(--foreground) 45%, #5e50b1 90%);
+    background-size: 100% 200%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    will-change: transform;
+  }
+
+  &-heading-line--first {
+    background-position: 0% 0%;
+  }
+
+  &-heading-line--second {
+    background-position: 0% 100%;
   }
 
   &-description {

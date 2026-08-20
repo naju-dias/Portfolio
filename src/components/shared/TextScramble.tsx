@@ -13,6 +13,7 @@ interface TextScrambleProps {
   style?: CSSProperties;
   playOnView?: boolean;
   viewDelay?: number;
+  hoverEnabled?: boolean; // NOVO
 }
 
 export default function TextScramble({
@@ -24,6 +25,7 @@ export default function TextScramble({
   style,
   playOnView = false,
   viewDelay = 0,
+  hoverEnabled = true,
 }: TextScrambleProps) {
   const [displayText, setDisplayText] = useState(
     playOnView ? "" : text
@@ -47,7 +49,6 @@ export default function TextScramble({
     }
   }, [text, className]);
 
-  // dispara o scramble quando entra em viewport
   useEffect(() => {
     if (!playOnView || hasPlayedOnViewRef.current || !isInView) return;
 
@@ -62,15 +63,17 @@ export default function TextScramble({
   const active = isHovering || viewTriggered;
 
   useEffect(() => {
-    if (!active) {
-      if (!playOnView) startTransition(() => setDisplayText(text));
-      return;
-    }
+      if (!active) {
+        if (!playOnView || hasPlayedOnViewRef.current) {
+          startTransition(() => setDisplayText(text));
+        }
+        return;
+      }
 
-    startTimeRef.current = Date.now();
-    let lastFrameTime = 0;
+      startTimeRef.current = Date.now();
+      let lastFrameTime = 0;
 
-    const animate = () => {
+      const animate = () => {
       const now = Date.now();
       const elapsed = now - startTimeRef.current;
       const progress = Math.min(elapsed / duration, 1);
@@ -123,8 +126,8 @@ export default function TextScramble({
         overflow: "hidden",
         whiteSpace: "nowrap",
       }}
-      onMouseEnter={() => setIsHovering(true)}
-      onMouseLeave={() => setIsHovering(false)}
+      onMouseEnter={hoverEnabled ? () => setIsHovering(true) : undefined}
+      onMouseLeave={hoverEnabled ? () => setIsHovering(false) : undefined}
     >
       <span
         ref={measureRef}
