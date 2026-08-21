@@ -26,3 +26,4 @@ export { threejsIcon } from "./threejs";
 export { prismalightIcon } from "./prismalight";
 export { framerlightIcon } from "./framerlight";
 export { threejsmodalIcon } from "./threejsmodal";
+export { scssIcon } from "./scss";

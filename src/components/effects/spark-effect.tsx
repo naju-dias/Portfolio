@@ -18,6 +18,7 @@ type SparkEffectProps = {
   color?: string;
   randColor?: boolean;
   acceleration?: [number, number];
+  fitContainer?: boolean;
 };
 
 type SparkType = {
@@ -41,6 +42,7 @@ export function SparkEffect({
   color = "150, 150, 150",
   randColor = true,
   acceleration = [5, 1],
+  fitContainer = false,
 }: SparkEffectProps) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
@@ -87,6 +89,12 @@ export function SparkEffect({
     let isVisible = true;
 
     function setCanvasWidth() {
+      if (fitContainer && canvas.parentElement) {
+        canvas.width = canvas.parentElement.clientWidth;
+        canvas.height = canvas.parentElement.clientHeight;
+        return;
+      }
+
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
     }
@@ -157,19 +165,18 @@ export function SparkEffect({
     }
 
     function addSpark() {
-      const x = rand(
-        -200,
-        window.innerWidth + 200
-      );
+      const width = fitContainer
+        ? canvas.width
+        : window.innerWidth;
 
-      const y = rand(
-        -200,
-        window.innerHeight + 200
-      );
+      const height = fitContainer
+        ? canvas.height
+        : window.innerHeight;
 
-      sparks.push(
-        new Spark(x, y)
-      );
+      const x = rand(-50, width + 50);
+      const y = rand(-50, height + 50);
+
+      sparks.push(new Spark(x, y));
     }
 
     function drawSpark(

@@ -48,7 +48,7 @@ export default function Contact() {
     <section id="contact" className="contact">
       <div className="contact-container">
 
-        <Reveal y={32} duration={800}>
+        <Reveal y={40} duration={1300} delay={200} threshold={0.4}>
           <div className="contact-heading">
             <span className="contact-micro-label">
               <span className="contact-micro-slash">{"//"}</span>{" "}
@@ -61,7 +61,7 @@ export default function Contact() {
 
         <div className="contact-form-wrapper">
 
-          <Reveal y={40} duration={900} delay={200}>
+          <Reveal y={40} duration={900} delay={350} threshold={0.4}>
             <div className="contact-fields-group">
 
               <div className="contact-field">
@@ -71,7 +71,7 @@ export default function Contact() {
                     duration={1500}
                     scrambleIntensity={60}
                     playOnView
-                    viewDelay={200}
+                    viewDelay={250}
                     hoverEnabled={false}
                   />
                 </label>
@@ -141,7 +141,7 @@ export default function Contact() {
             </p>
           )}
 
-          <Reveal y={28} duration={800} delay={400}>
+          <Reveal y={28} duration={850} delay={400} threshold={0.02}>
             <div className="container-botao-direita">
               <button
                 className="btn-enviar-scramble"

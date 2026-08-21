@@ -4,7 +4,6 @@ import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useRef, useState } from "react";
 import { motion, AnimatePresence, type Variants } from "framer-motion";
-import Reveal from "../shared/Reveal";
 
 import { projects, type Project } from "@/data/projects";
 import { useIsMobile } from "@/hooks/useIsMobile";
@@ -48,6 +47,11 @@ const mobileHeaderItemVariants: Variants = {
   visible: { y: "0%", transition: { duration: 0.5, ease: EASE } },
 };
 
+const descriptionVariants: Variants = {
+  hidden: { opacity: 0, y: 16 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.8, delay: 0.25, ease: EASE } },
+};
+
 const imageMaskVariants: Variants = {
   hidden: { clipPath: "inset(9% 0% 9% 0%)" },
   visible: {
@@ -62,22 +66,6 @@ const imageInnerVariants: Variants = {
     scale: 1,
     filter: "blur(0px)",
     transition: { duration: 1.5, ease: EASE },
-  },
-};
-
-const infoContainerVariants: Variants = {
-  hidden: {},
-  visible: {
-    transition: { staggerChildren: 0.12, delayChildren: 0.35 },
-  },
-};
-
-const infoItemVariants: Variants = {
-  hidden: { opacity: 0, y: 16 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.6, ease: EASE },
   },
 };
 
@@ -168,7 +156,7 @@ export default function Projects() {
             </span>
           </h2>
 
-          <motion.p variants={headerItemVariants} className="proj-description">
+          <motion.p variants={descriptionVariants} className="proj-description">
             Criando experiências imersivas com foco em desempenho, qualidade de código e solução.
           </motion.p>
         </motion.div>
@@ -193,46 +181,61 @@ export default function Projects() {
               }}
             >
               <div className="proj-card">
-                <motion.div
-                  className="proj-card-info"
-                  variants={infoContainerVariants}
-                  initial="hidden"
-                  animate="visible"
-                >
+                <div className="proj-card-info">
                   <div className="proj-card-info-top">
-                    <motion.h3 variants={infoItemVariants} className="proj-card-title">
+                    <h3 className="proj-card-title">
                       {project.title}
-                    </motion.h3>
-                    <motion.p variants={infoItemVariants} className="proj-card-type">
+                    </h3>
+
+                    <p className="proj-card-type">
                       {project.type}
-                    </motion.p>
-                    <motion.p variants={infoItemVariants} className="proj-card-desc">
+                    </p>
+
+                    <p className="proj-card-desc">
                       {project.description}
-                    </motion.p>
+                    </p>
                   </div>
 
-                  <motion.div variants={infoItemVariants} className="proj-card-techs">
+                  <div className="proj-card-techs">
                     {project.techs.map((tech) => (
-                      <div key={tech.name} className="proj-card-tech-pill" style={{ ["--tech-color" as any]: tech.color }}>
-                        <span className="proj-card-tech-icon" aria-hidden="true" dangerouslySetInnerHTML={{ __html: tech.icon }} />
+                      <div
+                        key={tech.name}
+                        className="proj-card-tech-pill"
+                        style={{
+                          ["--tech-color" as any]: tech.color,
+                        }}
+                      >
+                        <span
+                          className="proj-card-tech-icon"
+                          aria-hidden="true"
+                          dangerouslySetInnerHTML={{ __html: tech.icon }}
+                        />
                         <span>{tech.name}</span>
                       </div>
                     ))}
-                  </motion.div>
+                  </div>
 
-                  <motion.button
-                    variants={infoItemVariants}
+                  <button
                     className="proj-card-link"
                     onClick={() => setSelected(project)}
                     onMouseEnter={preloadProjectModal.bind(null, project.image)}
                     onTouchStart={preloadProjectModal.bind(null, project.image)}
                   >
                     Ver Projeto
-                    <svg className="proj-link-arrow-icon" xmlns="http://www.w3.org/2000/svg" width="21" height="21" fill="#f7f7ff" viewBox="0 0 256 256" aria-hidden="true">
+
+                    <svg
+                      className="proj-link-arrow-icon"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="21"
+                      height="21"
+                      fill="#f7f7ff"
+                      viewBox="0 0 256 256"
+                      aria-hidden="true"
+                    >
                       <path d="M221.66,133.66l-72,72a8,8,0,0,1-11.32-11.32L196.69,136H40a8,8,0,0,1,0-16H196.69L138.34,61.66a8,8,0,0,1,11.32-11.32l72,72A8,8,0,0,1,221.66,133.66Z" />
                     </svg>
-                  </motion.button>
-                </motion.div>
+                  </button>
+                </div>
 
                 <div
                   className="proj-card-image-wrap"

@@ -5,8 +5,9 @@ import { motion, type Variants } from "framer-motion";
 import "./Skills.scss";
 import Reveal from "../shared/Reveal";
 import { SparkEffect } from "../effects/spark-effect";
+import { MonitorIcon, DatabaseIcon, WrenchIcon, SwatchesIcon } from "@phosphor-icons/react";
 
-import {htmlIcon, cssIcon, tailwindIcon, javascriptIcon, typescriptIcon, reactIcon, pythonIcon, nextjsIcon, mysqlIcon, dockerIcon, gitIcon, githubIcon, jestIcon, figmaIcon, framerIcon, notionIcon, claudeIcon, fastapiIcon, postgresqlIcon, prismaIcon, vercelIcon } from "../../lib/icons";
+import {htmlIcon, cssIcon, tailwindIcon, javascriptIcon, typescriptIcon, reactIcon, pythonIcon, nextjsIcon, mysqlIcon, dockerIcon, gitIcon, githubIcon, jestIcon, figmaIcon, framerIcon, notionIcon, claudeIcon, fastapiIcon, postgresqlIcon, prismaIcon, vercelIcon, scssIcon } from "../../lib/icons";
 
 type Skill = {
   name: string;
@@ -16,32 +17,28 @@ type Skill = {
 
 type SkillCategory = {
   label: string;
-  icon: string;
+  icon: React.ReactNode;
   skills: Skill[];
 };
-
-const frontendCategoryIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M6 21v-2l1-1H4q-.825 0-1.412-.587T2 16V5q0-.825.588-1.412T4 3h16q.825 0 1.413.588T22 5v11q0 .825-.587 1.413T20 18h-3l1 1v2zm-2-5h16V5H4zm0 0V5z"/></svg>`;
-const backendCategoryIcon = `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><ellipse cx="12" cy="5" rx="8" ry="3" stroke="currentColor" stroke-width="2"/><path d="M4 5V19C4 20.6569 7.58172 22 12 22C16.4183 22 20 20.6569 20 19V5" stroke="currentColor" stroke-width="2"/><path d="M4 12C4 13.6569 7.58172 15 12 15C16.4183 15 20 13.6569 20 12" stroke="currentColor" stroke-width="2"/></svg>`;
-const toolingCategoryIcon = `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
-const designCategoryIcon = `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="13.5" cy="6.5" r="2.5" stroke="currentColor" stroke-width="2"/><circle cx="19" cy="12" r="2.5" stroke="currentColor" stroke-width="2"/><circle cx="6" cy="12" r="4" stroke="currentColor" stroke-width="2"/><circle cx="13.5" cy="17.5" r="2.5" stroke="currentColor" stroke-width="2"/></svg>`;
 
 const skillCategories: SkillCategory[] = [
   {
     label: "Frontend",
-    icon: frontendCategoryIcon,
+    icon: <MonitorIcon size={68} weight="regular" />,
     skills: [
-      { name: "HTML", color: "#E34F26", icon: htmlIcon },
-      { name: "CSS", color: "#1572B6", icon: cssIcon },
-      { name: "Tailwind CSS", color: "#38bdf8", icon: tailwindIcon },
-      { name: "JavaScript", color: "#d9c421", icon: javascriptIcon },
-      { name: "TypeScript", color: "#3178C6", icon: typescriptIcon },
       { name: "React", color: "#61DAFB", icon: reactIcon },
       { name: "Next.js", color: "#000000", icon: nextjsIcon },
+      { name: "TypeScript", color: "#3178C6", icon: typescriptIcon },
+      { name: "JavaScript", color: "#d9c421", icon: javascriptIcon },
+      { name: "HTML", color: "#E34F26", icon: htmlIcon },
+      { name: "CSS", color: "#1572B6", icon: cssIcon },
+      { name: "SCSS", color: "#cf649a", icon: scssIcon },
+      { name: "Tailwind CSS", color: "#38bdf8", icon: tailwindIcon },
     ],
   },
   {
     label: "Backend & Dados",
-    icon: backendCategoryIcon,
+    icon: <DatabaseIcon size={68} weight="regular" />,
     skills: [
       { name: "Python", color: "#3776AB", icon: pythonIcon },
       { name: "FastAPI", color: "#009688", icon: fastapiIcon },
@@ -52,7 +49,7 @@ const skillCategories: SkillCategory[] = [
   },
   {
     label: "Tooling & DevOps",
-    icon: toolingCategoryIcon,
+    icon: <WrenchIcon size={68} weight="regular" />,
     skills: [
       { name: "Docker", color: "#008fe2", icon: dockerIcon },
       { name: "Git", color: "#F05032", icon: gitIcon },
@@ -63,7 +60,7 @@ const skillCategories: SkillCategory[] = [
   },
   {
     label: "Design & Workflow",
-    icon: designCategoryIcon,
+    icon: <SwatchesIcon size={48} weight="regular" />,
     skills: [
       { name: "Figma", color: "#f4511e", icon: figmaIcon },
       { name: "Framer", color: "#000000", icon: framerIcon },
@@ -111,30 +108,48 @@ export default function Skills() {
 
       <div className="skills-categories">
         {skillCategories.map((category, idx) => (
-          <Reveal y={40} duration={900} key={category.label} delay={idx * 120}>
+          <Reveal y={40} duration={900} key={category.label} delay={idx * 120} threshold={0.05}>
             <div className="skills-category">
-              <div className="skills-category-header">
+
+            {/* Header desktop */}
+            <div className="skills-category-header skills-category-header--desktop">
+              <span
+                className="skills-category-icon"
+                aria-hidden="true"
+              >
+                {category.icon}
+              </span>
+
+              <span className="skills-category-label">
+                {category.label}
+              </span>
+            </div>
+
+            <div className="skills-card">
+
+              {/* Header mobile */}
+              <div className="skills-category-header skills-category-header--mobile">
                 <span
                   className="skills-category-icon"
                   aria-hidden="true"
-                  dangerouslySetInnerHTML={{ __html: category.icon }}
-                />
-                <span className="skills-bracket">[</span>
-                <span className="skills-category-label">{category.label}</span>
-                <span className="skills-bracket">]</span>
-              </div>
+                >
+                  {category.icon}
+                </span>
 
-              <div className="skills-card">
-                <div className="skills-card-noise" aria-hidden="true">
-                  <SparkEffect />
+                <span className="skills-category-label">
+                  {category.label}
+                </span>
+              </div>
+                <div className="skills-card-spark" aria-hidden="true">
+                  <SparkEffect fitContainer amount={25} maxopacity={0.60} speed={0.006} />
                 </div>
 
+                {/* Icons */}
                 <motion.div
                   className="skills-icons-grid"
                   variants={chipContainerVariants}
                   initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true, amount: 0.3 }}
+                  animate="visible"
                 >
                   {category.skills.map((skill) => (
                     <motion.div
