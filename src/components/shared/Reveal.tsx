@@ -75,14 +75,7 @@ export default function Reveal({
     ease: EASE,
   };
 
-  /*
-   * LINES
-   * direction="left" -> uma única cortina contínua revelando a frase inteira
-   *                     da esquerda pra direita (clip-path).
-   * direction="up"    -> cada palavra sobe individualmente, com stagger.
-   * Ideal para headings e frases de destaque de cor sólida.
-   * NÃO usar em texto com gradiente/background-clip: text (usar "mask" nesses casos).
-   */
+  /* LINES (headings e frases de destaque de cor sólida) */
   if (variant === "lines") {
     if (direction === "left") {
       return (
@@ -163,11 +156,7 @@ export default function Reveal({
     );
   }
 
-  /*
-   * SOFT
-   * Entrada editorial suave.
-   * Ideal para textos, labels, infos e componentes menores.
-   */
+  /* SOFT (textos, labels, infos e componentes menores)*/
   if (variant === "soft") {
     return (
       <motion.div
@@ -179,12 +168,10 @@ export default function Reveal({
             ? {
                 opacity: 1,
                 y: 0,
-                filter: "blur(0px)",
               }
             : {
                 opacity: 0,
                 y,
-                filter: "blur(4px)",
               }
         }
         transition={transition}
@@ -194,14 +181,7 @@ export default function Reveal({
     );
   }
 
-  /*
-   * MASK
-   * Conteúdo emerge de dentro do próprio layout.
-   * Ideal para headings grandes e texto com gradiente.
-   *
-   * Movimento propositalmente simples:
-   * sem blur e sem rotateX para ficar mais editorial.
-   */
+  /* MASK (headings grandes e texto com gradiente) */
   if (variant === "mask") {
     return (
       <div
@@ -230,11 +210,7 @@ export default function Reveal({
     );
   }
 
-  /*
-   * MEDIA
-   * Reveal por máscara + zoom muito sutil.
-   * Para imagens, cards, mockups e vídeos.
-   */
+  /* MEDIA (imagens e cards) */
   if (variant === "media") {
     return (
       <motion.div
@@ -279,11 +255,7 @@ export default function Reveal({
     );
   }
 
-  /*
-   * FADE
-   * Quase imperceptível.
-   * Para elementos que não precisam disputar atenção.
-   */
+  /* FADE (elementos secundários) */
   return (
     <motion.div
       ref={ref as React.RefObject<HTMLDivElement>}
