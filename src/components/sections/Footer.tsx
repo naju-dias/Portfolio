@@ -15,7 +15,7 @@ export default function Footer() {
           position: "relative",
           width: "100%",
           minHeight: "250px",
-          backgroundColor: "#0b0b11",
+          backgroundColor: "#06060a",
           overflow: "hidden",
           display: "flex",
           alignItems: "center",

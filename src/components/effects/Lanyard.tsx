@@ -58,7 +58,7 @@ export default function Lanyard({
       },
       {
         threshold: 0,
-        rootMargin: "150px 0px",
+        rootMargin: "30px 0px",
       }
     );
 
@@ -105,7 +105,7 @@ export default function Lanyard({
           interpolate
           updateLoop="independent"
         >
-          <Band />
+          <Band isVisible={isVisible} />
         </Physics>
 
         {/* Iluminação original */}
@@ -152,14 +152,16 @@ export default function Lanyard({
 interface BandProps {
   maxSpeed?: number;
   minSpeed?: number;
+  isVisible?: boolean;
 }
 
 function Band({
   maxSpeed = 50,
   minSpeed = 0,
+  isVisible = true,
 }: BandProps) {
-  /* Refs */
 
+  /* Refs */
   const band = useRef<any>(null);
   const fixed = useRef<any>(null);
   const j1 = useRef<any>(null);
@@ -168,7 +170,6 @@ function Band({
   const card = useRef<any>(null);
 
   /* R3F */
-
   const { width, height } = useThree((state) => state.size);
   const invalidate = useThree((state) => state.invalidate);
 
@@ -249,6 +250,7 @@ function Band({
   /* ------- FRAME ------- */
 
   useFrame((state, delta) => {
+    if (!isVisible) return;
     /* Impede delta enorme caso o browser pule frames ou a física tenha acabado de voltar da pausa */
     const dt = Math.min(delta, 1 / 30);
 

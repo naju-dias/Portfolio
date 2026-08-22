@@ -21,7 +21,7 @@ export const projects: Project[] = [
     description:
       'Site pessoal desenvolvido do zero para apresentar minha trajetória como Engenheira de Software.',
     longDescription:
-      'Site pessoal desenvolvido do zero para apresentar minha trajetória como Engenheira de Software, com forte foco em UX e identidade visual autoral. O destaque é a "Carta Coringa": um cartão 3D inspirado em cards de trading game, renderizado com física real via React Three Fiber e Rapier, que reage ao movimento do usuário como um crachá suspenso. O restante da interface acompanha esse cuidado visual, com transições de fundo controladas por scroll, tipografia customizada e microinterações em toda a navegação.',
+      'Site pessoal desenvolvido do zero para apresentar minha trajetória como Engenheira de Software, com forte foco em UX e identidade visual autoral. O destaque é o "Lanyard Card de Yugioh": um cartão 3D inspirado em cards de trading game, renderizado com física real via React Three Fiber e Rapier, que reage ao movimento do usuário como um crachá suspenso. O restante da interface acompanha esse cuidado visual, com transições de fundo controladas por scroll, tipografia customizada e microinterações em toda a navegação.',
     image: '/projects/projeto1.png',
     liveUrl: 'https://seusite.vercel.app',
     codeUrl: 'https://github.com/seugithub/portfolio',

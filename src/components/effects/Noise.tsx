@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+
 import "./Noise.scss";
 
 interface NoiseProps {
@@ -29,36 +30,32 @@ export default function Noise({
     if (!ctx) return;
 
     let timer: ReturnType<typeof setInterval> | null = null;
-    let visible = true;
+    let visible = false;
     let currentFrame = 0;
 
     const textures: HTMLCanvasElement[] = [];
 
     const createTexture = () => {
-      const textureCanvas =
-        document.createElement("canvas");
+      const textureCanvas = document.createElement("canvas");
 
       textureCanvas.width = patternSize;
       textureCanvas.height = patternSize;
 
-      const textureCtx =
-        textureCanvas.getContext("2d");
+      const textureCtx = textureCanvas.getContext("2d");
 
       if (!textureCtx) {
         return textureCanvas;
       }
 
-      const imageData =
-        textureCtx.createImageData(
-          patternSize,
-          patternSize
-        );
+      const imageData = textureCtx.createImageData(
+        patternSize,
+        patternSize
+      );
 
       const data = imageData.data;
 
       for (let i = 0; i < data.length; i += 4) {
-        const value =
-          Math.random() * 255;
+        const value = Math.random() * 255;
 
         data[i] = value;
         data[i + 1] = value;
@@ -66,11 +63,7 @@ export default function Noise({
         data[i + 3] = patternAlpha;
       }
 
-      textureCtx.putImageData(
-        imageData,
-        0,
-        0
-      );
+      textureCtx.putImageData(imageData, 0, 0);
 
       return textureCanvas;
     };
@@ -80,19 +73,15 @@ export default function Noise({
     }
 
     const resize = () => {
-      const rect =
-        canvas.getBoundingClientRect();
+      const rect = canvas.getBoundingClientRect();
 
       const dpr = Math.min(
         window.devicePixelRatio || 1,
         1.5
       );
 
-      canvas.width =
-        Math.floor(rect.width * dpr);
-
-      canvas.height =
-        Math.floor(rect.height * dpr);
+      canvas.width = Math.floor(rect.width * dpr);
+      canvas.height = Math.floor(rect.height * dpr);
 
       ctx.setTransform(
         dpr,
@@ -105,21 +94,16 @@ export default function Noise({
     };
 
     const draw = () => {
-      if (!visible || document.hidden) {
-        return;
-      }
+      if (!visible || document.hidden) return;
 
-      const rect =
-        canvas.getBoundingClientRect();
+      const rect = canvas.getBoundingClientRect();
 
-      const texture =
-        textures[currentFrame];
+      const texture = textures[currentFrame];
 
-      const pattern =
-        ctx.createPattern(
-          texture,
-          "repeat"
-        );
+      const pattern = ctx.createPattern(
+        texture,
+        "repeat"
+      );
 
       if (!pattern) return;
 
@@ -133,12 +117,10 @@ export default function Noise({
       ctx.save();
 
       const offsetX =
-        (currentFrame * 17) %
-        patternSize;
+        (currentFrame * 17) % patternSize;
 
       const offsetY =
-        (currentFrame * 29) %
-        patternSize;
+        (currentFrame * 29) % patternSize;
 
       ctx.translate(
         -offsetX,
@@ -157,32 +139,57 @@ export default function Noise({
       ctx.restore();
 
       currentFrame =
-        (currentFrame + 1) %
-        textures.length;
+        (currentFrame + 1) % textures.length;
+    };
+
+    const start = () => {
+      if (
+        !visible ||
+        document.hidden ||
+        timer !== null
+      ) {
+        return;
+      }
+
+      draw();
+
+      timer = setInterval(
+        draw,
+        refreshInterval
+      );
+    };
+
+    const stop = () => {
+      if (timer !== null) {
+        clearInterval(timer);
+        timer = null;
+      }
+    };
+
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        stop();
+      } else if (visible) {
+        start();
+      }
     };
 
     resize();
-    draw();
 
-    timer = setInterval(
-      draw,
-      refreshInterval
-    );
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        visible = entry.isIntersecting;
 
-    const observer =
-      new IntersectionObserver(
-        ([entry]) => {
-          visible =
-            entry.isIntersecting;
-
-          if (visible) {
-            draw();
-          }
-        },
-        {
-          threshold: 0,
+        if (visible) {
+          start();
+        } else {
+          stop();
         }
-      );
+      },
+      {
+        threshold: 0,
+      }
+    );
 
     observer.observe(canvas);
 
@@ -190,6 +197,11 @@ export default function Noise({
       "resize",
       resize,
       { passive: true }
+    );
+
+    document.addEventListener(
+      "visibilitychange",
+      handleVisibilityChange
     );
 
     return () => {
@@ -200,9 +212,12 @@ export default function Noise({
         resize
       );
 
-      if (timer) {
-        clearInterval(timer);
-      }
+      document.removeEventListener(
+        "visibilitychange",
+        handleVisibilityChange
+      );
+
+      stop();
     };
   }, [
     patternSize,
