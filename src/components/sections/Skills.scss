@@ -322,23 +322,20 @@ html, body {
     border-radius: inherit;
     padding: 1.5px;
     background: linear-gradient(
-    180deg,
-    var(--skill-color) 0%,
-    color-mix(in srgb, var(--skill-color) 35%, transparent) 7%,
-    transparent 12%
-  );
+      180deg,
+      var(--skill-color) 0%,
+      color-mix(in srgb, var(--skill-color) 35%, transparent) 7%,
+      transparent 12%
+    );
     -webkit-mask: linear-gradient(#fff 0 0) content-box,
     linear-gradient(#fff 0 0);
     -webkit-mask-composite: xor;
     mask: linear-gradient(#fff 0 0) content-box,
     linear-gradient(#fff 0 0);
     mask-composite: exclude;
-    filter: drop-shadow(0 0 4px var(--skill-color))
-    drop-shadow(0 0 14px var(--skill-color))
-    drop-shadow(0 0 26px var(--skill-color));
-    opacity: 1;
+    opacity: 0.7;
     pointer-events: none;
-    transition: filter 0.2s ease, opacity 0.2s ease;
+    transition: opacity 0.2s ease;
   }
 
   &-chip:hover {
@@ -352,7 +349,7 @@ html, body {
   }
 
   &-chip:hover::before {
-    opacity: 0.9;
+    opacity: 1;
   }
 
   /* ----- Ícone SVG ----- */

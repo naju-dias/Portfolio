@@ -6,6 +6,7 @@ import "./Skills.scss";
 import Reveal from "../shared/Reveal";
 import { SparkEffect } from "../effects/spark-effect";
 import { MonitorIcon, DatabaseIcon, WrenchIcon, SwatchesIcon } from "@phosphor-icons/react";
+import { makeSvgIdsUnique } from "@/lib/svgUnique";
 
 import {htmlIcon, cssIcon, tailwindIcon, javascriptIcon, typescriptIcon, reactIcon, pythonIcon, nextjsIcon, mysqlIcon, dockerIcon, gitIcon, githubIcon, jestIcon, figmaIcon, framerIcon, notionIcon, claudeIcon, fastapiIcon, postgresqlIcon, prismaIcon, vercelIcon, scssIcon } from "../../lib/icons";
 
@@ -164,7 +165,7 @@ export default function Skills() {
                       <span
                         className="skill-icon"
                         aria-hidden="true"
-                        dangerouslySetInnerHTML={{ __html: skill.icon }}
+                        dangerouslySetInnerHTML={{ __html: makeSvgIdsUnique(skill.icon) }}
                       />
                       <span className="skill-label">{skill.name}</span>
                     </motion.div>

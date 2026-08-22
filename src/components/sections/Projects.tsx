@@ -7,6 +7,7 @@ import { motion, AnimatePresence, type Variants } from "framer-motion";
 
 import { projects, type Project } from "@/data/projects";
 import { useIsMobile } from "@/hooks/useIsMobile";
+import { makeSvgIdsUnique } from "@/lib/svgUnique";
 
 import "./Projects.scss";
 
@@ -208,7 +209,7 @@ export default function Projects() {
                         <span
                           className="proj-card-tech-icon"
                           aria-hidden="true"
-                          dangerouslySetInnerHTML={{ __html: tech.icon }}
+                          dangerouslySetInnerHTML={{ __html: makeSvgIdsUnique(tech.icon) }}
                         />
                         <span>{tech.name}</span>
                       </div>
