@@ -3,6 +3,8 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { Geist, Geist_Mono, Instrument_Serif, Caveat, JetBrains_Mono } from "next/font/google";
 
+import Script from "next/script";
+
 import "./globals.css";
 
 import { Analytics } from "@vercel/analytics/next";
@@ -95,7 +97,9 @@ export default function RootLayout({
   return (
     <html lang="pt-br" suppressHydrationWarning>
       <head>
-        <script
+        <Script
+          id="loader-init-script"
+          strategy="beforeInteractive"
           dangerouslySetInnerHTML={{
             __html: loaderScript,
           }}

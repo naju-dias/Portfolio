@@ -8,12 +8,14 @@ import Reveal from "../shared/Reveal";
 import TextScramble from "../shared/TextScramble";
 import { heroTiming, tt, tc } from "@/config/heroTiming";
 import { useLoaderDone } from "@/context/LoaderContext";
+import { useIsMobile } from "@/hooks/useIsMobile";
 import "./Hero.scss";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
 export default function Hero({ children }: { children?: React.ReactNode }) {
   const { loaderDone } = useLoaderDone();
+  const isMobile = useIsMobile(768);
 
   return (
     <section
@@ -39,7 +41,7 @@ export default function Hero({ children }: { children?: React.ReactNode }) {
         overflow-hidden"
         >
         <div className="absolute inset-0 z-0 pointer-events-none">
-          <SparkEffect />
+          <SparkEffect amount={isMobile ? 110 : 5000} speed={isMobile ? 0.01 : 0.016} maxopacity={isMobile ? 0.7 : 1}/>
           <Noise patternAlpha={8} />
         </div>
 

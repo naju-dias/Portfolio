@@ -1,10 +1,15 @@
-let uidCounter = 0;
+function sanitizeSeed(seed: string): string {
+  return seed
+    .toLowerCase()
+    .replace(/[^a-z0-9]/g, "-") // troca tudo que não é letra/número por hífen
+    .replace(/-+/g, "-")        // colapsa hífens repetidos
+    .replace(/^-|-$/g, "");     // remove hífen do início/fim
+}
 
-export function makeSvgIdsUnique(svgString: string): string {
-  const uid = `s${uidCounter++}`;
+export function makeSvgIdsUnique(svgString: string, seed: string): string {
+  const uid = `s-${sanitizeSeed(seed)}`;
   const ids = new Set<string>();
 
-  // encontra todos os id declarados no svg
   const idRegex = /id="([^"]+)"/g;
   let match;
   while ((match = idRegex.exec(svgString)) !== null) {

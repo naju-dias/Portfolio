@@ -209,7 +209,7 @@ export default function Projects() {
                         <span
                           className="proj-card-tech-icon"
                           aria-hidden="true"
-                          dangerouslySetInnerHTML={{ __html: makeSvgIdsUnique(tech.icon) }}
+                          dangerouslySetInnerHTML={{ __html: makeSvgIdsUnique(tech.icon, `projects-${tech.name}`) }}
                         />
                         <span>{tech.name}</span>
                       </div>
@@ -269,10 +269,10 @@ export default function Projects() {
 
                   <motion.div
                     className="proj-card-image-inner"
-                    variants={imageMaskVariants}
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true, amount: 0.2 }}
+                    variants={isDesktop ? imageMaskVariants : undefined}
+                    initial={isDesktop ? "hidden" : undefined}
+                    whileInView={isDesktop ? "visible" : undefined}
+                    viewport={isDesktop ? { once: true, amount: 0.2 } : undefined}
                   >
                     {isDesktop ? (
                       <motion.div variants={imageInnerVariants} style={{ width: "100%", height: "100%" }}>

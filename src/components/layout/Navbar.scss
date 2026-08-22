@@ -52,6 +52,14 @@
   &.theme-light .nav-burger {
     color: var(--card);
   }
+
+  &.nav-burger.open {
+    color: #f7f7ff;
+  }
+
+  &.theme-light .nav-burger.open {
+    color: #f7f7ff;
+  }
 }
 
 /* ----- Navbar elementos ----- */

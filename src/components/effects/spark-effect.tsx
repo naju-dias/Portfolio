@@ -60,23 +60,13 @@ export function SparkEffect({
 
     const OPT = {
       selector,
-
-      // quantidade
-      amount: isMobile ? 120 : amount,
-
-      // velocidade
-      speed: isMobile ? 0.01 : speed,
-
+      amount,
+      speed,
       lifetime,
       direction,
       size,
       maxopacity,
-
-      color:
-        window.innerWidth < 520
-          ? "150, 150, 150"
-          : color,
-
+      color,
       randColor,
       acceleration,
     };

@@ -336,16 +336,19 @@ html, body {
     opacity: 0.7;
     pointer-events: none;
     transition: opacity 0.2s ease;
+
+    @media (max-width: 768px) {
+      opacity: 0.5;
+    }
+
+    @media (max-width: 480px) {
+      opacity: 0.4;
+    }
   }
 
   &-chip:hover {
-    transform: translateY(-6px) scale(1.03);
     background: color-mix(in srgb, var(--skill-color) 10%, var(--secondary));
     box-shadow: 0 12px 32px rgba(0, 0, 0, 0.16), 0 0 0 2px color-mix(in srgb, var(--skill-color) 35%, transparent);
-
-    @media (max-width: 768px) {
-      transform: translateY(-4px) scale(1.02);
-    }
   }
 
   &-chip:hover::before {

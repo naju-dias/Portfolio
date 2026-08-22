@@ -6,6 +6,7 @@ import "./Skills.scss";
 import Reveal from "../shared/Reveal";
 import { SparkEffect } from "../effects/spark-effect";
 import { MonitorIcon, DatabaseIcon, WrenchIcon, SwatchesIcon } from "@phosphor-icons/react";
+import { useIsMobile } from "@/hooks/useIsMobile";
 import { makeSvgIdsUnique } from "@/lib/svgUnique";
 
 import {htmlIcon, cssIcon, tailwindIcon, javascriptIcon, typescriptIcon, reactIcon, pythonIcon, nextjsIcon, mysqlIcon, dockerIcon, gitIcon, githubIcon, jestIcon, figmaIcon, framerIcon, notionIcon, claudeIcon, fastapiIcon, postgresqlIcon, prismaIcon, vercelIcon, scssIcon } from "../../lib/icons";
@@ -91,6 +92,8 @@ const chipItemVariants: Variants = {
 };
 
 export default function Skills() {
+  const isMobile = useIsMobile(768);
+  
   return (
     <section id="skills" data-nav-theme="light" className="skills-section">
 
@@ -142,7 +145,7 @@ export default function Skills() {
                 </span>
               </div>
                 <div className="skills-card-spark" aria-hidden="true">
-                  <SparkEffect fitContainer amount={25} maxopacity={0.60} speed={0.006} />
+                  <SparkEffect fitContainer amount={isMobile ? 14 : 25} maxopacity={isMobile ? 0.45 : 0.60} speed={isMobile ? 0.0045 : 0.006} />
                 </div>
 
                 {/* Icons */}
@@ -157,7 +160,7 @@ export default function Skills() {
                       key={skill.name}
                       className="skill-chip"
                       variants={chipItemVariants}
-                      whileHover={{ y: -3, scale: 1.03 }}
+                      whileHover={{ y: -4 }}
                       transition={{ duration: 0.25, ease: EASE }}
                       style={{ "--skill-color": skill.color } as CSSProperties}
                       aria-label={skill.name}
@@ -165,7 +168,7 @@ export default function Skills() {
                       <span
                         className="skill-icon"
                         aria-hidden="true"
-                        dangerouslySetInnerHTML={{ __html: makeSvgIdsUnique(skill.icon) }}
+                        dangerouslySetInnerHTML={{ __html: makeSvgIdsUnique(skill.icon, `skills-${skill.name}`) }}
                       />
                       <span className="skill-label">{skill.name}</span>
                     </motion.div>
